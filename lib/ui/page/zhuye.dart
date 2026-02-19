@@ -4,6 +4,7 @@ import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/post.dart';
 import 'package:we_pai/ui/widget/zhuye_low_edge.dart';
 import 'package:we_pai/ui/widget/options.dart';
+import 'package:we_pai/ui/widget/search.dart';
 
 class Zhuye extends StatefulWidget {
   const Zhuye({super.key});
@@ -39,6 +40,9 @@ class _ZhuyeState extends State<Zhuye> {
           Positioned(top: 590, left: 42, child: Zuopinzhanshi()),
           Positioned(top: 516, left: 228, child: Sheyingshijianquan()),
           Positioned(top: 663, left: 228, child: Paihangbang()),
+
+          //搜索框
+          Positioned(top: 66, left: 42, child: Search()),
 
           //使用条款确认和消失
           Positioned(

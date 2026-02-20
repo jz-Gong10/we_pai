@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/page/zhuye.dart';
+import 'net/http.dart';
+import 'package:we_pai/ui/widget/progress_indicator.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,6 +23,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool _loading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           Background(imagePath: 'lib/material/background.png'),
 
+          //We拍图片
           Positioned(
             top: 237,
             left: 60,
@@ -43,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
 
+          //登录按钮
           Positioned(
             top: 762,
             left: 88,
@@ -57,7 +63,34 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
+
+              //展示用这个直接跳转
               onPressed: () => navigate(context, Zhuye()),
+
+              //别删这段代码！！！千万别删，这是登录按钮的网络请求代码，但虚拟机不能访问，不便于调试就先注释掉了
+              // onPressed: () async {
+              //   setState(() {
+              //     _loading = true;
+              //   });
+              //   try {
+              //     final response = await Http().get(
+              //       path:
+              //           'http://127.0.0.1:4523/m1/7790878-7537573-default/login',
+              //     );
+              //     if (!mounted) return;
+              //     if (response.statusCode == 200) {
+              //       navigate(context, Zhuye());
+              //     } else {
+              //       debugPrint("请求失败: \\${response.statusCode}");
+              //     }
+              //   } finally {
+              //     if (mounted) {
+              //       setState(() {
+              //         _loading = false;
+              //       });
+              //     }
+              //   }
+              // },
               child: Text(
                 '登录',
                 style: TextStyle(
@@ -76,6 +109,15 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
+
+          //加载中图标
+          if (_loading)
+            Positioned.fill(
+              child: Container(
+                color: Color.fromARGB(0, 0, 0, 0),
+                child: const Center(child: CircularProgress()),
+              ),
+            ),
         ],
       ),
     );

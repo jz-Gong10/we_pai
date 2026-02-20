@@ -5,6 +5,7 @@ import 'package:we_pai/ui/widget/post.dart';
 import 'package:we_pai/ui/widget/zhuye_low_edge.dart';
 import 'package:we_pai/ui/widget/options.dart';
 import 'package:we_pai/ui/widget/search.dart';
+import 'package:we_pai/ui/widget/show_youzhizuopin.dart';
 
 class Zhuye extends StatefulWidget {
   const Zhuye({super.key});
@@ -43,6 +44,9 @@ class _ZhuyeState extends State<Zhuye> {
 
           //搜索框
           Positioned(top: 66, left: 42, child: Search()),
+
+          //作品展示
+          Positioned(top: 140, left: 27, child: ShowYouzhizuopin()),
 
           //使用条款确认和消失
           Positioned(

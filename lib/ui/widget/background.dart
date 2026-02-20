@@ -12,17 +12,15 @@ class Background extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(decoration: BoxDecoration(color: Color(0xffF9F2EF))),
-
-        Container(
-          alignment: Alignment.center,
-          width: 440,
-          height: 956,
-          child: Image.asset(imagePath),
+    return Container(
+      width: double.infinity, // 强制宽度撑满
+      height: double.infinity, // 强制高度撑满
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(imagePath),
+          fit: BoxFit.cover, // 保持比例并覆盖
         ),
-      ],
+      ),
     );
   }
 }

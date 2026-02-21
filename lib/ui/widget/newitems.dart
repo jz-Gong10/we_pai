@@ -55,7 +55,6 @@ class _TextInputWidgetState extends State<TextInputWidget> {
               fontFamily: 'ShanHaiJiGuMingKe',
               fontSize: 16, 
               color: Colors.black,
-              fontWeight: FontWeight.bold
               ),
           ),
           const SizedBox(height: 4),
@@ -147,7 +146,7 @@ class _TextInputWidget1State extends State<TextInputWidget1> {
         children: [
           Text(
             widget.label,
-            style: const TextStyle(fontSize: 16, color: Colors.black,fontWeight: FontWeight.bold),
+            style: const TextStyle(fontFamily: 'ShanHaiJiGuMingKe', fontSize: 16, color: Colors.black),
           ),
           const SizedBox(height: 8),
           Text(
@@ -243,7 +242,7 @@ class _YesNoWidgetState extends State<YesNoWidget> {
         children: [
           Text(
             widget.label,
-            style: const TextStyle(fontFamily: 'ShanHaiJiGuMingKe',fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontFamily: 'ShanHaiJiGuMingKe',fontSize: 16, color: Colors.black),
           ),
           const SizedBox(height: 4),
           RadioListTile(value: true, groupValue: _value, onChanged: (v) => _setValue(true), title: const Text('是'),dense:true),
@@ -321,7 +320,7 @@ class _StartTimePickerState extends State<StartTimePicker> {
           children: [
             const Text(
               '01 起始时间',
-              style: TextStyle(fontFamily: 'ShanHaiJiGuMingKe',fontSize: 16, color: Colors.black,fontWeight: FontWeight.bold),
+              style: TextStyle(fontFamily: 'ShanHaiJiGuMingKe',fontSize: 16, color: Colors.black),
             ),
             const SizedBox(height: 8),
             GestureDetector(

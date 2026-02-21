@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/page/zhuye.dart';
+import 'package:we_pai/ui/widget/print.dart';
 import 'net/http.dart';
 import 'package:we_pai/ui/widget/progress_indicator.dart';
+import 'package:we_pai/ui/widget/print.dart';
 
 void main() => runApp(MyApp());
 
@@ -64,8 +66,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
 
-              //展示用这个直接跳转
-              onPressed: () => navigate(context, Zhuye()),
+              //暂时用这个直接跳转
+              onPressed: () {
+                navigate(context, Zhuye());
+                printToast("登录成功");
+              },
 
               //别删这段代码！！！千万别删，这是登录按钮的网络请求代码，但虚拟机不能访问，不便于调试就先注释掉了
               // onPressed: () async {
@@ -80,6 +85,13 @@ class _MyHomePageState extends State<MyHomePage> {
               //     if (!mounted) return;
               //     if (response.statusCode == 200) {
               //       navigate(context, Zhuye());
+              // Fluttertoast.showToast(
+              //   msg: "登录成功",
+              //   toastLength: Toast.LENGTH_SHORT,
+              //   gravity: ToastGravity.CENTER,
+              //   backgroundColor: Colors.black54,
+              //   textColor: Colors.white,
+              // );
               //     } else {
               //       debugPrint("请求失败: \\${response.statusCode}");
               //     }

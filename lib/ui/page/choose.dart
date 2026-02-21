@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/button.dart';
+import 'package:we_pai/ui/page/zhuye.dart';
+import 'package:we_pai/ui/page/new.dart';
+import 'package:we_pai/ui/page/drafts.dart';
 
 class Choose extends StatefulWidget {
   const Choose({super.key});
@@ -16,7 +19,7 @@ class _ChooseState extends State<Choose> {
     return Scaffold(
       
       appBar:AppBar(
-        automaticallyImplyLeading: true,//返回按钮
+        automaticallyImplyLeading: false,
       ),
       
       
@@ -24,21 +27,55 @@ class _ChooseState extends State<Choose> {
         children: [
           Background(imagePath: 'lib/material/background2.png'),
 
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              
-              children: [
-                //新建按钮
-                CustomButton(text: '新建', onPressed: () {}),
-            
-                SizedBox(height: 30), 
-            
-                //草稿箱按钮
-                CustomButton(text: '草稿箱', onPressed: () {}),
-              ],
+          //返回按钮
+          Positioned(
+            top: 85,
+            left: 9,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Zhuye()),
+                );
+              },
+              child: Image.asset(
+                'lib/material/return.png',
+                width: 30,
+                height: 30,
+              ),
             ),
           ),
+
+          //新建
+          Positioned(
+            top:291,
+            left:25,
+            child: CustomButton(
+              text: '新建',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Newdraft()),
+                );
+              },
+            ),
+          ),
+
+          //草稿箱
+          Positioned(
+            top:439,
+            left:25,
+            child: CustomButton(
+              text: '草稿箱',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const DisplayDrafts()),
+                );
+              },
+            ),
+          )
+          
         ],
       ),
     );

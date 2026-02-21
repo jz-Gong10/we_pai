@@ -7,8 +7,9 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final double width;
   final double height;
+  final double fontSize;
 
-  CustomButton({required this.text, required this.onPressed, this.width = 350, this.height = 60});
+  CustomButton({required this.text, required this.onPressed, this.width = 389, this.height = 71,this.fontSize = 24});
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +18,8 @@ class CustomButton extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         color: primary1, 
-        border: Border.all(color: primary2), 
-        borderRadius: BorderRadius.circular(12), 
+        border: Border.all(color: primary2,width: 1), 
+        borderRadius: BorderRadius.circular(10), 
       ),
       child: TextButton(
         onPressed: onPressed,
@@ -26,7 +27,7 @@ class CustomButton extends StatelessWidget {
           text,
           style: TextStyle(
             color: Colors.black,
-            fontSize: 24,
+            fontSize: fontSize,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -36,6 +37,6 @@ class CustomButton extends StatelessWidget {
 }
 
 class EditButton extends CustomButton {
-  EditButton({required String text, required VoidCallback onPressed})
-      : super(text: '编辑', onPressed: onPressed, width: 60, height: 50);
+  EditButton({required VoidCallback onPressed})
+      : super(text: '编辑', onPressed: onPressed, width: 60, height: 30,fontSize: 10);
 }

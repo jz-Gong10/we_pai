@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/page/zhuye.dart';
 
-// import 'package:we_pai/ui/page/drafts.dart';
+import 'package:we_pai/ui/page/choose.dart';
 //测试
 void main() => runApp(MyApp());
 
@@ -11,8 +11,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(home: DisplayDrafts());
-    return MaterialApp(home: MyHomePage());
+    return MaterialApp(home: Choose());
+    //return MaterialApp(home: MyHomePage());
   }
 }
 

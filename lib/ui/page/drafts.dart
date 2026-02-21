@@ -1,8 +1,8 @@
 //草稿箱
 import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
-import 'package:we_pai/ui/page/editdraft.dart';
 import 'package:we_pai/ui/widget/displaydraft.dart';
+import 'package:we_pai/ui/widget/button.dart';
 
 class DisplayDrafts extends StatefulWidget {
   const DisplayDrafts({super.key});
@@ -24,6 +24,13 @@ class _DisplayDraftsState extends State<DisplayDrafts> {
       body: Stack(
         children: [
           Background(imagePath: 'lib/material/background2.png'),
+
+          // 返回按钮
+          Positioned(
+            top: 15,
+            left: 9,
+            child: AppBackButton(),
+          ),
 
           Center(
             child: ListView.builder(

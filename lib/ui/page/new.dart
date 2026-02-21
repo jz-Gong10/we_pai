@@ -1,7 +1,8 @@
 //新建草稿页面
 import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
-import 'package:we_pai/ui/page/choose.dart';
+import 'package:we_pai/ui/widget/button.dart';
+import 'package:we_pai/ui/widget/newitems.dart';
 
 class Newdraft extends StatefulWidget {
   const Newdraft({super.key});
@@ -22,25 +23,30 @@ class _NewdraftState extends State<Newdraft> {
         children: [
           Background(imagePath: 'lib/material/background2.png'),
 
-          //返回按钮
+          // 返回按钮
           Positioned(
-            top: 85,
+            top: 15,
             left: 9,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Choose()),
-                );
-              },
-              child: Image.asset(
-                'lib/material/return.png',
-                width: 30,
-                height: 30,
-              ),
-            ),
+            child: AppBackButton(),
           ),
           
+          //草稿箱（还没写）
+
+          ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              StartTimePicker(),
+              DurationInputWidget(),
+              LocationInputWidget(),
+              PeopleInputWidget(),
+              RewardInputWidget(),
+              EquipmentInputWidget(),
+              StyleInputWidget(),
+              ContactInputWidget(),
+              PhotographerInputWidget(),
+              OtherInputWidget(),
+            ],
+          ),
           ],
       ),
     );

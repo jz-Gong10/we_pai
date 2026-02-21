@@ -38,5 +38,32 @@ class CustomButton extends StatelessWidget {
 
 class EditButton extends CustomButton {
   EditButton({required VoidCallback onPressed})
-      : super(text: '编辑', onPressed: onPressed, width: 60, height: 30,fontSize: 10);
+      : super(text: '编辑', onPressed: onPressed, width: 70, height: 30,fontSize: 18);
+}
+
+class AppBackButton extends StatelessWidget {
+  final VoidCallback? onTap;
+  final double width;
+  final double height;
+  final String assetPath;
+
+  const AppBackButton({
+    Key? key,
+    this.onTap,
+    this.width = 30,
+    this.height = 30,
+    this.assetPath = 'lib/material/return.png',
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap ?? () => Navigator.pop(context),
+      child: Image.asset(
+        assetPath,
+        width: width,
+        height: height,
+      ),
+    );
+  }
 }

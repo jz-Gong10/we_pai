@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/button.dart';
-import 'package:we_pai/ui/page/zhuye.dart';
 import 'package:we_pai/ui/page/new.dart';
 import 'package:we_pai/ui/page/drafts.dart';
 
@@ -27,23 +26,11 @@ class _ChooseState extends State<Choose> {
         children: [
           Background(imagePath: 'lib/material/background2.png'),
 
-          //返回按钮
+          // 返回按钮
           Positioned(
-            top: 85,
+            top: 15,
             left: 9,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Zhuye()),
-                );
-              },
-              child: Image.asset(
-                'lib/material/return.png',
-                width: 30,
-                height: 30,
-              ),
-            ),
+            child: AppBackButton(),
           ),
 
           //新建

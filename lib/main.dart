@@ -6,7 +6,7 @@ import 'net/http.dart';
 import 'package:we_pai/ui/widget/progress_indicator.dart';
 import 'package:we_pai/ui/widget/print.dart';
 
-import 'package:we_pai/ui/page/choose.dart';
+import 'package:we_pai/ui/page/new.dart';
 //测试
 void main() => runApp(MyApp());
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Choose());
+    return MaterialApp(home: Newdraft());
     //return MaterialApp(home: MyHomePage());
   }
 }

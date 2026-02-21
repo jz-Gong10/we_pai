@@ -15,6 +15,7 @@ class _DisplaydraftState extends State<Displaydraft> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(vertical: 45, horizontal: 26),
       width: 389,
       height: 158,
       decoration: BoxDecoration(
@@ -32,7 +33,7 @@ class _DisplaydraftState extends State<Displaydraft> {
                 '上次编辑：年月日',
                 style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
               ),
             ),

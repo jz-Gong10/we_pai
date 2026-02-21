@@ -7,7 +7,15 @@ void navigate(BuildContext context, Widget page) {
 }
 
 class ZhuyeLowEdge extends StatefulWidget {
-  const ZhuyeLowEdge({super.key});
+  final String name;
+  final String casId;
+  final String avatarUrl;
+  const ZhuyeLowEdge({
+    super.key,
+    required this.name,
+    required this.casId,
+    required this.avatarUrl,
+  });
 
   @override
   State<ZhuyeLowEdge> createState() => _ZhuyeLowEdgeState();
@@ -55,7 +63,14 @@ class _ZhuyeLowEdgeState extends State<ZhuyeLowEdge> {
                 shadowColor: Color.fromARGB(0, 255, 255, 255),
               ),
               onPressed: () {
-                navigate(context, Wode());
+                navigate(
+                  context,
+                  Wode(
+                    name: widget.name,
+                    casId: widget.casId,
+                    avatarUrl: widget.avatarUrl,
+                  ),
+                );
               },
               child: Image.asset('lib/material/wode.png'),
             ),

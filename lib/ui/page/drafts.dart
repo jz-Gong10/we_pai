@@ -15,19 +15,15 @@ class _DisplayDraftsState extends State<DisplayDrafts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      appBar:AppBar(
-        automaticallyImplyLeading: false,
-      ),
-      
-      
+      appBar: AppBar(automaticallyImplyLeading: false),
+
       body: Stack(
         children: [
           Background(imagePath: 'lib/material/background2.png'),
 
           Center(
             child: ListView.builder(
-              itemCount: 3, 
+              itemCount: 3,
               itemBuilder: (context, index) {
                 return Displaydraft();
               },

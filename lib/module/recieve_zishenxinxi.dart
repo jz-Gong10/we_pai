@@ -49,4 +49,22 @@ class UserInfo {
       photographerType: json['photographerType'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'role': role,
+      'avatarUrl': avatarUrl,
+      'sex': sex,
+      'equipment': equipment,
+      'casId': casId,
+      'phone': phone,
+      'name': name,
+      'nickname': nickname,
+      'completedOrders': completedOrders,
+      'style': style,
+      'detail': detail,
+      'totalOrders': totalOrders,
+      'photographerType': photographerType,
+    };
+  }
 }

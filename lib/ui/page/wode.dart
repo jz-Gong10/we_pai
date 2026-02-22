@@ -35,9 +35,27 @@ class _WodeState extends State<Wode> {
     String? avatarUrl;
 
     if (_user != null) {
-      name = _user!.name;
-      casId = _user!.casId;
-      avatarUrl = _user!.avatarUrl ?? '';
+      setState(() {
+        name = _user!.name;
+        casId = _user!.casId;
+        avatarUrl = _user!.avatarUrl ?? '';
+      });
+    } else {
+      return Scaffold(
+        body: Stack(
+          children: [
+            Background(imagePath: 'lib/material/background2.png'),
+
+            Positioned(top: 72, left: 23, child: UpEdge(title: '个人主页')),
+
+            Positioned(
+              top: 155,
+              left: 25,
+              child: UserShow(name: '未知用户', casId: '000000', avatarUrl: ''),
+            ),
+          ],
+        ),
+      );
     }
     return Scaffold(
       body: Stack(
@@ -49,7 +67,11 @@ class _WodeState extends State<Wode> {
           Positioned(
             top: 155,
             left: 25,
-            child: UserShow(name: name, casId: casId, avatarUrl: avatarUrl),
+            child: UserShow(
+              name: name,
+              casId: casId,
+              avatarUrl: avatarUrl ?? '',
+            ),
           ),
         ],
       ),

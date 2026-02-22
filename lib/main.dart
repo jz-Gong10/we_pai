@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/page/zhuye.dart';
 import 'package:we_pai/ui/widget/print.dart';
 import 'net/http.dart';
 import 'package:we_pai/ui/widget/progress_indicator.dart';
 import 'package:we_pai/ui/widget/print.dart';
+import 'package:we_pai/service/api_service.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:dio/dio.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

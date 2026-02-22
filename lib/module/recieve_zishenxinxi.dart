@@ -1,6 +1,6 @@
 class UserInfo {
   int role;
-  String? avatarUrl;
+  String avatarUrl;
   int sex;
   String equipment;
   String casId;
@@ -16,7 +16,7 @@ class UserInfo {
 
   UserInfo({
     required this.role,
-    this.avatarUrl,
+    required this.avatarUrl,
     required this.sex,
     required this.equipment,
     required this.casId,
@@ -34,7 +34,7 @@ class UserInfo {
   factory UserInfo.fromJson(Map<String, dynamic> json) {
     return UserInfo(
       role: json['role'],
-      avatarUrl: json['avatarUrl'] == null ? null : json['avatarUrl'],
+      avatarUrl: json['avatarUrl'],
       sex: json['sex'],
       equipment: json['equipment'],
       casId: json['casId'],
@@ -66,5 +66,10 @@ class UserInfo {
       'totalOrders': totalOrders,
       'photographerType': photographerType,
     };
+  }
+
+  @override
+  String toString() {
+    return 'UserInfo{role : $role,avatarUrl: $avatarUrl,sex: $sex,equipment: $equipment,casId:$casId,phone:$phone,name:$name,nickname:$nickname,completedOrders:$completedOrders,style:$style,detial:$detail,totalOrders:$totalOrders,photographerType:$photographerType}';
   }
 }

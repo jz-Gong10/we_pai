@@ -31,7 +31,7 @@ class _DisplayDraftsState extends State<DisplayDrafts> {
   Future<void> _fetchDraftData() async {
     try {
       // 调用ApiService中的方法获取草稿列表数据
-      DraftResponse response = await ApiService.fetchDraftList(1, 10);
+      DraftResponse response = await ApiEnquiry.fetchDraftList(1, 10);
       setState(() {
         _draftList = response.data.list; 
         _isLoading = false; // 数据加载完成，更新加载状态

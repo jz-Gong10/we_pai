@@ -6,7 +6,7 @@ class SuccessPostWidget extends StatelessWidget {
   final String text;
   const SuccessPostWidget({Key? key, this.text = "提交成功"}) : super(key: key);
 
-  /// 显示提交成功弹窗，并在 [duration] 后自动关闭。
+  // 显示提交成功弹窗，自动关闭。
   static Future<void> show(BuildContext context,
       {String text = '提交成功', Duration duration = const Duration(seconds: 2)}) async {
     showDialog(

@@ -2,25 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/up_edge.dart';
 import 'package:we_pai/ui/widget/user_show.dart';
+import 'package:we_pai/module/recieve_zishenxinxi.dart';
+import 'package:we_pai/shared_preference/user_storage.dart';
 
 class Wode extends StatefulWidget {
-  final String name;
-  final String casId;
-  final String avatarUrl;
-  const Wode({
-    super.key,
-    required this.name,
-    required this.casId,
-    required this.avatarUrl,
-  });
+  const Wode({super.key});
 
   @override
   State<Wode> createState() => _WodeState();
 }
 
 class _WodeState extends State<Wode> {
+  UserInfo? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final user = await UserStorage.getUser();
+    setState(() {
+      _user = user;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    String name = '未知用户';
+    String casId = '';
+    String? avatarUrl;
+
+    if (_user != null) {
+      name = _user!.name;
+      casId = _user!.casId;
+      avatarUrl = _user!.avatarUrl ?? '';
+    }
     return Scaffold(
       body: Stack(
         children: [
@@ -31,11 +49,7 @@ class _WodeState extends State<Wode> {
           Positioned(
             top: 155,
             left: 25,
-            child: UserShow(
-              name: widget.name,
-              casId: widget.casId,
-              avatarUrl: widget.avatarUrl,
-            ),
+            child: UserShow(name: name, casId: casId, avatarUrl: avatarUrl),
           ),
         ],
       ),

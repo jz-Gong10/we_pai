@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:we_pai/module/recieve_zishenxinxi.dart';
+import 'package:we_pai/shared_preference/user_storage.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/post.dart';
 import 'package:we_pai/ui/widget/print.dart';
@@ -21,55 +22,6 @@ class _ZhuyeState extends State<Zhuye> {
   String? _imagePath = 'lib/material/term_for_usage.png';
   bool _isVisible = true;
 
-  String name = '';
-  String casId = '';
-  String avatarUrl = '';
-
-  // 接收自身信息(网络请求并获取返回数据模板)
-  UserInfo? _userInfo;
-  bool _loadingProfile = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadProfile();
-  }
-
-  Future<void> _loadProfile() async {
-    setState(() {
-      _loadingProfile = true;
-    });
-    try {
-      final response = await Http().get(path: '/user/getProfile');
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData =
-            response.data as Map<String, dynamic>;
-        final Map<String, dynamic>? userData =
-            responseData['data'] as Map<String, dynamic>?;
-        if (userData != null) {
-          setState(() {
-            _userInfo = UserInfo.fromJson(userData);
-
-            //获取个人数据
-            name = _userInfo!.name;
-            casId = _userInfo!.casId;
-            avatarUrl = _userInfo!.avatarUrl ?? '';
-          });
-        }
-      } else {
-        printToast('个人数据同步失败：${response.statusCode}');
-      }
-    } catch (e) {
-      debugPrint('load profile error: $e');
-    } finally {
-      if (mounted) {
-        setState(() {
-          _loadingProfile = false;
-        });
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,12 +30,7 @@ class _ZhuyeState extends State<Zhuye> {
           Background(imagePath: 'lib/material/background2.png'),
 
           //下方状态栏
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: ZhuyeLowEdge(name: name, casId: casId, avatarUrl: avatarUrl),
-          ),
+          Positioned(bottom: 0, left: 0, right: 0, child: ZhuyeLowEdge()),
 
           //发布按钮
           Positioned(

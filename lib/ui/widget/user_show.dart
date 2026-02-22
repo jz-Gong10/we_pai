@@ -5,13 +5,13 @@ import 'package:we_pai/ui/widget/background.dart';
 class UserShow extends StatefulWidget {
   final String name;
   final String casId;
-  final String avatarUrl;
+  String? avatarUrl;
 
-  const UserShow({
+  UserShow({
     super.key,
     required this.name,
     required this.casId,
-    required this.avatarUrl,
+    this.avatarUrl,
   });
 
   @override
@@ -43,7 +43,7 @@ class _UserShowState extends State<UserShow> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(50)),
             ),
-            child: Image.network(widget.avatarUrl),
+            child: Image.network(widget.avatarUrl ?? ''),
           ),
 
           Column(

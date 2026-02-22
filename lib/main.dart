@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:we_pai/service/dio_service.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/page/zhuye.dart';
 import 'package:we_pai/ui/widget/print.dart';
@@ -11,6 +12,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:dio/dio.dart';
 
 void main() async {
+  DioService().init();
   runApp(MyApp());
 }
 
@@ -73,16 +75,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
 
-              //暂时用这个直接跳转
+              // 暂时用这个直接跳转
               onPressed: () {
                 navigate(context, Zhuye());
                 printToast("登录成功");
               },
 
-              //别删这段代码！！！千万别删，这是登录按钮的网络请求代码，但虚拟机不能访问，不便于调试就先注释掉了
+              // //别删这段代码！！！千万别删，这是登录按钮的网络请求代码，但虚拟机不能访问，不便于调试就先注释掉了
               // onPressed: () async {
               //   setState(() {
-              //     _loading = true;
+              //     _loading = true;sss
               //   });
               //   try {
               //     final response = await Http().get(
@@ -92,13 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
               //     if (!mounted) return;
               //     if (response.statusCode == 200) {
               //       navigate(context, Zhuye());
-              // Fluttertoast.showToast(
-              //   msg: "登录成功",
-              //   toastLength: Toast.LENGTH_SHORT,
-              //   gravity: ToastGravity.CENTER,
-              //   backgroundColor: Colors.black54,
-              //   textColor: Colors.white,
-              // );
+              //       printToast("登录成功");
               //     } else {
               //       debugPrint("请求失败: \\${response.statusCode}");
               //     }

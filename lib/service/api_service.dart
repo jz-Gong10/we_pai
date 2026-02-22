@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:we_pai/module/recieve_sheyinghsiliebiao.dart';
 import '../module/recieve_zishenxinxi.dart';
 import 'dio_service.dart';
 import 'package:we_pai/service/dio_service.dart';
@@ -41,13 +42,34 @@ class ApiService {
   }
 
   // 获取摄影师列表
-  Future<List<UserInfo>> getPhotographers() async {
+  Future<List<SYSList>> getPhotographers() async {
+    try {
+      Response response = await _dio.get(
+        '/photographer/list',
+        data: {'pageNum': '1', 'pageSize': '10', 'keyword': ''},
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = response.data;
+        List<dynamic> listData = data['list'];
+        return listData.map<SYSList>((json) {
+          return SYSList.fromJson(json);
+        }).toList();
+      } else {
+        throw Exception('个人信息接收失败: ${response.statusCode}');
+      }
+    } on DioError catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<int> getPhotographers_total() async {
     try {
       Response response = await _dio.get('/photographer/list');
 
       if (response.statusCode == 200) {
-        List<dynamic> data = response.data;
-        return data.map((json) => UserInfo.fromJson(json)).toList();
+        final Map<String, dynamic> data = response.data;
+        return data['list'];
       } else {
         throw Exception('个人信息接收失败: ${response.statusCode}');
       }

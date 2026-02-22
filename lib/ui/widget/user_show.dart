@@ -33,45 +33,49 @@ class _UserShowState extends State<UserShow> {
         ),
       ),
 
-      child: Row(
-        children: [
-          Container(
-            color: Colors.grey,
-            width: 100,
-            height: 100,
-            margin: EdgeInsets.only(left: 49, right: 20, top: 12, bottom: 12),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(50)),
+      child: SizedBox(
+        width: 246,
+        height: 100,
+        child: Row(
+          children: [
+            Container(
+              color: Colors.grey,
+              width: 100,
+              height: 100,
+              margin: EdgeInsets.only(left: 49, right: 20, top: 12, bottom: 12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+              ),
+              child: Image.network(widget.avatarUrl ?? ''),
             ),
-            child: Image.network(widget.avatarUrl ?? ''),
-          ),
 
-          Column(
-            children: [
-              Text(
-                widget.name,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+            Column(
+              children: [
+                Text(
+                  widget.name,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-              Text(
-                widget.casId,
-                style: TextStyle(fontSize: 18, color: Colors.grey),
-              ),
-            ],
-          ),
-
-          SizedBox(
-            child: IconButton(
-              onPressed: () {
-                navigate(context, Wanshanziliao());
-              },
-              icon: Icon(Icons.edit),
+                Text(
+                  widget.casId,
+                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                ),
+              ],
             ),
-          ),
-        ],
+
+            SizedBox(
+              child: IconButton(
+                onPressed: () {
+                  navigate(context, Wanshanziliao());
+                },
+                icon: Icon(Icons.edit),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

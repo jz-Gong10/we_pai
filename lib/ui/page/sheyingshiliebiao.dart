@@ -68,6 +68,27 @@ class _SheyingshiliebiaoPageState extends State<SheyingshiliebiaoPage> {
           Background(imagePath: 'lib/material/background2.png'),
 
           Positioned(
+            top: 180,
+            left: 42,
+            width: 356,
+            height: 600,
+            child: ListView.builder(
+              itemCount: total,
+              itemBuilder: (context, index) {
+                final SYSList pho = _photographers[index];
+                return SYSShowBlock(
+                  nickname: pho.nickname,
+                  avatarUrl: pho.avatarUrl,
+                  orderCount: pho.orderCount,
+                  casId: pho.casId,
+                  style: pho.style,
+                  type: pho.type,
+                );
+              },
+            ),
+          ),
+
+          Positioned(
             top: 72,
             left: 23,
             right: 23,
@@ -75,24 +96,6 @@ class _SheyingshiliebiaoPageState extends State<SheyingshiliebiaoPage> {
           ),
 
           Positioned(top: 119, left: 43, child: Search()),
-
-          Positioned(
-            top: 180,
-            left: 42,
-            child: ListView.builder(
-              itemCount: total,
-              itemBuilder: (context, index) {
-                return SYSShowBlock(
-                  nickname: _photographers[index].nickname,
-                  avatarUrl: _photographers[index].avatarUrl,
-                  orderCount: _photographers[index].orderCount,
-                  casId: _photographers[index].casId,
-                  style: _photographers[index].style,
-                  type: _photographers[index].type,
-                );
-              },
-            ),
-          ),
 
           if (_isLoading)
             Positioned.fill(

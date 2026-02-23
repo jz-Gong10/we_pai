@@ -4,6 +4,8 @@ import '../module/recieve_zishenxinxi.dart';
 import 'dio_service.dart';
 import 'package:we_pai/service/dio_service.dart';
 import 'package:we_pai/api/api_config.dart';
+import 'package:we_pai/net/http.dart';
+import 'package:flutter/material.dart';
 
 class ApiService {
   final Dio _dio = DioService().dio;
@@ -55,21 +57,6 @@ class ApiService {
         return listData.map<SYSList>((json) {
           return SYSList.fromJson(json);
         }).toList();
-      } else {
-        throw Exception('个人信息接收失败: ${response.statusCode}');
-      }
-    } on DioError catch (e) {
-      throw _handleDioError(e);
-    }
-  }
-
-  Future<int> getPhotographers_total() async {
-    try {
-      Response response = await _dio.get('/photographer/list');
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> data = response.data;
-        return data['list'];
       } else {
         throw Exception('个人信息接收失败: ${response.statusCode}');
       }

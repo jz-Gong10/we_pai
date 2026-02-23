@@ -16,7 +16,7 @@ class DioService {
       BaseOptions(
         baseUrl: ApiConfig.baseUrl,
         connectTimeout: Duration(milliseconds: ApiConfig.connectTimeout),
-        receiveTimeout: Duration(microseconds: ApiConfig.recieveTimeout),
+        receiveTimeout: Duration(milliseconds: ApiConfig.recieveTimeout),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',

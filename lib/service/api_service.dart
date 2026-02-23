@@ -7,7 +7,6 @@ import 'package:we_pai/service/dio_service.dart';
 import 'package:we_pai/api/api_config.dart';
 import 'package:we_pai/net/http.dart';
 import 'package:flutter/material.dart';
-import 'package:we_pai/module/model.dart';
 
 class ApiService {
   final Dio _dio = DioService().dio;

@@ -80,6 +80,7 @@ class _SheyingshiliebiaoPageState extends State<SheyingshiliebiaoPage> {
                     casId: pho.casId,
                     style: pho.style,
                     type: pho.type,
+                    equipment: pho.equipment,
                   );
                 },
               ),

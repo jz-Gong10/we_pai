@@ -2,9 +2,10 @@ class SYSList {
   String avatarUrl;
   String casId;
   String nickname;
-  String style;
+  List<String> style;
   int orderCount;
-  String type;
+  List<String> type;
+  List<String> equipment;
 
   SYSList({
     required this.avatarUrl,
@@ -13,6 +14,7 @@ class SYSList {
     required this.style,
     required this.orderCount,
     required this.type,
+    required this.equipment,
   });
 
   factory SYSList.fromJson(Map<String, dynamic> json) {
@@ -20,9 +22,10 @@ class SYSList {
       avatarUrl: json['avatar_url'],
       casId: json['cas_d'],
       nickname: json['nickname'],
-      style: json['style'],
       orderCount: json['order_count'],
-      type: json['type'],
+      equipment: List<String>.from(json['equipment'] ?? []),
+      style: List<String>.from(json['style'] ?? []),
+      type: List<String>.from(json['type'] ?? []),
     );
   }
 
@@ -34,11 +37,12 @@ class SYSList {
       'style': style,
       'orderCount': orderCount,
       'type': type,
+      'equipment': equipment,
     };
   }
 
   @override
   String toString() {
-    return 'UserInfo{avatarUrl: $avatarUrl,casId:$casId,nickname:$nickname,style:$style,orderCount:$orderCount,type:$type}';
+    return 'UserInfo{avatarUrl: $avatarUrl,casId:$casId,nickname:$nickname,style:$style,orderCount:$orderCount,type:$type,equipment:$equipment}';
   }
 }

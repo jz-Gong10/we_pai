@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:we_pai/module/recieve_sheyinghsiliebiao.dart';
+import 'package:we_pai/module/sys_model.dart';
 import '../module/recieve_zishenxinxi.dart';
 import 'dio_service.dart';
 import 'package:we_pai/service/dio_service.dart';
 import 'package:we_pai/api/api_config.dart';
 import 'package:we_pai/net/http.dart';
 import 'package:flutter/material.dart';
+import 'package:we_pai/module/model.dart';
 
 class ApiService {
   final Dio _dio = DioService().dio;
@@ -14,14 +16,10 @@ class ApiService {
   Future<UserInfo> getUserInfo() async {
     try {
       Response response = await _dio.get('/user/getProfile');
-      Map<String, dynamic> responseData = response.data;
-      int code = responseData['code'] ?? 0;
-      String msg = responseData['msg'] ?? 0;
-      if (code == 200) {
-        Map<String, dynamic> data = responseData['data'];
-        return UserInfo.fromJson(data); //传回来的只有data里的东西
+      if (response.statusCode == 200) {
+        return UserInfo.fromJson(response.data); //传回来的只有data里的东西
       } else {
-        throw Exception('获取个人信息失败: $msg');
+        throw Exception('获取个人信息失败: ${response.statusCode}');
       }
     } on DioError catch (e) {
       throw _handleDioError(e);
@@ -52,8 +50,8 @@ class ApiService {
       );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data = response.data;
-        List<dynamic> listData = data['list'];
+        SysModel responseData = response.data;
+        List<dynamic> listData = responseData.phoList;
         return listData.map<SYSList>((json) {
           return SYSList.fromJson(json);
         }).toList();

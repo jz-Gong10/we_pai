@@ -5,8 +5,9 @@ class SYSShowBlock extends StatefulWidget {
   final String casId;
   final String avatarUrl;
   final int orderCount;
-  final String style;
-  final String type;
+  final List<String> style;
+  final List<String> type;
+  final List<String> equipment;
 
   const SYSShowBlock({
     super.key,
@@ -16,6 +17,7 @@ class SYSShowBlock extends StatefulWidget {
     required this.casId,
     required this.style,
     required this.type,
+    required this.equipment,
   });
 
   @override
@@ -85,6 +87,8 @@ class _SYSShowBlockState extends State<SYSShowBlock> {
           ),
 
           SizedBox(height: 16), // 添加间距
+
+          Text('设备：${widget.equipment}'),
 
           Text('风格：${widget.style}'),
 

@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:we_pai/module/recieve_zishenxinxi.dart';
+import 'package:we_pai/service/api_service.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/post.dart';
+import 'package:we_pai/ui/widget/print.dart';
 import 'package:we_pai/ui/widget/zhuye_low_edge.dart';
 import 'package:we_pai/ui/widget/options.dart';
 import 'package:we_pai/ui/widget/search.dart';

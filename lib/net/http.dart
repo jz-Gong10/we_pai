@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Http {
   //请求的基础地址
-  final String baseUrl = "";
+  final String baseUrl = "http://127.0.0.1:4523/m1/7790878-7537573-default";
   final Duration connectTimeout = Duration(seconds: 10);
   final Duration receiveTimeout = Duration(seconds: 10);
 

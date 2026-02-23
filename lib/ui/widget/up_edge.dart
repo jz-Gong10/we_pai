@@ -40,14 +40,7 @@ class _UpEdgeState extends State<UpEdge> {
           ),
         ),
 
-        Expanded(
-          flex: 1,
-          child: Icon(
-            Icons.update,
-            color: const Color.fromARGB(255, 0, 0, 0),
-            size: 24,
-          ),
-        ),
+        Expanded(flex: 1, child: SizedBox()),
       ],
     );
   }

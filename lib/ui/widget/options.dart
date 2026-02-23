@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:we_pai/ui/page/sheyingshiliebiao.dart';
 
 void navigate(BuildContext context, Widget page) {
   Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
@@ -51,7 +52,7 @@ class _SheyingshiliebiaoState extends State<Sheyingshiliebiao> {
       alignment: Alignment.center,
       child: GestureDetector(
         onTap: () {
-          // navigate(context, );
+          navigate(context, SheyingshiliebiaoPage());
         },
         child: Container(
           width: 174,

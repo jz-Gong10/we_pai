@@ -1,0 +1,96 @@
+import 'package:dio/dio.dart';
+import 'package:we_pai/module/recieve_sheyinghsiliebiao.dart';
+import '../module/recieve_zishenxinxi.dart';
+import 'dio_service.dart';
+import 'package:we_pai/service/dio_service.dart';
+import 'package:we_pai/api/api_config.dart';
+
+class ApiService {
+  final Dio _dio = DioService().dio;
+
+  // 获得自身信息
+  Future<UserInfo> getUserInfo() async {
+    try {
+      Response response = await _dio.get('/user/getProfile');
+      Map<String, dynamic> responseData = response.data;
+      int code = responseData['code'] ?? 0;
+      String msg = responseData['msg'] ?? 0;
+      if (code == 200) {
+        Map<String, dynamic> data = responseData['data'];
+        return UserInfo.fromJson(data); //传回来的只有data里的东西
+      } else {
+        throw Exception('获取个人信息失败: $msg');
+      }
+    } on DioError catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // 获取单个用户信息
+  Future<UserInfo> getUserById(int id) async {
+    try {
+      Response response = await _dio.get('/user/info/{casId}');
+
+      if (response.statusCode == 200) {
+        return UserInfo.fromJson(response.data);
+      } else {
+        throw Exception('获取用户失败: ${response.statusCode}');
+      }
+    } on DioError catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // 获取摄影师列表
+  Future<List<SYSList>> getPhotographers() async {
+    try {
+      Response response = await _dio.get(
+        '/photographer/list',
+        data: {'pageNum': '1', 'pageSize': '10', 'keyword': ''},
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = response.data;
+        List<dynamic> listData = data['list'];
+        return listData.map<SYSList>((json) {
+          return SYSList.fromJson(json);
+        }).toList();
+      } else {
+        throw Exception('个人信息接收失败: ${response.statusCode}');
+      }
+    } on DioError catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<int> getPhotographers_total() async {
+    try {
+      Response response = await _dio.get('/photographer/list');
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = response.data;
+        return data['list'];
+      } else {
+        throw Exception('个人信息接收失败: ${response.statusCode}');
+      }
+    } on DioError catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // 错误处理
+  Exception _handleDioError(DioError e) {
+    String message = e.message ?? '未知错误';
+
+    if (e.response != null) {
+      message =
+          '服务器错误: ${e.response?.statusCode} - ${e.response?.statusMessage}';
+      // 可以尝试从响应体中获取更详细的错误信息
+      if (e.response?.data != null && e.response?.data is Map) {
+        message = e.response?.data['message'] ?? message;
+      }
+    }
+
+    return Exception(message);
+  }
+}

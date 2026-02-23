@@ -72,8 +72,7 @@ class _ZiliaocardState extends State<Ziliaocard>{
     return Container(
       //大的容器
       margin:EdgeInsets.all(16),
-      padding:EdgeInsets.all(16),
-      width: MediaQuery.of(context).size.width * 0.6,
+      width: MediaQuery.of(context).size.width - 40,
       
       decoration:BoxDecoration(
         //渐变
@@ -81,8 +80,8 @@ class _ZiliaocardState extends State<Ziliaocard>{
           begin: Alignment.topCenter, 
           end: Alignment.bottomCenter, 
           colors: [
-            primary1, 
-            primary2, 
+            primary1,
+            primary2,
           ],
         ),
         borderRadius: BorderRadius.circular(10),
@@ -92,7 +91,10 @@ class _ZiliaocardState extends State<Ziliaocard>{
         ),
       ),
 
-      child:Column(
+      child:SingleChildScrollView(
+        child:Padding(
+          padding: EdgeInsets.all(16),
+          child:Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           //头像行
@@ -169,6 +171,9 @@ class _ZiliaocardState extends State<Ziliaocard>{
             ),
           ],
         ),
+        ),
+      ),
+      
     );
   }
 }

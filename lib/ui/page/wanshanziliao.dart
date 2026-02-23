@@ -18,7 +18,7 @@ class _WanshanziliaoState extends State<Wanshanziliao> {
         children: [
           Background(imagePath: 'lib/material/background2.png'),
 
-          Positioned(top: 72, left: 23, child: UpEdge(title: '完善资料')),
+          Positioned(top: 30, left: 23, right: 23, child: UpEdge(title: '完善资料')),
 
            Align(
             alignment: Alignment.topCenter, 

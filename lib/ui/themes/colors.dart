@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-var primary1 = const Color.fromARGB(255, 251, 221, 209);
+var primary1 = const Color(0xFFF9F0EC);
 
-var primary2 = const Color.fromARGB(255, 234, 180, 151);
+var primary2 = const Color(0xFFFFFAE3D8);
 
-var primary3 = const Color.fromRGBO(249, 140, 83, 0.5); 
+var primary3 = const Color(0xFFEAB497); 
 
 //弹窗
 var qianlan = const Color.fromARGB(255, 223, 233, 243);

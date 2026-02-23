@@ -11,6 +11,7 @@ import 'package:we_pai/service/api_service.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:dio/dio.dart';
 import 'package:we_pai/ui/page/wanshanziliao.dart';
+import 'package:we_pai/ui/page/yijianfankui.dart';
 
 //测试
 void main() => runApp(MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Wanshanziliao());
+    return MaterialApp(home: Yijianfankui());
     //return MaterialApp(home: MyHomePage());
   }
 }

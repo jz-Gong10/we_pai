@@ -10,3 +10,5 @@ var primary3 = const Color(0xFFEAB497);
 var qianlan = const Color.fromARGB(255, 223, 233, 243);
 
 var qianhuang = const Color.fromARGB(255, 235, 235, 213);
+
+var qianhui = const Color.fromARGB(255, 215, 215, 215);

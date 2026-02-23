@@ -119,7 +119,7 @@ class _ZiliaocardState extends State<Ziliaocard>{
                   height: 60,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Colors.grey[350],
+                    color: qianhui,
                     //如有有图片就显示
                     image: _image != null ? DecorationImage(image: FileImage(_image!),fit:BoxFit.cover) : null,
                   ),

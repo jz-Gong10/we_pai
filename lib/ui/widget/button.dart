@@ -102,3 +102,113 @@ class AppBackButton extends StatelessWidget {
     );
   }
 }
+
+//问题反馈按钮
+class ClassButton extends StatelessWidget {
+  final VoidCallback onTap;
+  final String text;
+  final bool isSelected;
+
+   ClassButton({
+    required this.text,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        child:AnimatedContainer(//来点动画（）
+          duration: Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          
+          width:100,
+          height:35,
+
+          decoration: BoxDecoration(
+            color: qianhui, 
+            borderRadius: BorderRadius.circular(8),
+            border: isSelected
+                ? Border.all(color: Colors.black, width: 2.0)
+                : null, // 选中黑框，未选中时无边框
+          ),
+
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.black87,
+              fontSize: 12,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+//提交，带边框和文字阴影效果
+class SubmitButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const SubmitButton({Key? key, required this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // --- 样式设置 ---
+      width: 240,
+      height: 60,
+      decoration: BoxDecoration(
+        color: primary2, 
+        
+        //边框阴影
+        boxShadow: [
+          BoxShadow(
+            color: primary3, 
+            blurRadius: 8, //模糊半径
+            offset: Offset(0, 4), //偏移量(x, y)，向下偏移产生投影
+          ),
+        ],
+        
+        borderRadius: BorderRadius.circular(30), // 大圆角
+      ),
+
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero, //去除默认内边距
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+
+        child: Stack(
+          children: [
+            //按钮文字
+            Center(
+              child: Text(
+                '提交',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  //文字阴影
+                  shadows: [
+                    Shadow(
+                      blurRadius: 3.0,
+                      color: Colors.grey,
+                      offset: Offset(0, 2), // 文字阴影偏移
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

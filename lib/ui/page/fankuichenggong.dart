@@ -2,15 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/up_edge.dart';
 
-
-class Fankui extends StatefulWidget {
+class Fankui extends StatelessWidget {
   const Fankui({super.key});
 
-  @override
-  State<Fankui> createState() => _FankuiState();
-}
-
-class _FankuiState extends State<Fankui> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

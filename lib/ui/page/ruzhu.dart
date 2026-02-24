@@ -6,6 +6,7 @@ import 'package:we_pai/ui/widget/yaoqingma.dart';
 import 'package:we_pai/net/http.dart';
 import 'package:we_pai/ui/widget/progress_indicator.dart';
 import 'package:we_pai/ui/widget/touchable_word.dart';
+import 'package:we_pai/ui/page/ruzhuok.dart';
 
 class Ruzhu extends StatefulWidget {
   const Ruzhu({super.key});
@@ -104,6 +105,13 @@ class _RuzhuState extends State<Ruzhu> {
                     if (response.statusCode == 200) {
                       // 打印接口返回的msg字段
                       printToast(response.data['msg'].toString());
+                      // 跳转到入驻成功页面
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Ruzhuok(),
+                        ),
+                      );
                     } else {
                       printToast('入驻失败: ${response.statusCode}');
                     }

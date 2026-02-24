@@ -362,6 +362,81 @@ class _PickImageState extends State<PickImage>{
             ),
           ),
         ],
-      );
+    );
+  }
+}
+
+//单张图片选择器
+class PickSingleImage extends StatefulWidget {
+  final Function(File?) onImageSelected;
+
+  const PickSingleImage({super.key, required this.onImageSelected});
+
+  @override
+  State<PickSingleImage> createState() => _PickSingleImageState();
+}
+
+class _PickSingleImageState extends State<PickSingleImage>{
+  File? _image;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async{
+    showModalBottomSheet(
+      context: context, 
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading:Icon(Icons.photo_library),
+                title: const Text('从相册选择'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+                  if (image != null) {
+                    setState(() {
+                      _image = File(image.path);
+                    });
+                    widget.onImageSelected(_image);
+                  }
+                },
+              ),
+              ListTile(
+                leading:Icon(Icons.photo_camera), 
+                title: const Text('拍照'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+                  if (image != null) {
+                    setState(() {
+                      _image = File(image.path);
+                    });
+                    widget.onImageSelected(_image);
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context){
+    return GestureDetector(
+      onTap: _pickImage,
+      child: Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: qianhui,
+          image: _image != null ? DecorationImage(image: FileImage(_image!), fit: BoxFit.cover) : null,
+        ),
+        alignment: Alignment.center,
+        child: _image == null ? Icon(Icons.add_a_photo, size: 30, color: Colors.black) : null,
+      ),
+    );
   }
 }

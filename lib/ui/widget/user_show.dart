@@ -100,7 +100,7 @@ class _UserShowState extends State<UserShow> {
               child: SizedBox(
                 child: IconButton(
                   onPressed: () {
-                    navigate(context, Wanshanziliao());
+                    navigate(context, Wanshanziliao(userType: 'photographer'));
                   },
                   icon: Icon(Icons.edit),
                 ),

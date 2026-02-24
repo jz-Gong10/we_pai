@@ -11,6 +11,7 @@ class Work extends StatelessWidget {
   final Function()? onLike;
   final Function()? onComment;
   final Function()? onDelete;
+  final String type; // 'all' or 'my'
 
   const Work({
     Key? key,
@@ -23,6 +24,7 @@ class Work extends StatelessWidget {
     this.onLike,
     this.onComment,
     this.onDelete,
+    required this.type,
   }) : super(key: key);
 
   // 查看大图
@@ -90,7 +92,7 @@ class Work extends StatelessWidget {
               ),
             ],
           ),
-          // 描述文本，与头像左边界对齐
+          // 描述文本
           const SizedBox(height: 8),
           Text(
             description,
@@ -168,17 +170,18 @@ class Work extends StatelessWidget {
                   Text('$comments'),
                 ],
               ),
-              GestureDetector(//删除
-                onTap: onDelete,
-                child: Container(
-                  width: 24,
-                  height: 24,
-                  child: const Icon(
-                    Icons.delete_outline,
-                    size: 20,
+              if (type != 'all')
+                GestureDetector(//删除
+                  onTap: onDelete,
+                  child: Container(
+                    width: 24,
+                    height: 24,
+                    child: const Icon(
+                      Icons.delete_outline,
+                      size: 20,
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ],

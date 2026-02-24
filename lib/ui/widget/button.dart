@@ -96,8 +96,8 @@ class AppBackButton extends StatelessWidget {
   const AppBackButton({
     Key? key,
     this.onTap,
-    this.width = 20,
-    this.height = 20,
+    this.width = 24,
+    this.height = 24,
     this.assetPath = 'lib/material/return.png',
   }) : super(key: key);
 

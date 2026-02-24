@@ -1,6 +1,5 @@
 class ApiConfig {
-  static const String baseUrl =
-      'http://127.0.0.1:4523/m1/7790878-7537573-default';
+  static const String baseUrl = 'https://www.h10eaea4e.nyat.app:48561';
 
   static const String userInfo = '/user/getProfile';
   static const String sysList = '/photographer/list';

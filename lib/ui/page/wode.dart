@@ -31,12 +31,12 @@ class _WodeState extends State<Wode> {
     });
     try {
       // 并发请求示例
-      var result = await Future.wait([_apiService.getUserInfo()]);
+      var userInfo = await _apiService.getUserInfo();
 
       setState(() {
-        name = result[0].name;
-        casId = result[0].casId;
-        avatarUrl = result[0].avatarUrl;
+        name = userInfo.name;
+        casId = userInfo.casId;
+        avatarUrl = userInfo.avatarUrl;
       });
     } catch (e) {
       setState(() {
@@ -52,11 +52,17 @@ class _WodeState extends State<Wode> {
         children: [
           Background(imagePath: 'lib/material/background2.png'),
 
-          Positioned(top: 72, left: 23, child: UpEdge(title: '个人主页')),
+          Positioned(
+            top: 72,
+            left: 23,
+            right: 23,
+            child: UpEdge(title: '个人主页'),
+          ),
 
           Positioned(
             top: 155,
             left: 25,
+            right: 25,
             child: UserShow(
               name: name,
               casId: casId,

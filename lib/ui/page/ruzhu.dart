@@ -97,8 +97,7 @@ class _RuzhuState extends State<Ruzhu> {
                 try {
                   if (_invitationCode.isNotEmpty) {
                     final response = await Http().post(
-                      path:
-                          'http://127.0.0.1:4523/m1/7790878-7537573-default/photographer/enroll',
+                      path: '/photographer/enroll',
                       data: {'invitationCode': _invitationCode},
                     );
                     if (!mounted) return;

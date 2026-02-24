@@ -4,7 +4,7 @@ import 'package:we_pai/service/api_service.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/up_edge.dart';
 import 'package:we_pai/ui/widget/search.dart';
-import 'package:we_pai/ui/widget/zuopin_show_block.dart';
+import 'package:we_pai/ui/widget/photographer_show_block.dart';
 import 'package:we_pai/ui/widget/progress_indicator.dart';
 
 class SheyingshiliebiaoPage extends StatefulWidget {
@@ -27,7 +27,6 @@ class _SheyingshiliebiaoPageState extends State<SheyingshiliebiaoPage> {
   String avatarUrl = '';
   String type = '';
   String style = '';
-  int orderCount = 5;
 
   @override
   void initState() {
@@ -41,14 +40,10 @@ class _SheyingshiliebiaoPageState extends State<SheyingshiliebiaoPage> {
       _isLoading = true;
     });
     try {
-      var results = await Future.wait([
-        _apiService.getPhotographers_total(),
-        _apiService.getPhotographers(),
-      ]);
-
+      List<SYSList> photographers = await _apiService.getPhotographers();
+      debugPrint('数据获取成功，数量: ${photographers.length}'); //看看接没接到数据
       setState(() {
-        total = results[0] as int;
-        _photographers = results[1] as List<SYSList>;
+        _photographers = photographers;
 
         _isLoading = false;
       });
@@ -68,6 +63,31 @@ class _SheyingshiliebiaoPageState extends State<SheyingshiliebiaoPage> {
           Background(imagePath: 'lib/material/background2.png'),
 
           Positioned(
+            top: 180,
+            left: 42,
+            width: 356,
+            height: 750,
+            child: Container(
+              color: Colors.red.withOpacity(0.3), //测试
+              child: ListView.builder(
+                itemCount: _photographers.length,
+                itemBuilder: (context, index) {
+                  final SYSList pho = _photographers[index];
+                  return SYSShowBlock(
+                    nickname: pho.nickname,
+                    avatarUrl: pho.avatarUrl,
+                    orderCount: pho.orderCount,
+                    casId: pho.casId,
+                    style: pho.style,
+                    type: pho.type,
+                    equipment: pho.equipment,
+                  );
+                },
+              ),
+            ),
+          ),
+
+          Positioned(
             top: 72,
             left: 23,
             right: 23,
@@ -75,24 +95,6 @@ class _SheyingshiliebiaoPageState extends State<SheyingshiliebiaoPage> {
           ),
 
           Positioned(top: 119, left: 43, child: Search()),
-
-          Positioned(
-            top: 180,
-            left: 42,
-            child: ListView.builder(
-              itemCount: total,
-              itemBuilder: (context, index) {
-                return SYSShowBlock(
-                  nickname: _photographers[index].nickname,
-                  avatarUrl: _photographers[index].avatarUrl,
-                  orderCount: _photographers[index].orderCount,
-                  casId: _photographers[index].casId,
-                  style: _photographers[index].style,
-                  type: _photographers[index].type,
-                );
-              },
-            ),
-          ),
 
           if (_isLoading)
             Positioned.fill(

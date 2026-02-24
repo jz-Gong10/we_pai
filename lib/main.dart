@@ -81,17 +81,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 printToast("登录成功");
               },
 
-              // //别删这段代码！！！千万别删，这是登录按钮的网络请求代码，但虚拟机不能访问，不便于调试就先注释掉了
+              // 别删这段代码！！！千万别删，这是登录按钮的网络请求代码，但虚拟机不能访问，不便于调试就先注释掉了
               // onPressed: () async {
               //   setState(() {
-              //     _loading = true;sss
+              //     _loading = true;
               //   });
               //   try {
               //     final response = await Http().get(
-              //       path:
-              //           'http://127.0.0.1:4523/m1/7790878-7537573-default/login',
+              //       path: '/login',
+              //       queryParameters: {
+              //         'token':
+              //             'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJjYXNJRCI6IjIwMjMwMDE0MTAzNCIsIm5hbWUiOiLmlrnotoUiLCJleHAiOjE3NzA2NTUxNTB9.FWLq2cVjJ0YAfVdFwsqE_bQbYnHqgZ0H_yjQnOLas-8', // 添加token参数
+              //       },
               //     );
-              //     if (!mounted) return;
+              // if (!mounted) return;
               //     if (response.statusCode == 200) {
               //       navigate(context, Zhuye());
               //       printToast("登录成功");

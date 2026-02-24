@@ -12,3 +12,13 @@ var qianlan = const Color.fromARGB(255, 223, 233, 243);
 var qianhuang = const Color.fromARGB(255, 235, 235, 213);
 
 var qianhui = const Color.fromARGB(255, 215, 215, 215);
+
+//渐变
+var pinkGradient = LinearGradient(
+          begin: Alignment.topCenter, 
+          end: Alignment.bottomCenter, 
+          colors: [
+            primary1, 
+            primary2, 
+          ],
+        );

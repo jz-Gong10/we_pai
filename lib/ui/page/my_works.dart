@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/up_edge.dart';
 import 'package:we_pai/ui/widget/work.dart';
+import 'package:we_pai/ui/themes/colors.dart';
 
 class MyWorks extends StatefulWidget {
   const MyWorks({super.key});
@@ -62,6 +63,8 @@ class _MyWorksState extends State<MyWorks> {
                   imageUrls: List<String>.from(work['imageUrls']),
                   likes: work['likes'],
                   comments: work['comments'],
+                  gradient: lhGradient,
+
                   onLike: () {
                     // 点赞逻辑
                     print('Liked work $index');

@@ -1,3 +1,4 @@
+//用来展示作品的（包含描述文本和9张图片）
 import 'package:flutter/material.dart';
 import 'package:we_pai/ui/themes/colors.dart';
 
@@ -11,7 +12,9 @@ class Work extends StatelessWidget {
   final Function()? onLike;
   final Function()? onComment;
   final Function()? onDelete;
-  final String type; // 'all' or 'my'
+  final String type; // 'all' or 'my' or 'sb'
+  //all,sb没有删除，my有删除
+  final Gradient? gradient;// lhGradient或者pinkGradient
 
   const Work({
     Key? key,
@@ -25,6 +28,7 @@ class Work extends StatelessWidget {
     this.onComment,
     this.onDelete,
     required this.type,
+    this.gradient,
   }) : super(key: key);
 
   // 查看大图
@@ -60,9 +64,9 @@ class Work extends StatelessWidget {
       width: containerWidth,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        gradient: lhGradient,
+        gradient: gradient ?? lhGradient,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.black, width: 1),
+        border: Border.all(color: primary3, width: 1),
       ),
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -170,7 +174,7 @@ class Work extends StatelessWidget {
                   Text('$comments'),
                 ],
               ),
-              if (type != 'all')
+              if (type != 'all' && type != 'sb')
                 GestureDetector(//删除
                   onTap: onDelete,
                   child: Container(

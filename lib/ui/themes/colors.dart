@@ -32,7 +32,7 @@ var lhGradient = LinearGradient(
   ],
 );
 
-//搭建一个页面的模板
+//搭建一个页面的模板,没滚动
 // import 'package:flutter/material.dart';
 // import 'package:we_pai/ui/widget/background.dart';
 // import 'package:we_pai/ui/widget/up_edge.dart';
@@ -53,7 +53,7 @@ var lhGradient = LinearGradient(
 //         children: [
 //           Background(imagePath: 'lib/material/background2.png'),
           
-//           Positioned(top: 30, left: 23, right: 23, child: UpEdge(title: '意见反馈')),
+//           Positioned(top: 20, left: 23, right: 23, child: UpEdge(title: '意见反馈')),
 
 //            Align(
 //             alignment: Alignment.centerLeft, 

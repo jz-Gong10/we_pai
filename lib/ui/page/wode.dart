@@ -64,6 +64,7 @@ class _WodeState extends State<Wode> {
             left: 25,
             right: 25,
             child: UserShow(
+              change: true,// 我自己的主页我当然可以改啦
               name: name,
               casId: casId,
               avatarUrl: avatarUrl ?? '',

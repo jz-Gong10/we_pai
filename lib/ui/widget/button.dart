@@ -29,7 +29,7 @@ class CustomButton extends StatelessWidget {
           ],
         ), 
 
-        border: Border.all(color: primary2,width: 1), 
+        border: Border.all(color: primary3,width: 1), 
         borderRadius: BorderRadius.circular(10), 
       ),
       child: TextButton(
@@ -66,7 +66,7 @@ class BorderLessButton extends StatelessWidget {
       width: 100,
       height:50,
       decoration: BoxDecoration(
-        color: primary1, 
+        color: primary2, 
         borderRadius: BorderRadius.circular(15), 
       ),
       child: Center(
@@ -96,8 +96,8 @@ class AppBackButton extends StatelessWidget {
   const AppBackButton({
     Key? key,
     this.onTap,
-    this.width = 24,
-    this.height = 24,
+    this.width = 15,
+    this.height = 15,
     this.assetPath = 'lib/material/return.png',
   }) : super(key: key);
 
@@ -109,6 +109,7 @@ class AppBackButton extends StatelessWidget {
         assetPath,
         width: width,
         height: height,
+        fit: BoxFit.contain,
       ),
     );
   }
@@ -169,7 +170,6 @@ class SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // --- 样式设置 ---
       width: 240,
       height: 60,
       decoration: BoxDecoration(

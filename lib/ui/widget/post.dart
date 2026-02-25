@@ -33,3 +33,13 @@ class _PostState extends State<Post> {
     );
   }
 }
+
+//下方状态栏
+// Positioned(bottom: 0, left: 0, right: 0, child: ZhuyeLowEdge()),
+
+// //发布按钮
+// Positioned(
+//   bottom: 22,
+//   left: MediaQuery.of(context).size.width / 2 - 105 / 2,
+//   child: Post(),
+// ),

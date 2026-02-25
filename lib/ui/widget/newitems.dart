@@ -40,9 +40,8 @@ class _TextInputWidgetState extends State<TextInputWidget> {
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.only(top: 32,left: 20,right: 20),
       width: 389,
-      height: 120,
       decoration: BoxDecoration(
-        color: primary1,
+        color: primary2,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
@@ -136,9 +135,8 @@ class _TextInputWidget1State extends State<TextInputWidget1> {
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.only(top: 32,left: 20,right: 20),
       width: 389,
-      height: 180,
       decoration: BoxDecoration(
-        color: primary1,
+        color: primary2,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
@@ -231,9 +229,8 @@ class _YesNoWidgetState extends State<YesNoWidget> {
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.only(top: 32, left: 20, right: 20),
       width: 389,
-      height: 140,
       decoration: BoxDecoration(
-        color: primary1,
+        color: primary2,
         borderRadius: BorderRadius.circular(15),
       ),
 
@@ -307,9 +304,8 @@ class _StartTimePickerState extends State<StartTimePicker> {
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.only(top: 32,left: 20,right: 20),
       width: 389,
-      height: 120,
       decoration: BoxDecoration(
-        color: primary1,
+        color: primary2,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Align(

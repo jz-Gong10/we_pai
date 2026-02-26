@@ -9,7 +9,15 @@ class DioService {
 
   late Dio _dio;
 
-  Dio get dio => _dio;
+  Dio get dio {
+    if (!_dioInitialized) {
+      init();
+      _dioInitialized = true;
+    }
+    return _dio;
+  }//当首次调用dio时初始化dio对象
+  
+  bool _dioInitialized = false;
 
   void init() {
     _dio = Dio(

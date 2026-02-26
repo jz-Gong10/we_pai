@@ -60,13 +60,15 @@ class Work extends StatelessWidget {
     final avatarSize = 48.0;
     final imageSize = (containerWidth - 16) / 3;
 
+    final borderColor = gradient == lhGradient ? Colors.black : primary3;
+
     return Container(
       width: containerWidth,
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         gradient: gradient ?? lhGradient,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: primary3, width: 1),
+        border: Border.all(color: borderColor, width: 1),
       ),
       padding: const EdgeInsets.all(16),
       child: Column(

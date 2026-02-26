@@ -54,18 +54,28 @@ class _UserShowState extends State<UserShow> {
                       // 图片加载失败时显示默认头像
                       return Container(
                         color: qianhui,
+                        child: Icon(
+                          Icons.person,
+                          size: 50,
+                          color: Colors.grey,
+                        ),
                       );
                     },
                   )
                 : Container(
                     color: qianhui,
+                    child: Icon(
+                      Icons.person,
+                      size: 50,
+                      color: Colors.grey,
+                    ),
                   ), // 无URL时显示默认头像
           ),
 
           // 用户名和ID
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(left: 30),
+              margin: EdgeInsets.only(left: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -75,18 +85,29 @@ class _UserShowState extends State<UserShow> {
                       Text(
                         widget.name,
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(width: 10),
-                      Icon(Icons.camera_alt_outlined, size: 20),
+                      SizedBox(width: 3),
+                      //Icon(Icons.camera_alt_outlined, size: 20),
+                      //如果chage=true,有修改按钮
+                      if (widget.change)
+                        Container(
+                          margin: EdgeInsets.only(right: 10),
+                          child: IconButton(
+                            onPressed: () {
+                              navigate(context, Wanshanziliao(userType: 'photographer'));
+                            },
+                            icon: Icon(Icons.edit),
+                          ),
+                        ),
                     ],
                   ),
                   SizedBox(height: 10),
                   Text(
-                    widget.casId,
+                    'id:${widget.casId}',
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ],
@@ -94,17 +115,17 @@ class _UserShowState extends State<UserShow> {
             ),
           ),
 
-          //如果chage=true,有修改按钮
-          if (widget.change)
-            Container(
-              margin: EdgeInsets.only(right: 20),
-              child: IconButton(
-                onPressed: () {
-                  navigate(context, Wanshanziliao(userType: 'photographer'));
-                },
-                icon: Icon(Icons.edit),
-              ),
-            ),
+          // //如果chage=true,有修改按钮
+          // if (widget.change)
+          //   Container(
+          //     margin: EdgeInsets.only(right: 20),
+          //     child: IconButton(
+          //       onPressed: () {
+          //         navigate(context, Wanshanziliao(userType: 'photographer'));
+          //       },
+          //       icon: Icon(Icons.edit),
+          //     ),
+          //   ),
         ],
       ),
     );

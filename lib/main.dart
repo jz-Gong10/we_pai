@@ -12,7 +12,7 @@ import 'package:we_pai/service/api_service.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:dio/dio.dart';
 import 'package:we_pai/ui/page/my_works.dart';
-import 'package:we_pai/ui/page/clientdetail.dart';
+import 'package:we_pai/ui/page/wode.dart';
 
 //测试
 void main() => runApp(MyApp());
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Clientdetail());
+    return MaterialApp(home: Wode());
     // return MaterialApp(home: MyHomePage());
   }
 }

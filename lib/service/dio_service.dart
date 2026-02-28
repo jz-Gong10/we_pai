@@ -82,23 +82,23 @@ class DioService {
   }
 
   // 错误处理
-  String _handleError(DioError error) {
+  String _handleError(DioException error) {
     switch (error.type) {
-      case DioErrorType.connectionTimeout:
+      case DioExceptionType.connectionTimeout:
         return '连接超时';
-      case DioErrorType.sendTimeout:
+      case DioExceptionType.sendTimeout:
         return '发送超时';
-      case DioErrorType.receiveTimeout:
+      case DioExceptionType.receiveTimeout:
         return '接收超时';
-      case DioErrorType.badCertificate:
+      case DioExceptionType.badCertificate:
         return '证书错误';
-      case DioErrorType.badResponse:
+      case DioExceptionType.badResponse:
         return _handleResponseError(error.response);
-      case DioErrorType.cancel:
+      case DioExceptionType.cancel:
         return '请求取消';
-      case DioErrorType.connectionError:
+      case DioExceptionType.connectionError:
         return '网络连接失败';
-      case DioErrorType.unknown:
+      case DioExceptionType.unknown:
         return '未知错误: ${error.message}';
     }
   }

@@ -20,7 +20,7 @@ class ApiService {
       } else {
         throw Exception('获取个人信息失败: ${response.statusCode}');
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw _handleDioError(e);
     }
   }
@@ -35,7 +35,7 @@ class ApiService {
       } else {
         throw Exception('获取用户失败: ${response.statusCode}');
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw _handleDioError(e);
     }
   }
@@ -57,13 +57,13 @@ class ApiService {
       } else {
         throw Exception('个人信息接收失败: ${response.statusCode}');
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw _handleDioError(e);
     }
   }
 
   // 错误处理
-  Exception _handleDioError(DioError e) {
+  Exception _handleDioError(DioException e) {
     String message = e.message ?? '未知错误';
 
     if (e.response != null) {

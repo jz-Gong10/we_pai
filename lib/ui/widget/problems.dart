@@ -14,7 +14,7 @@ class Problems extends StatefulWidget {
 
 class _ProblemsState extends State<Problems>{
   //用于存储选择的图片文件
-  List<File> _images = [];
+  final List<File> _images = [];
 
   //具体问题描述文本输入框控制器
   final TextEditingController _detailController = TextEditingController();
@@ -46,8 +46,8 @@ class _ProblemsState extends State<Problems>{
 
                 onTap: () async {
                   Navigator.pop(context); // 关闭菜单
-                  final List<XFile>? images = await _picker.pickMultiImage();
-                  if (images != null && images.isNotEmpty) {
+                  final List<XFile> images = await _picker.pickMultiImage();
+                  if (images.isNotEmpty) {
                     // 仅添加不超过上限9的图片
                     final int available = 9 - _images.length;
                     final List<File> toAdd = images.take(available).map((xFile) => File(xFile.path)).toList();
@@ -98,6 +98,7 @@ class _ProblemsState extends State<Problems>{
   ];
 
   //释放控制器资源
+  @override
   void dispose(){
     _detailController.dispose();
     super.dispose();
@@ -217,7 +218,7 @@ class _ProblemsState extends State<Problems>{
                     )
                   ],
                 );
-              }).toList(),
+              }),
 
               //添加“上传”按钮 (只有数量小于9时才显示)
               if (_images.length < 9)

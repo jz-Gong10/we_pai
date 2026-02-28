@@ -17,7 +17,7 @@ class Work extends StatelessWidget {
   final Gradient? gradient;// lhGradient或者pinkGradient
 
   const Work({
-    Key? key,
+    super.key,
     required this.avatarUrl,
     required this.nickname,
     required this.description,
@@ -29,7 +29,7 @@ class Work extends StatelessWidget {
     this.onDelete,
     required this.type,
     this.gradient,
-  }) : super(key: key);
+  });
 
   // 查看大图
   void _viewImage(BuildContext context, String imageUrl) {
@@ -38,7 +38,7 @@ class Work extends StatelessWidget {
       builder: (context) {
         return Dialog(
           backgroundColor: Colors.black,
-          child: Container(
+          child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
             height: MediaQuery.of(context).size.height * 0.8,
             child: InteractiveViewer(
@@ -146,7 +146,7 @@ class Work extends StatelessWidget {
                 children: [
                   GestureDetector(//点赞
                     onTap: onLike,
-                    child: Container(
+                    child: SizedBox(
                       width: 24,
                       height: 24,
                       child: const Icon(
@@ -163,7 +163,7 @@ class Work extends StatelessWidget {
                 children: [
                   GestureDetector(//评论
                     onTap: onComment,
-                    child: Container(
+                    child: SizedBox(
                       width: 24,
                       height: 24,
                       child: const Icon(
@@ -179,7 +179,7 @@ class Work extends StatelessWidget {
               if (type != 'all' && type != 'sb')
                 GestureDetector(//删除
                   onTap: onDelete,
-                  child: Container(
+                  child: SizedBox(
                     width: 24,
                     height: 24,
                     child: const Icon(

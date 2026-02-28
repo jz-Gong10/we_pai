@@ -97,7 +97,7 @@ class _ArrayState extends State<Array> {
                       padding: const EdgeInsets.only(bottom: 30),
                       child: _buildPhotographerCard(entry.key, entry.value),
                     );
-                  }).toList(),
+                  }),
                 ],
               ),
             ),

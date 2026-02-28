@@ -11,7 +11,7 @@ class CustomButton extends StatelessWidget {
   final double height;
   final double fontSize;
 
-  CustomButton({required this.text, required this.onPressed, this.width = 389, this.height = 71,this.fontSize = 24});
+  const CustomButton({super.key, required this.text, required this.onPressed, this.width = 389, this.height = 71,this.fontSize = 24});
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +49,8 @@ class CustomButton extends StatelessWidget {
 
 //编辑按钮
 class EditButton extends CustomButton {
-  EditButton({required VoidCallback onPressed})
-      : super(text: '编辑', onPressed: onPressed, width: 70, height: 30,fontSize: 18);
+  EditButton({required super.onPressed})
+      : super(text: '编辑', width: 70, height: 30,fontSize: 18);
 }
 
 //无边框，“提交”和“保存草稿”的模板
@@ -58,7 +58,7 @@ class BorderLessButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  BorderLessButton({required this.text, required this.onPressed});
+  const BorderLessButton({super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -94,12 +94,12 @@ class AppBackButton extends StatelessWidget {
   final String assetPath;
 
   const AppBackButton({
-    Key? key,
+    super.key,
     this.onTap,
     this.width = 15,
     this.height = 15,
     this.assetPath = 'lib/material/return.png',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +121,7 @@ class ClassButton extends StatelessWidget {
   final String text;
   final bool isSelected;
 
-   ClassButton({
+   const ClassButton({super.key, 
     required this.text,
     required this.isSelected,
     required this.onTap,
@@ -165,7 +165,7 @@ class ClassButton extends StatelessWidget {
 class SubmitButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const SubmitButton({Key? key, required this.onPressed}) : super(key: key);
+  const SubmitButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -234,7 +234,7 @@ class PickImage extends StatefulWidget {
 
 class _PickImageState extends State<PickImage>{
   //用于存储选择的图片文件
-  List<File> _images = [];
+  final List<File> _images = [];
 
   //图片选择器
   final ImagePicker _picker = ImagePicker();
@@ -263,7 +263,7 @@ class _PickImageState extends State<PickImage>{
 
                 onTap: () async {
                   Navigator.pop(context); // 关闭菜单
-                  final List<XFile>? images = await _picker.pickMultiImage();
+                  final List<XFile> images = await _picker.pickMultiImage();
                   if (images != null && images.isNotEmpty) {//存在并且包含内容
                     // 仅添加不超过上限9的图片
                     final int available = 9 - _images.length;
@@ -344,7 +344,7 @@ class _PickImageState extends State<PickImage>{
               )
             ],
           );
-        }).toList(),
+        }),
 
         //添加“上传”按钮 (只有数量小于9时才显示)
         if (_images.length < 9)

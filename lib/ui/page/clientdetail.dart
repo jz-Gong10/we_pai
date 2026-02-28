@@ -15,14 +15,14 @@ class Clientdetail extends StatefulWidget {
 
 class _ClientdetailState extends State<Clientdetail> {
   bool _isFollowing = false;
-  int _likes = 111000;
+  final int _likes = 111000;
   int _followers = 11000;
-  int _orders = 11;
+  final int _orders = 11;
   
   // 格式化数字，超过10000显示为x.xw
   String formatNumber(int number) {
     if (number >= 10000) {
-      return (number / 10000).toStringAsFixed(1) + 'w';// .toStringAsFixed(1)：将结果格式化为保留一位小数的字符串
+      return '${(number / 10000).toStringAsFixed(1)}w';// .toStringAsFixed(1)：将结果格式化为保留一位小数的字符串
     }
     return number.toString();
   }

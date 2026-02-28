@@ -4,7 +4,6 @@ import 'package:we_pai/ui/themes/colors.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/up_edge.dart';
 import 'package:we_pai/ui/widget/user_show.dart';
-import 'package:we_pai/module/recieve_zishenxinxi.dart';
 import 'package:we_pai/ui/page/my_works.dart';
 import 'package:we_pai/ui/page/judge.dart';
 

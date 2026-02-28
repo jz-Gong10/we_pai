@@ -26,7 +26,7 @@ class _NewdraftState extends State<Newdraft> {
   bool _needEquipment = false;
   String _contactInfo = '';
   bool _wantPhotographer = false;
-  String _photographerId = '';
+  final String _photographerId = '';
   String _type = '';
   String _remark = '';
 

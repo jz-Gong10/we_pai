@@ -10,10 +10,10 @@ class lineInput extends StatelessWidget {
   final String? labelText;
 
   const lineInput({
-    Key? key,
+    super.key,
     this.controller, 
     this.labelText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

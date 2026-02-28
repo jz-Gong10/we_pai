@@ -9,7 +9,7 @@ class UserShow extends StatefulWidget {
   final String avatarUrl;
   final bool change;
 
-  UserShow({
+  const UserShow({
     super.key,
     required this.name,
     required this.casId,
@@ -46,7 +46,7 @@ class _UserShowState extends State<UserShow> {
             ),
             clipBehavior: Clip.hardEdge,
             child:
-                (widget.avatarUrl != null && widget.avatarUrl.isNotEmpty)
+                (widget.avatarUrl.isNotEmpty)
                 ? Image.network(
                     widget.avatarUrl,
                     fit: BoxFit.cover,

@@ -42,7 +42,7 @@ class _SYSShowBlockState extends State<SYSShowBlock> {
                 width: 40,
                 height: 40,
                 margin: EdgeInsets.all(11),
-                child: (widget.avatarUrl != null && widget.avatarUrl.isNotEmpty)
+                child: (widget.avatarUrl.isNotEmpty)
                     ? Image.network(
                         widget.avatarUrl,
                         fit: BoxFit.cover,

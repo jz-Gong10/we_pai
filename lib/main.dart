@@ -13,6 +13,9 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:dio/dio.dart';
 import 'package:we_pai/ui/page/my_works.dart';
 import 'package:we_pai/ui/page/wode.dart';
+import 'package:we_pai/ui/page/drafts.dart';
+
+
 
 //测试
 void main() => runApp(MyApp());
@@ -22,7 +25,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Wode());
+    return MaterialApp(home: DisplayDrafts());
     // return MaterialApp(home: MyHomePage());
   }
 }
@@ -35,7 +38,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool _loading = false;
+  final bool _loading = false;
 
   @override
   Widget build(BuildContext context) {

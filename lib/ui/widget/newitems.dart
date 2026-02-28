@@ -9,11 +9,11 @@ class TextInputWidget extends StatefulWidget {
   final ValueChanged<String>? onChanged;
 
   const TextInputWidget({
-    Key? key,
+    super.key,
     required this.label,
     this.hint = '点击输入',
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<TextInputWidget> createState() => _TextInputWidgetState();
@@ -99,16 +99,17 @@ class _TextInputWidgetState extends State<TextInputWidget> {
 class TextInputWidget1 extends TextInputWidget {
   final String line1;
   final String line2;
+  @override
   final String hint;
 
   const TextInputWidget1({
-    Key? key,
-    required String label,
-    ValueChanged<String>? onChanged,
+    super.key,
+    required super.label,
+    super.onChanged,
     this.line1 = '类型：（任务写真/毕业照/活动记录/小动物/其他）',
     this.line2 = '风格：（清新/复古/氛围感/其他）',
     this.hint = '点击输入',
-  }) : super(key: key, label: label, onChanged: onChanged);
+  });
 
   @override
   State<TextInputWidget1> createState() => _TextInputWidget1State();
@@ -196,11 +197,11 @@ class YesNoWidget extends StatefulWidget {
   final ValueChanged<bool>? onChanged;
 
   const YesNoWidget({
-    Key? key,
+    super.key,
     required this.label,
     this.initialValue,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<YesNoWidget> createState() => _YesNoWidgetState();
@@ -257,10 +258,10 @@ class StartTimePicker extends StatefulWidget {
   final ValueChanged<DateTime>? onChanged;
 
   const StartTimePicker({
-    Key? key,
+    super.key,
     this.initialDate,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<StartTimePicker> createState() => _StartTimePickerState();
@@ -350,109 +351,91 @@ class _StartTimePickerState extends State<StartTimePicker> {
 //02 大约拍摄时长
 class DurationInputWidget extends TextInputWidget {
   const DurationInputWidget({
-    Key? key,
-    ValueChanged<String>? onChanged,
+    super.key,
+    super.onChanged,
   }) : super(
-          key: key,
           label: '02 大约拍摄时长',
           hint: '点击输入（小时）',
-          onChanged: onChanged,
         );
 }
 
 //03 地点
 class LocationInputWidget extends TextInputWidget {
   const LocationInputWidget({
-    Key? key,
-    ValueChanged<String>? onChanged,
+    super.key,
+    super.onChanged,
   }) : super(
-          key: key,
           label: '03 地点',
-          onChanged: onChanged,
         );
 }
 
 //04 拍摄人数
 class PeopleInputWidget extends TextInputWidget {
   const PeopleInputWidget({
-    Key? key,
-    ValueChanged<String>? onChanged,
+    super.key,
+    super.onChanged,
   }) : super(
-          key: key,
           label: '04 拍摄人数',
-          onChanged: onChanged,
         );
 }
 
 //05 报酬
 class RewardInputWidget extends TextInputWidget {
   const RewardInputWidget({
-    Key? key,
-    ValueChanged<String>? onChanged,
+    super.key,
+    super.onChanged,
   }) : super(
-          key: key,
           label: '05 报酬',
-          onChanged: onChanged,
         );
 }
 
 //06 是否需要专业设备
 class EquipmentInputWidget extends YesNoWidget {
   const EquipmentInputWidget({
-    Key? key,
-    ValueChanged<bool>? onChanged,
+    super.key,
+    super.onChanged,
   }) : super(
-          key: key,
           label: '06 是否需要专业设备',
-          onChanged: onChanged,
         );
 }
 
 //07 拍摄类型与风格
 class StyleInputWidget extends TextInputWidget1 {
   const StyleInputWidget({
-    Key? key,
-    ValueChanged<String>? onChanged,
+    super.key,
+    super.onChanged,
   }) : super(
-          key: key,
           label: '07 拍摄类型与风格',
-          onChanged: onChanged,
         );
 }
 
 //08 联系方式
 class ContactInputWidget extends TextInputWidget {
   const ContactInputWidget({
-    Key? key,
-    ValueChanged<String>? onChanged,
+    super.key,
+    super.onChanged,
   }) : super(
-          key: key,
           label: '08 联系方式（微信/QQ/电话号码）',
-          onChanged: onChanged,
         );
 }
 
 //09 是否预约特定摄影师
 class PhotographerInputWidget extends YesNoWidget {
   const PhotographerInputWidget({
-    Key? key,
-    ValueChanged<bool>? onChanged,
+    super.key,
+    super.onChanged,
   }) : super(
-          key: key,
           label: '09 是否预约特定摄影师',
-          onChanged: onChanged,
         );
 }
 
 //10 其他问题与需求
 class OtherInputWidget extends TextInputWidget {
   const OtherInputWidget({
-    Key? key,
-    ValueChanged<String>? onChanged,
+    super.key,
+    super.onChanged,
   }) : super(
-          key: key,
           label: '10 其他问题与需求',
-          onChanged: onChanged,
         );
 }
 

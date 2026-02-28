@@ -63,12 +63,12 @@ class PostInput extends StatefulWidget {
   // final double width;
 
   const PostInput({
-    Key? key,
+    super.key,
     this.controller,
     // this.hintText = '发表你的想法...',
     this.onChanged,
     // required this.width,
-  }) : super(key: key);
+  });
 
   @override
   _PostInputState createState() => _PostInputState();

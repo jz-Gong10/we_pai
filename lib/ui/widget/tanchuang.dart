@@ -4,7 +4,7 @@ import 'package:we_pai/ui/themes/colors.dart';
 //提交成功
 class SuccessPostWidget extends StatelessWidget {
   final String text;
-  const SuccessPostWidget({Key? key, this.text = "提交成功"}) : super(key: key);
+  const SuccessPostWidget({super.key, this.text = "提交成功"});
 
   // 显示提交成功弹窗，自动关闭。
   static Future<void> show(BuildContext context,
@@ -58,7 +58,7 @@ class SuccessPostWidget extends StatelessWidget {
 
 //保存草稿成功
 class SuccessSaveDraftWidget extends SuccessPostWidget {
-  SuccessSaveDraftWidget({String text = '保存草稿成功'}) : super(text: text);
+  const SuccessSaveDraftWidget({super.key, super.text = '保存草稿成功'});
 
   //2秒后自动关闭。
   static Future<void> show(BuildContext context,

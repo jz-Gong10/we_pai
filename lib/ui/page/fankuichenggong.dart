@@ -28,6 +28,8 @@ class Fankui extends StatelessWidget {
 }
 
 class Smile extends StatelessWidget{
+  const Smile({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

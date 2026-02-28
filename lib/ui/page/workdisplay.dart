@@ -72,7 +72,7 @@ class _WorkDisplayState extends State<WorkDisplay> {
                       padding: const EdgeInsets.only(bottom: 20),
                       child: _buildWorkCard(work),
                     );
-                  }).toList(),
+                  }),
                 ],
               ),
             ),
@@ -174,7 +174,7 @@ class _WorkDisplayState extends State<WorkDisplay> {
                     size: 16,
                   ),
                   const SizedBox(width: 8),
-                  Container(//评论输入框
+                  SizedBox(//评论输入框
                     width: 180,
                     height: 30,
                     child: TextField(

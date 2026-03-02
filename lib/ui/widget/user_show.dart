@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:we_pai/ui/page/wanshanziliao.dart';
 import 'package:we_pai/ui/widget/background.dart';
+import 'package:we_pai/ui/themes/colors.dart';
 
 class UserShow extends StatefulWidget {
   final String name;
   final String casId;
   final String avatarUrl;
+  final bool change;
 
-  UserShow({
+  const UserShow({
     super.key,
     required this.name,
     required this.casId,
     required this.avatarUrl,
+    required this.change,
   });
 
   @override
@@ -22,92 +25,108 @@ class _UserShowState extends State<UserShow> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 389,
-      height: 124,
+      width: double.infinity,
+      height: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10)),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFFF9F0EC), Color(0xFFFAE3D8)],
-        ),
+        border: Border.all(color: primary3, width: 1),
+        gradient: pinkGradient,
       ),
 
-      child: SizedBox(
-        width: 246,
-        height: 105,
-        child: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                width: 120,
-                height: 100,
-                child: Container(
-                  margin: EdgeInsets.only(left: 20),
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                  ),
-                  child:
-                      (widget.avatarUrl != null && widget.avatarUrl.isNotEmpty)
-                      ? Image.network(
-                          widget.avatarUrl,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            // 图片加载失败时显示默认头像
-                            return Icon(
-                              Icons.person,
-                              size: 24,
-                              color: Colors.grey,
-                            );
-                          },
-                        )
-                      : Icon(
-                          Icons.person,
-                          size: 24,
-                          color: Colors.grey,
-                        ), // 无URL时显示默认头像
-                ),
-              ),
+      child: Row(
+        children: [
+          // 圆形头像
+          Container(
+            margin: EdgeInsets.only(left: 30),
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              color: qianhui,
+              borderRadius: BorderRadius.all(Radius.circular(50)),
             ),
-
-            Expanded(
-              flex: 1,
-              child: Column(
-                children: [
-                  SizedBox(height: 30),
-                  Text(
-                    widget.name,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+            clipBehavior: Clip.hardEdge,
+            child:
+                (widget.avatarUrl.isNotEmpty)
+                ? Image.network(
+                    widget.avatarUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      // 图片加载失败时显示默认头像
+                      return Container(
+                        color: qianhui,
+                        child: Icon(
+                          Icons.person,
+                          size: 50,
+                          color: Colors.grey,
+                        ),
+                      );
+                    },
+                  )
+                : Container(
+                    color: qianhui,
+                    child: Icon(
+                      Icons.person,
+                      size: 50,
+                      color: Colors.grey,
                     ),
+                  ), // 无URL时显示默认头像
+          ),
+
+          // 用户名和ID
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(left: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        widget.name,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(width: 3),
+                      //Icon(Icons.camera_alt_outlined, size: 20),
+                      //如果chage=true,有修改按钮
+                      if (widget.change)
+                        Container(
+                          margin: EdgeInsets.only(right: 10),
+                          child: IconButton(
+                            onPressed: () {
+                              navigate(context, Wanshanziliao(userType: 'photographer'));
+                            },
+                            icon: Icon(Icons.edit),
+                          ),
+                        ),
+                    ],
                   ),
+                  SizedBox(height: 10),
                   Text(
-                    widget.casId,
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                    'id:${widget.casId}',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ],
               ),
             ),
+          ),
 
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                child: IconButton(
-                  onPressed: () {
-                    navigate(context, Wanshanziliao());
-                  },
-                  icon: Icon(Icons.edit),
-                ),
-              ),
-            ),
-          ],
-        ),
+          // //如果chage=true,有修改按钮
+          // if (widget.change)
+          //   Container(
+          //     margin: EdgeInsets.only(right: 20),
+          //     child: IconButton(
+          //       onPressed: () {
+          //         navigate(context, Wanshanziliao(userType: 'photographer'));
+          //       },
+          //       icon: Icon(Icons.edit),
+          //     ),
+          //   ),
+        ],
       ),
     );
   }

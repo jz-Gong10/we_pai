@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:we_pai/service/dio_service.dart';
+import 'package:we_pai/ui/page/array.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/page/zhuye.dart';
 import 'package:we_pai/ui/widget/print.dart';
@@ -10,19 +11,22 @@ import 'package:we_pai/ui/widget/print.dart';
 import 'package:we_pai/service/api_service.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:dio/dio.dart';
+import 'package:we_pai/ui/page/my_works.dart';
+import 'package:we_pai/ui/page/wode.dart';
+import 'package:we_pai/ui/page/drafts.dart';
 
-void main() async {
-  DioService().init();
-  runApp(MyApp());
-}
+
+
+//测试
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: MyHomePage());
-    //return MaterialApp(home: MyHomePage());
+    return MaterialApp(home: DisplayDrafts());
+    // return MaterialApp(home: MyHomePage());
   }
 }
 
@@ -34,7 +38,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool _loading = false;
+  final bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +49,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
           //We拍图片
           Positioned(
-            top: 237,
-            left: 60,
+            top: 150,
+            left: 30,
+            right:30,
             child: Container(
               alignment: Alignment.center,
               width: 319,
@@ -61,8 +66,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
           //登录按钮
           Positioned(
-            top: 762,
-            left: 88,
+            top: 550,
+            left: 50,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(264, 60),

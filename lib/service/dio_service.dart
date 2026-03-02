@@ -9,7 +9,15 @@ class DioService {
 
   late Dio _dio;
 
-  Dio get dio => _dio;
+  Dio get dio {
+    if (!_dioInitialized) {
+      init();
+      _dioInitialized = true;
+    }
+    return _dio;
+  }//当首次调用dio时初始化dio对象
+  
+  bool _dioInitialized = false;
 
   void init() {
     _dio = Dio(
@@ -74,23 +82,23 @@ class DioService {
   }
 
   // 错误处理
-  String _handleError(DioError error) {
+  String _handleError(DioException error) {
     switch (error.type) {
-      case DioErrorType.connectionTimeout:
+      case DioExceptionType.connectionTimeout:
         return '连接超时';
-      case DioErrorType.sendTimeout:
+      case DioExceptionType.sendTimeout:
         return '发送超时';
-      case DioErrorType.receiveTimeout:
+      case DioExceptionType.receiveTimeout:
         return '接收超时';
-      case DioErrorType.badCertificate:
+      case DioExceptionType.badCertificate:
         return '证书错误';
-      case DioErrorType.badResponse:
+      case DioExceptionType.badResponse:
         return _handleResponseError(error.response);
-      case DioErrorType.cancel:
+      case DioExceptionType.cancel:
         return '请求取消';
-      case DioErrorType.connectionError:
+      case DioExceptionType.connectionError:
         return '网络连接失败';
-      case DioErrorType.unknown:
+      case DioExceptionType.unknown:
         return '未知错误: ${error.message}';
     }
   }

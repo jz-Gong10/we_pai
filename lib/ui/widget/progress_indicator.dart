@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ProgressIndicator extends StatelessWidget {
   final double value;
 
-  const ProgressIndicator({Key? key, required this.value}) : super(key: key);
+  const ProgressIndicator({super.key, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class ProgressIndicator extends StatelessWidget {
 }
 
 class CircularProgress extends StatelessWidget {
-  const CircularProgress({Key? key});
+  const CircularProgress({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 //编辑旧草稿页面
 import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
-import 'package:we_pai/ui/page/drafts.dart';
+import 'package:we_pai/ui/widget/button.dart';
 
 class Editdraft extends StatefulWidget {
   const Editdraft({super.key});
@@ -22,23 +22,11 @@ class _EditdraftState extends State<Editdraft> {
         children: [
           Background(imagePath: 'lib/material/background2.png'),
 
-          //返回按钮
+          // 返回按钮
           Positioned(
-            top: 85,
+            top: 15,
             left: 9,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const DisplayDrafts()),
-                );
-              },
-              child: Image.asset(
-                'lib/material/return.png',
-                width: 30,
-                height: 30,
-              ),
-            ),
+            child: AppBackButton(),
           ),
           
           ],

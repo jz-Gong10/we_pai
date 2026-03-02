@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:we_pai/ui/page/all_works.dart';
 import 'package:we_pai/ui/page/sheyingshiliebiao.dart';
 
 void navigate(BuildContext context, Widget page) {
@@ -112,7 +113,7 @@ class _SheyingshijianquanState extends State<Sheyingshijianquan> {
       alignment: Alignment.center,
       child: GestureDetector(
         onTap: () {
-          // navigate(context, );
+          navigate(context, MyWorks());
         },
         child: Container(
           width: 168,

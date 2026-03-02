@@ -97,4 +97,52 @@ class ApiService {
       throw _handleDioError(e);
     }
   }
+
+  // 获取所有作品列表（要改）
+  Future<WorkResponse> getAllWorks(int pageNum, int pageSize) async {
+    try {
+      Response response = await _dio.get('/square/list', queryParameters: {
+        'pageNum': pageNum,
+        'pageSize': pageSize,
+      });
+
+      if (response.statusCode == 200) {
+        return WorkResponse.fromJson(response.data);
+      } else {
+        throw Exception('获取所有作品列表失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // 获取作品详情
+  Future<WorkDetailResponse> getWorkDetail(int postId) async {
+    try {
+      Response response = await _dio.get('/square/detail/$postId');
+
+      if (response.statusCode == 200) {
+        return WorkDetailResponse.fromJson(response.data);
+      } else {
+        throw Exception('获取作品详情失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // 获取评论列表
+  Future<CommentResponse> getComments(int postId) async {
+    try {
+      Response response = await _dio.get('/square/comments/$postId');
+
+      if (response.statusCode == 200) {
+        return CommentResponse.fromJson(response.data);
+      } else {
+        throw Exception('获取评论列表失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
 }

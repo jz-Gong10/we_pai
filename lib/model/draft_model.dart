@@ -1,4 +1,5 @@
 //定义数据类型：DraftModel和DraftResponse类
+//获取草稿列表
 class DraftModel {
   final int OrderId;
   final String location;

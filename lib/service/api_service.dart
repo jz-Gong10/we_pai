@@ -7,6 +7,7 @@ import 'package:we_pai/service/dio_service.dart';
 import 'package:we_pai/api/api_config.dart';
 import 'package:we_pai/net/http.dart';
 import 'package:flutter/material.dart';
+import '../model/work_model.dart';
 
 class ApiService {
   final Dio _dio = DioService().dio;
@@ -76,5 +77,24 @@ class ApiService {
     }
 
     return Exception(message);
+  }
+
+  // 获取个人作品列表
+  Future<WorkResponse> getMyWorks(int pageNum, int pageSize, {int? status}) async {
+    try {
+      Response response = await _dio.get('/square/my-posts', queryParameters: {
+        'pageNum': pageNum,
+        'pageSize': pageSize,
+        if (status != null) 'status': status,
+      });
+
+      if (response.statusCode == 200) {
+        return WorkResponse.fromJson(response.data);
+      } else {
+        throw Exception('获取作品列表失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
   }
 }

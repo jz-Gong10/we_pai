@@ -5,8 +5,6 @@ import 'package:we_pai/model/draft_model.dart';
 
 //查询草稿列表的接口调用方法
 class ApiEnquiry {
-  static const String baseUrl = 'http://127.0.0.1:4523/m1/7790878-7537573-default';
-
   static Future<DraftResponse> fetchDraftList(int pageNum, int pageSize) async {
     // 调用http.dart中Http的get方法，通过queryParameters传递参数
     final response = await Http().get(
@@ -29,8 +27,6 @@ class ApiEnquiry {
 
 //提交草稿的接口调用方法
 class ApiPost {
-  static const String baseUrl = 'http://127.0.0.1:4523/m1/7790878-7537573-default';
-  
   static Future<DraftResponse> createOrder(Map<String, dynamic> data) async {
     final response = await Http().post(
       path: '/order/create',
@@ -48,8 +44,6 @@ class ApiPost {
 
 //保存草稿的接口调用方法
 class ApiSave {
-  static const String baseUrl = 'http://127.0.0.1:4523/m1/7790878-7537573-default';
-  
   static Future<DraftResponse> saveOrder(Map<String, dynamic> data) async {
     final response = await Http().post(
       path: '/order/draft/save',
@@ -67,8 +61,6 @@ class ApiSave {
 
 //获取草稿详细信息的接口调用方法
 class ApiDetail {
-  static const String baseUrl = 'http://127.0.0.1:4523/m1/7790878-7537573-default';
-
   static Future<DraftResponse> fetchDraftDetail(int orderId) async {
     // 调用http.dart中Http的get方法，通过queryParameters传递参数
     final response = await Http().get(

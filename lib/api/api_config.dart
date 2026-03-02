@@ -1,5 +1,5 @@
 class ApiConfig {
-  static const String baseUrl = 'https://www.h10eaea4e.nyat.app:48561';
+  static const String baseUrl = 'http://172.24.37.149:8080';//这里改成了zerotier的前置
 
   static const String userInfo = '/user/getProfile';
   static const String sysList = '/photographer/list';

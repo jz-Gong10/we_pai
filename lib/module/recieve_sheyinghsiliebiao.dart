@@ -20,7 +20,7 @@ class SYSList {
   factory SYSList.fromJson(Map<String, dynamic> json) {
     return SYSList(
       avatarUrl: json['avatar_url'],
-      casId: json['cas_d'],
+      casId: json['cas_id'],
       nickname: json['nickname'],
       orderCount: json['order_count'],
       equipment: List<String>.from(json['equipment'] ?? []),

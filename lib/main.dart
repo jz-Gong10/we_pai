@@ -14,8 +14,8 @@ import 'package:dio/dio.dart';
 import 'package:we_pai/ui/page/my_works.dart';
 import 'package:we_pai/ui/page/wode.dart';
 import 'package:we_pai/ui/page/drafts.dart';
-
-
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //测试
 void main() => runApp(MyApp());
@@ -40,6 +40,18 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final bool _loading = false;
 
+  final String url =
+      'https://i.sdu.edu.cn/cas/proxy/login/page?forward=https%3a%2f%2fwww.h10eaea4e.nyat.app%3a48561%2flogin';
+
+  Future<void> _launchURL() async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw '无法打开该网址: $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Positioned(
             top: 150,
             left: 30,
-            right:30,
+            right: 30,
             child: Container(
               alignment: Alignment.center,
               width: 319,
@@ -82,6 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
               // 暂时用这个直接跳转
               onPressed: () {
+                _launchURL();
                 navigate(context, Zhuye());
                 printToast("登录成功");
               },

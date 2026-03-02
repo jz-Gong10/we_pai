@@ -46,7 +46,7 @@ class ApiService {
     try {
       Response response = await _dio.get(
         '/photographer/list',
-        data: {'pageNum': '1', 'pageSize': '10', 'keyword': ''},
+        queryParameters: {'pageNum': '1', 'pageSize': '10', 'keyword': ''},
       );
 
       if (response.statusCode == 200) {
@@ -80,13 +80,20 @@ class ApiService {
   }
 
   // 获取个人作品列表
-  Future<WorkResponse> getMyWorks(int pageNum, int pageSize, {int? status}) async {
+  Future<WorkResponse> getMyWorks(
+    int pageNum,
+    int pageSize, {
+    int? status,
+  }) async {
     try {
-      Response response = await _dio.get('/square/my-posts', queryParameters: {
-        'pageNum': pageNum,
-        'pageSize': pageSize,
-        if (status != null) 'status': status,
-      });
+      Response response = await _dio.get(
+        '/square/my-posts',
+        queryParameters: {
+          'pageNum': pageNum,
+          'pageSize': pageSize,
+          if (status != null) 'status': status,
+        },
+      );
 
       if (response.statusCode == 200) {
         return WorkResponse.fromJson(response.data);

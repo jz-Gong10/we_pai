@@ -145,7 +145,7 @@ class Work extends StatelessWidget {
               Row(
                 children: [
                   GestureDetector(//点赞
-                    onTap: onLike,
+                    onTap: onLike,//点赞逻辑
                     child: SizedBox(
                       width: 24,
                       height: 24,
@@ -162,7 +162,7 @@ class Work extends StatelessWidget {
               Row(
                 children: [
                   GestureDetector(//评论
-                    onTap: onComment,
+                    onTap: onComment,//评论逻辑
                     child: SizedBox(
                       width: 24,
                       height: 24,
@@ -178,7 +178,7 @@ class Work extends StatelessWidget {
               ),
               if (type != 'all' && type != 'sb')
                 GestureDetector(//删除
-                  onTap: onDelete,
+                  onTap: onDelete,//删除逻辑
                   child: SizedBox(
                     width: 24,
                     height: 24,

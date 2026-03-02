@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: DisplayDrafts());
-    // return MaterialApp(home: MyHomePage());
+    // return MaterialApp(home: DisplayDrafts());
+    return MaterialApp(home: MyHomePage());
   }
 }
 
@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
           //登录按钮
           Positioned(
             top: 550,
-            left: 50,
+            left: MediaQuery.of(context).size.width / 2 - 132,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(264, 60),

@@ -125,20 +125,24 @@ class _WodeState extends State<Wode> {
 
                         // 展开内容
                         if (_isReservationExpanded)
-                          Divider(height: 1, color: primary3),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                            child: Column(
-                              children: [
-                                // 预约单项目
-                                _buildReservationItem('毕业季帮拍，需自带设备。', '对接中'),
-                                Divider(height: 1, color: primary3),
-                                _buildReservationItem('个人写真，需自带设备。', '已完成', showEvaluate: true),
-                                Divider(height: 1, color: primary3),
-                                _buildReservationItem('风景，需自带设备。', '待接单'),
-                                Divider(height: 1, color: primary3),
-                              ],
-                            ),
+                          Column(
+                            children: [
+                              Divider(height: 1, color: primary3),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                child: Column(
+                                  children: [
+                                    // 预约单项目
+                                    _buildReservationItem('毕业季帮拍，需自带设备。', '对接中'),
+                                    Divider(height: 1, color: primary3),
+                                    _buildReservationItem('个人写真，需自带设备。', '已完成', showEvaluate: true),
+                                    Divider(height: 1, color: primary3),
+                                    _buildReservationItem('风景，需自带设备。', '待接单'),
+                                    Divider(height: 1, color: primary3),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                       ],
                     ),
@@ -185,20 +189,24 @@ class _WodeState extends State<Wode> {
 
                         // 展开内容
                         if (_isOrderExpanded)
-                          Divider(height: 1, color: primary3),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                            child: Column(
-                              children: [
-                                // 客单项目
-                                _buildOrderItem('毕业季帮拍，需自带设备。', '对接中'),
-                                Divider(height: 1, color: primary3),
-                                _buildOrderItem('毕业季帮拍，需自带设备。', '已完成'),
-                                Divider(height: 1, color: primary3),
-                                _buildOrderItem('毕业季帮拍，需自带设备。', '已完成'),
-                                Divider(height: 1, color: primary3),
-                              ],
-                            ),
+                          Column(
+                            children: [
+                              Divider(height: 1, color: primary3),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                child: Column(
+                                  children: [
+                                    // 客单项目
+                                    _buildOrderItem('毕业季帮拍，需自带设备。', '对接中'),
+                                    Divider(height: 1, color: primary3),
+                                    _buildOrderItem('毕业季帮拍，需自带设备。', '已完成'),
+                                    Divider(height: 1, color: primary3),
+                                    _buildOrderItem('毕业季帮拍，需自带设备。', '已完成'),
+                                    Divider(height: 1, color: primary3),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                       ],
                     ),

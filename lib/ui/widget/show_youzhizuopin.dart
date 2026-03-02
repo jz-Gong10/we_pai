@@ -12,7 +12,7 @@ class _ShowYouzhizuopinState extends State<ShowYouzhizuopin> {
   Widget build(BuildContext context) {
     return Container(
       width: 385,
-      height: 190,
+      height: 160,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.grey,

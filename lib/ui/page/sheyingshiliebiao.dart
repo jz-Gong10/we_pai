@@ -68,7 +68,7 @@ class _SheyingshiliebiaoPageState extends State<SheyingshiliebiaoPage> {
             width: 356,
             height: 750,
             child: Container(
-              color: Colors.red.withOpacity(0.3), //测试
+              // color: Colors.red.withOpacity(0.3), //测试
               child: ListView.builder(
                 itemCount: _photographers.length,
                 itemBuilder: (context, index) {

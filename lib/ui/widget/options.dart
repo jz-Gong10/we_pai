@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:we_pai/ui/page/all_works.dart';
+import 'package:we_pai/ui/page/array.dart';
 import 'package:we_pai/ui/page/sheyingshiliebiao.dart';
+import 'package:we_pai/ui/page/kedanguangchang.dart';
+import 'package:we_pai/ui/page/workdisplay.dart';
 
 void navigate(BuildContext context, Widget page) {
   Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
@@ -23,7 +26,7 @@ class _KedanguangchangState extends State<Kedanguangchang> {
       alignment: Alignment.center,
       child: GestureDetector(
         onTap: () {
-          // navigate(context, );
+          navigate(context, KedanguangchangPage());
         },
         child: Container(
           width: 172,
@@ -83,7 +86,7 @@ class _ZuopinzhanshiState extends State<Zuopinzhanshi> {
       alignment: Alignment.center,
       child: GestureDetector(
         onTap: () {
-          // navigate(context, );
+          navigate(context, WorkDisplay());
         },
         child: Container(
           width: 172,
@@ -143,7 +146,7 @@ class _PaihangbangState extends State<Paihangbang> {
       alignment: Alignment.center,
       child: GestureDetector(
         onTap: () {
-          // navigate(context, );
+          navigate(context, Array());
         },
         child: Container(
           width: 168,

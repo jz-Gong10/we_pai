@@ -8,6 +8,7 @@ import 'package:we_pai/api/api_config.dart';
 import 'package:we_pai/net/http.dart';
 import 'package:flutter/material.dart';
 import '../model/work_model.dart';
+import '../module/recieve_sheyingshijiedan.dart';
 
 class ApiService {
   final Dio _dio = DioService().dio;
@@ -46,7 +47,7 @@ class ApiService {
     try {
       Response response = await _dio.get(
         '/photographer/list',
-        data: {'pageNum': '1', 'pageSize': '10', 'keyword': ''},
+        queryParameters: {'pageNum': '1', 'pageSize': '10', 'keyword': ''},
       );
 
       if (response.statusCode == 200) {
@@ -57,6 +58,51 @@ class ApiService {
         }).toList();
       } else {
         throw Exception('获取摄影师列表失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  //获取公告
+  Future<List<String>> getAnnouncements() async {
+    try {
+      Response response = await _dio.get('/user/announcements');
+
+      if (response.statusCode == 200) {
+        return List<String>.from(response.data);
+      } else {
+        throw Exception('获取公告失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // 获取摄影师订单列表排行榜
+  Future<List<SYOrder>> getSYOrder() async {
+    try {
+      Response response = await _dio.get('/photographer/ranking/orders');
+
+      if (response.statusCode == 200) {
+        return List<SYOrder>.from(response.data);
+      } else {
+        throw Exception('获取摄影师订单列表排行榜失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  //获取摄影师评分排行榜
+  Future<List<SYOrder>> getSYRating() async {
+    try {
+      Response response = await _dio.get('/photographer/ranking/ratings');
+
+      if (response.statusCode == 200) {
+        return List<SYOrder>.from(response.data);
+      } else {
+        throw Exception('获取摄影师评分排行榜失败: ${response.statusCode}');
       }
     } on DioException catch (e) {
       throw _handleDioError(e);
@@ -80,13 +126,20 @@ class ApiService {
   }
 
   // 获取个人作品列表
-  Future<WorkResponse> getMyWorks(int pageNum, int pageSize, {int? status}) async {
+  Future<WorkResponse> getMyWorks(
+    int pageNum,
+    int pageSize, {
+    int? status,
+  }) async {
     try {
-      Response response = await _dio.get('/square/my-posts', queryParameters: {//获取自身帖子
-        'pageNum': pageNum,
-        'pageSize': pageSize,
-        if (status != null) 'status': status,
-      });
+      Response response = await _dio.get(
+        '/square/my-posts',
+        queryParameters: {
+          'pageNum': pageNum,
+          'pageSize': pageSize,
+          if (status != null) 'status': status,
+        },
+      );
 
       if (response.statusCode == 200) {
         return WorkResponse.fromJson(response.data);

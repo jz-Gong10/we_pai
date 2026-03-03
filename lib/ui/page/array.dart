@@ -1,10 +1,13 @@
 //摄影师排行榜
 import 'package:flutter/material.dart';
+import 'package:we_pai/module/recieve_sheyingshijiedan.dart';
 import 'package:we_pai/ui/themes/colors.dart';
 import 'package:we_pai/ui/widget/button.dart';
 import 'package:we_pai/ui/widget/search.dart';
 import 'package:we_pai/ui/widget/show_youzhizuopin.dart';
 import 'package:we_pai/ui/widget/background.dart';
+import 'package:we_pai/module/recieve_sheyingshijiedan.dart';
+import 'package:we_pai/service/api_service.dart';
 
 class Array extends StatefulWidget {
   const Array({super.key});
@@ -14,47 +17,100 @@ class Array extends StatefulWidget {
 }
 
 class _ArrayState extends State<Array> {
+  final ApiService _apiService = ApiService();
+  String? _error;
+  bool _isLoading = false;
   bool _isRatingRanking = true;
   //测试数据
-  final List<Map<String, dynamic>> _photographers = [
-    {
-      'avatar': 'https://via.placeholder.com/48',
-      'nickname': '摄影师1',
-      'rating': 4.9,
-      'orders': 120,
-    },
-    {
-      'avatar': 'https://via.placeholder.com/48',
-      'nickname': '摄影师2',
-      'rating': 4.8,
-      'orders': 115,
-    },
-    {
-      'avatar': 'https://via.placeholder.com/48',
-      'nickname': '摄影师3',
-      'rating': 4.7,
-      'orders': 110,
-    },
-    {
-      'avatar': 'https://via.placeholder.com/48',
-      'nickname': '摄影师4',
-      'rating': 4.6,
-      'orders': 105,
-    },
-    {
-      'avatar': 'https://via.placeholder.com/48',
-      'nickname': '摄影师5',
-      'rating': 4.5,
-      'orders': 100,
-    },
-  ];
+  // final List<Map<String, dynamic>> _photographers = [
+  //   {
+  //     'avatar': 'https://via.placeholder.com/48',
+  //     'nickname': '摄影师1',
+  //     'rating': 4.9,
+  //     'orders': 120,
+  //   },
+  //   {
+  //     'avatar': 'https://via.placeholder.com/48',
+  //     'nickname': '摄影师2',
+  //     'rating': 4.8,
+  //     'orders': 115,
+  //   },
+  //   {
+  //     'avatar': 'https://via.placeholder.com/48',
+  //     'nickname': '摄影师3',
+  //     'rating': 4.7,
+  //     'orders': 110,
+  //   },
+  //   {
+  //     'avatar': 'https://via.placeholder.com/48',
+  //     'nickname': '摄影师4',
+  //     'rating': 4.6,
+  //     'orders': 105,
+  //   },
+  //   {
+  //     'avatar': 'https://via.placeholder.com/48',
+  //     'nickname': '摄影师5',
+  //     'rating': 4.5,
+  //     'orders': 100,
+  //   },
+  // ];
 
-  //可以切换是按评分还是按接单量排序
+  List<SYOrder> photographers = [];
+  List<SYOrder> photographers2 = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPhotographers();
+    _load();
+  }
+
+  Future<void> _loadPhotographers() async {
+    setState(() {
+      _error = null;
+      _isLoading = true;
+    });
+    try {
+      List<SYOrder> response = await _apiService.getSYOrder();
+      setState(() {
+        photographers = response;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _load() async {
+    setState(() {
+      _error = null;
+      _isLoading = true;
+    });
+    try {
+      List<SYOrder> response = await _apiService.getSYRating();
+      setState(() {
+        photographers2 = response;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
+
+  // 可以切换是按评分还是按接单量排序
   List<Map<String, dynamic>> get _sortedPhotographers {
     if (_isRatingRanking) {
-      return List.from(_photographers)..sort((a, b) => b['rating'].compareTo(a['rating']));
+      return List.from(photographers2)
+        ..sort((a, b) => b['rating'].compareTo(a['rating']));
     } else {
-      return List.from(_photographers)..sort((a, b) => b['orders'].compareTo(a['orders']));
+      return List.from(photographers)
+        ..sort((a, b) => b['orders'].compareTo(a['orders']));
     }
   }
 
@@ -66,18 +122,9 @@ class _ArrayState extends State<Array> {
           Background(imagePath: 'lib/material/background2.png'),
 
           //返回按钮
-          Positioned(
-            top: 40,
-            left: 23,
-            child: AppBackButton(),
-          ),
+          Positioned(top: 40, left: 23, child: AppBackButton()),
           //搜索栏
-          Positioned(
-            top: 30,
-            left: 63,
-            right:20,
-            child: Search(),
-          ),
+          Positioned(top: 30, left: 63, right: 20, child: Search()),
 
           Positioned(
             top: 90,
@@ -88,7 +135,7 @@ class _ArrayState extends State<Array> {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-                  const ShowYouzhizuopin(),//这里在widget里面再完善一下
+                  const ShowYouzhizuopin(imageURL: ''), //这里在widget里面再完善一下
                   const SizedBox(height: 30),
                   _buildRankingToggle(),
                   const SizedBox(height: 40),
@@ -107,15 +154,14 @@ class _ArrayState extends State<Array> {
     );
   }
 
-  Widget _buildRankingToggle() {//切换评分排行榜还是接单排行榜的按钮
+  Widget _buildRankingToggle() {
+    //切换评分排行榜还是接单排行榜的按钮
     return Container(
       width: 280,
       height: 40,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          colors: [primary3, primary2],
-        ),
+        gradient: LinearGradient(colors: [primary3, primary2]),
       ),
       child: Row(
         children: [
@@ -128,7 +174,9 @@ class _ArrayState extends State<Array> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: _isRatingRanking ? Colors.white.withOpacity(0.3) : Colors.transparent,
+                  color: _isRatingRanking
+                      ? Colors.white.withOpacity(0.3)
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
@@ -142,10 +190,12 @@ class _ArrayState extends State<Array> {
                           blurRadius: 4.0,
                           color: Colors.grey,
                           offset: Offset(-1, 2), // 文字阴影偏移
-                        )
+                        ),
                       ],
                       fontSize: 14,
-                      fontWeight: _isRatingRanking ? FontWeight.bold : FontWeight.normal,
+                      fontWeight: _isRatingRanking
+                          ? FontWeight.bold
+                          : FontWeight.normal,
                     ),
                   ),
                 ),
@@ -161,7 +211,9 @@ class _ArrayState extends State<Array> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: !_isRatingRanking ? Colors.white.withOpacity(0.3) : Colors.transparent,
+                  color: !_isRatingRanking
+                      ? Colors.white.withOpacity(0.3)
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
@@ -175,10 +227,12 @@ class _ArrayState extends State<Array> {
                           blurRadius: 4.0,
                           color: Colors.grey,
                           offset: Offset(-1, 2), // 文字阴影偏移
-                        )
+                        ),
                       ],
                       fontSize: 14,
-                      fontWeight: !_isRatingRanking ? FontWeight.bold : FontWeight.normal,
+                      fontWeight: !_isRatingRanking
+                          ? FontWeight.bold
+                          : FontWeight.normal,
                     ),
                   ),
                 ),
@@ -196,17 +250,17 @@ class _ArrayState extends State<Array> {
         width: 250,
         height: 80,
         decoration: BoxDecoration(
-          color:primary2,
+          color: primary2,
           borderRadius: BorderRadius.circular(10),
 
           //边框阴影
           boxShadow: [
             BoxShadow(
-              color: Colors.grey, 
+              color: Colors.grey,
               blurRadius: 4, //模糊半径
               offset: Offset(0, 4), //偏移量(x, y)，向下偏移产生投影
             ),
-        ],
+          ],
         ),
         child: Stack(
           children: [
@@ -218,13 +272,13 @@ class _ArrayState extends State<Array> {
                 style: const TextStyle(
                   fontSize: 12,
                   color: Color.fromARGB(255, 222, 152, 115),
-                      //文字阴影
+                  //文字阴影
                   shadows: [
                     Shadow(
                       blurRadius: 2.0,
                       color: Colors.grey,
                       offset: Offset(0, 2), // 文字阴影偏移
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -253,14 +307,14 @@ class _ArrayState extends State<Array> {
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                      //文字阴影
-                      shadows: [
-                        Shadow(
-                          blurRadius: 4.0,
-                          color: Colors.grey,
-                          offset: Offset(0, 2), // 文字阴影偏移
-                        )
-                      ],
+                  //文字阴影
+                  shadows: [
+                    Shadow(
+                      blurRadius: 4.0,
+                      color: Colors.grey,
+                      offset: Offset(0, 2), // 文字阴影偏移
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -268,17 +322,19 @@ class _ArrayState extends State<Array> {
               top: 25,
               right: 12,
               child: Text(
-                _isRatingRanking ? '${photographer['rating']}' : '${photographer['orders']}单',
+                _isRatingRanking
+                    ? '${photographer['rating']}'
+                    : '${photographer['orders']}单',
                 style: const TextStyle(
                   fontSize: 18,
                   color: Color.fromARGB(255, 222, 152, 115),
-                      //文字阴影
+                  //文字阴影
                   shadows: [
                     Shadow(
                       blurRadius: 2.0,
                       color: Colors.grey,
                       offset: Offset(0, 2), // 文字阴影偏移
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -287,21 +343,22 @@ class _ArrayState extends State<Array> {
               bottom: 8,
               right: 12,
               child: GestureDetector(
-                onTap: () {//跳转逻辑（还没写）
+                onTap: () {
+                  //跳转逻辑（还没写）
                 },
                 child: Text(
                   'TA的主页',
                   style: TextStyle(
                     fontSize: 12,
                     color: Color.fromARGB(255, 222, 152, 115),
-                      //文字阴影
-                  shadows: [
-                    Shadow(
-                      blurRadius: 2.0,
-                      color: Colors.grey,
-                      offset: Offset(0, 2), // 文字阴影偏移
-                    )
-                  ],
+                    //文字阴影
+                    shadows: [
+                      Shadow(
+                        blurRadius: 2.0,
+                        color: Colors.grey,
+                        offset: Offset(0, 2), // 文字阴影偏移
+                      ),
+                    ],
                   ),
                 ),
               ),

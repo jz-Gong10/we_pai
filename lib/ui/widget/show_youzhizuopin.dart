@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ShowYouzhizuopin extends StatefulWidget {
-  const ShowYouzhizuopin({super.key});
+  final String imageURL;
+  const ShowYouzhizuopin({super.key, required this.imageURL});
 
   @override
   State<ShowYouzhizuopin> createState() => _ShowYouzhizuopinState();
@@ -17,7 +18,7 @@ class _ShowYouzhizuopinState extends State<ShowYouzhizuopin> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.grey,
       ),
-      // child: Image.network(),
+      child: Image.network(widget.imageURL),
     );
   }
 }

@@ -77,6 +77,18 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  final String url =
+      'https://i.sdu.edu.cn/cas/proxy/login/page?forward=https%3a%2f%2fwww.h10eaea4e.nyat.app%3a48561%2flogin';
+
+  Future<void> _launchURL() async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw '无法打开该网址: $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Positioned(
             top: 150,
             left: 30,
-            right:30,
+            right: 30,
             child: Container(
               alignment: Alignment.center,
               width: 319,
@@ -117,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
 
+
               // 登录按钮点击事件
               onPressed: () async {
                 setState(() {
@@ -133,9 +146,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               },
 
+//               // 暂时用这个直接跳转
+//               onPressed: () {
+//                 _launchURL();
+//                 navigate(context, Zhuye());
+//               },
+
               // 别删这段代码！！！千万别删，这是登录按钮的网络请求代码，但虚拟机不能访问，不便于调试就先注释掉了
               // onPressed: () async {
-              //   setState(() {
               //     _loading = true;
               //   });
               //   try {

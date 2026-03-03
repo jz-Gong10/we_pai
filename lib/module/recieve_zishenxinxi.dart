@@ -1,21 +1,23 @@
 class UserInfo {
   int role;
+  bool agreement;
   String avatarUrl;
   int sex;
-  String equipment;
+  List<String> equipment;
   String casId;
   String phone;
   String name;
   String nickname;
   int completedOrders;
-  String style;
+  List<String> style;
   String detail;
   int totalLikes;
   int totalOrders;
-  String photographerType;
+  List<String> photographerType;
 
   UserInfo({
     required this.role,
+    required this.agreement,
     required this.avatarUrl,
     required this.sex,
     required this.equipment,
@@ -34,25 +36,33 @@ class UserInfo {
   factory UserInfo.fromJson(Map<String, dynamic> json) {
     return UserInfo(
       role: json['role'],
+      agreement: json['agreement'] ?? false,
       avatarUrl: json['avatarUrl'],
       sex: json['sex'],
-      equipment: json['equipment'],
+      equipment: json['equipment'] != null
+          ? List<String>.from(json['equipment'])
+          : [],
       casId: json['casId'],
       phone: json['phone'],
       name: json['name'],
       nickname: json['nickname'],
       completedOrders: json['completedOrders'],
-      style: json['style'],
+      style: json['style'] != null
+          ? List<String>.from(json['style'])
+          : [],
       detail: json['detail'],
       totalLikes: json['totalLikes'],
       totalOrders: json['totalOrders'],
-      photographerType: json['photographerType'],
+      photographerType: json['photographerType'] != null
+          ? List<String>.from(json['photographerType'])
+          : [],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'role': role,
+      'agreement': agreement,
       'avatarUrl': avatarUrl,
       'sex': sex,
       'equipment': equipment,
@@ -63,6 +73,7 @@ class UserInfo {
       'completedOrders': completedOrders,
       'style': style,
       'detail': detail,
+      'totalLikes': totalLikes,
       'totalOrders': totalOrders,
       'photographerType': photographerType,
     };
@@ -70,6 +81,6 @@ class UserInfo {
 
   @override
   String toString() {
-    return 'UserInfo{role : $role,avatarUrl: $avatarUrl,sex: $sex,equipment: $equipment,casId:$casId,phone:$phone,name:$name,nickname:$nickname,completedOrders:$completedOrders,style:$style,detial:$detail,totalOrders:$totalOrders,photographerType:$photographerType}';
+    return 'UserInfo{role: $role, agreement: $agreement, avatarUrl: $avatarUrl, sex: $sex, equipment: $equipment, casId: $casId, phone: $phone, name: $name, nickname: $nickname, completedOrders: $completedOrders, style: $style, detail: $detail, totalLikes: $totalLikes, totalOrders: $totalOrders, photographerType: $photographerType}';
   }
 }

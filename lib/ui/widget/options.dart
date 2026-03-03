@@ -113,7 +113,7 @@ class _SheyingshijianquanState extends State<Sheyingshijianquan> {
       alignment: Alignment.center,
       child: GestureDetector(
         onTap: () {
-          navigate(context, MyWorks());
+          navigate(context, AllWorks());
         },
         child: Container(
           width: 168,

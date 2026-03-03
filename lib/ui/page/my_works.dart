@@ -50,7 +50,7 @@ class _MyWorksState extends State<MyWorks> {
       body: Stack(
         children: [
           Background(imagePath: 'lib/material/background2.png'),
-          
+
           Positioned(top: 30, left: 23, right: 23, child: UpEdge(title: '我的作品')),
 
           Padding(
@@ -66,27 +66,17 @@ class _MyWorksState extends State<MyWorks> {
                             itemBuilder: (context, index) {
                               final work = _works[index];
                               return Work(
+                                postId: work.postId,
                                 type: 'my',
                                 avatarUrl: work.avatarUrl,
                                 nickname: work.nickname,
                                 description: work.content,
                                 imageUrls: work.images,
                                 likes: work.likeCount,
-                                comments: 0, // API中没有评论数，暂时设为0
+                                comments: work.commentCount,
+                                isLiked: false, // 列表接口暂未返回isLiked字段，默认为false
                                 gradient: lhGradient,
-
-                                onLike: () {
-                                  // 点赞逻辑
-                                  print('Liked work ${work.postId}');
-                                },
-                                onComment: () {
-                                  // 评论逻辑
-                                  print('Commented on work ${work.postId}');
-                                },
-                                onDelete: () {
-                                  // 删除逻辑
-                                  print('Deleted work ${work.postId}');
-                                },
+                                onRefresh: _loadWorks,
                               );
                             },
                           ),

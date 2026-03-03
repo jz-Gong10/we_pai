@@ -15,11 +15,11 @@ class ApiService {
   // 获得自身信息
   Future<UserInfo> getUserInfo() async {
     try {
-      Response response = await _dio.get('/user/getProfile');
+      Response response = await _dio.get('/user/getProfile');//获取自身信息
       if (response.statusCode == 200) {
-        return UserInfo.fromJson(response.data); //传回来的只有data里的东西
+        return UserInfo.fromJson(response.data); 
       } else {
-        throw Exception('获取个人信息失败: ${response.statusCode}');
+        throw Exception('获取自身信息失败: ${response.statusCode}');
       }
     } on DioException catch (e) {
       throw _handleDioError(e);
@@ -29,7 +29,7 @@ class ApiService {
   // 获取单个用户信息
   Future<UserInfo> getUserById(int id) async {
     try {
-      Response response = await _dio.get('/user/info/{casId}');
+      Response response = await _dio.get('/user/info/{casId}');//获取用户(casId信息)
 
       if (response.statusCode == 200) {
         return UserInfo.fromJson(response.data);
@@ -56,7 +56,7 @@ class ApiService {
           return SYSList.fromJson(json);
         }).toList();
       } else {
-        throw Exception('个人信息接收失败: ${response.statusCode}');
+        throw Exception('获取摄影师列表失败: ${response.statusCode}');
       }
     } on DioException catch (e) {
       throw _handleDioError(e);
@@ -82,7 +82,7 @@ class ApiService {
   // 获取个人作品列表
   Future<WorkResponse> getMyWorks(int pageNum, int pageSize, {int? status}) async {
     try {
-      Response response = await _dio.get('/square/my-posts', queryParameters: {
+      Response response = await _dio.get('/square/my-posts', queryParameters: {//获取自身帖子
         'pageNum': pageNum,
         'pageSize': pageSize,
         if (status != null) 'status': status,
@@ -91,17 +91,17 @@ class ApiService {
       if (response.statusCode == 200) {
         return WorkResponse.fromJson(response.data);
       } else {
-        throw Exception('获取作品列表失败: ${response.statusCode}');
+        throw Exception('获取个人作品列表失败: ${response.statusCode}');
       }
     } on DioException catch (e) {
       throw _handleDioError(e);
     }
   }
 
-  // 获取所有作品列表（要改）
+  // 获取所有作品列表
   Future<WorkResponse> getAllWorks(int pageNum, int pageSize) async {
     try {
-      Response response = await _dio.get('/square/list', queryParameters: {
+      Response response = await _dio.get('/square/posts', queryParameters: {
         'pageNum': pageNum,
         'pageSize': pageSize,
       });
@@ -110,6 +110,57 @@ class ApiService {
         return WorkResponse.fromJson(response.data);
       } else {
         throw Exception('获取所有作品列表失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // 点赞
+  Future<void> likePost(int postId) async {
+    try {
+      Response response = await _dio.post('/square/like/$postId');
+      if (response.statusCode != 200) {
+        throw Exception('点赞失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // 取消点赞
+  Future<void> unlikePost(int postId) async {
+    try {
+      Response response = await _dio.post('/square/unlike/$postId');
+      if (response.statusCode != 200) {
+        throw Exception('取消点赞失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // 评论
+  Future<void> commentPost(int postId, String content) async {
+    try {
+      Response response = await _dio.post('/square/comment', data: {
+        'postId': postId,
+        'content': content,
+      });
+      if (response.statusCode != 200) {
+        throw Exception('评论失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // 删除帖子
+  Future<void> deletePost(int postId) async {
+    try {
+      Response response = await _dio.delete('/square/posts/$postId');
+      if (response.statusCode != 200) {
+        throw Exception('删除帖子失败: ${response.statusCode}');
       }
     } on DioException catch (e) {
       throw _handleDioError(e);

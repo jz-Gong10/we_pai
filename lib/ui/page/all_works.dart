@@ -1,3 +1,4 @@
+//摄影实践圈
 import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/up_edge.dart';
@@ -6,14 +7,14 @@ import 'package:we_pai/ui/themes/colors.dart';
 import 'package:we_pai/service/api_service.dart';
 import 'package:we_pai/model/work_model.dart';
 
-class MyWorks extends StatefulWidget {
-  const MyWorks({super.key});
+class AllWorks extends StatefulWidget {
+  const AllWorks({super.key});
 
   @override
-  State<MyWorks> createState() => _MyWorksState();
+  State<AllWorks> createState() => _AllWorksState();
 }
 
-class _MyWorksState extends State<MyWorks> {
+class _AllWorksState extends State<AllWorks> {
   final ApiService _apiService = ApiService();
   List<WorkItem> _works = [];
   Map<int, int> _commentCounts = {};
@@ -82,26 +83,24 @@ class _MyWorksState extends State<MyWorks> {
                             itemCount: _works.length,
                             itemBuilder: (context, index) {
                               final work = _works[index];
+                              
                               return Work(
+                                //每个作品用work.dart中的Work组件显示
+                                postId: work.postId,
                                 type: 'all',
+                                //这里设置种类为all，没有删除，展示所有人的作品
                                 avatarUrl: work.avatarUrl,
                                 nickname: work.nickname,
                                 description: work.content,
                                 imageUrls: work.images,
                                 likes: work.likeCount,
                                 comments: _commentCounts[work.postId] ?? 0,
+                                //接口那里没看到有直接获得评论数，_commentCounts这里用的获取评论接口，获取list长度
+                                isLiked: false, // 列表接口暂未返回isLiked字段，默认为false
                                 gradient: lhGradient,
-
-                                onLike: () {
-                                  print('Liked work ${work.postId}');
-                                },
-                                onComment: () {
-                                  print('Commented on work ${work.postId}');
-                                },
-                                onDelete: () {
-                                  print('Deleted work ${work.postId}');
-                                },
+                                onRefresh: _loadWorks,
                               );
+
                             },
                           ),
           ),

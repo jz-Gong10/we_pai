@@ -49,6 +49,7 @@ class WorkItem {
   final String nickname;
   final String createdAt;
   final int likeCount;
+  final int commentCount;
   final String type;
   final String title;
   final String content;
@@ -62,6 +63,7 @@ class WorkItem {
     required this.nickname,
     required this.createdAt,
     required this.likeCount,
+    required this.commentCount,
     required this.type,
     required this.title,
     required this.content,
@@ -91,6 +93,7 @@ class WorkItem {
       nickname: json['nickname'],
       createdAt: json['created_at'],
       likeCount: json['likeCount'],
+      commentCount: json['commentCount'] ?? 0,
       type: json['type'],
       title: json['title'],
       content: json['content'],

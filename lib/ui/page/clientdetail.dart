@@ -5,6 +5,9 @@ import 'package:we_pai/ui/widget/up_edge.dart';
 import 'package:we_pai/ui/widget/user_show.dart';
 import 'package:we_pai/ui/widget/work.dart';
 import 'package:we_pai/ui/themes/colors.dart';
+import 'package:we_pai/service/api_service.dart';
+import 'package:we_pai/module/recieve_zishenxinxi.dart';
+import 'package:we_pai/model/work_model.dart';
 
 class Clientdetail extends StatefulWidget {
   const Clientdetail({super.key});
@@ -14,11 +17,14 @@ class Clientdetail extends StatefulWidget {
 }
 
 class _ClientdetailState extends State<Clientdetail> {
+  final ApiService _apiService = ApiService();
+  UserInfo? _userInfo;
+  List<WorkItem> _works = [];
+  bool _isLoading = true;
+  String? _error;
   bool _isFollowing = false;
-  final int _likes = 111000;
-  int _followers = 11000;
-  final int _orders = 11;
-  
+  int _followers = 0;
+
   // 格式化数字，超过10000显示为x.xw
   String formatNumber(int number) {
     if (number >= 10000) {
@@ -26,7 +32,7 @@ class _ClientdetailState extends State<Clientdetail> {
     }
     return number.toString();
   }
-  
+
   // 关注/取消关注逻辑
   void _toggleFollow() {
     setState(() {
@@ -40,6 +46,34 @@ class _ClientdetailState extends State<Clientdetail> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+    try {
+      final userInfo = await _apiService.getUserInfo();
+      final worksResponse = await _apiService.getMyWorks(1, 10);
+      setState(() {
+        _userInfo = userInfo;
+        _works = worksResponse.data.list;
+        _followers = 11000; // 临时值，实际应该从API获取
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final contentWidth = screenWidth - 40;
@@ -48,7 +82,7 @@ class _ClientdetailState extends State<Clientdetail> {
       body: Stack(
         children: [
           Background(imagePath: 'lib/material/background2.png'),
-          
+
           Positioned(top: 20, left: 23, right: 23, child: UpEdge(title: '用户详情页')),
 
           Positioned(
@@ -56,111 +90,125 @@ class _ClientdetailState extends State<Clientdetail> {
             left: 20,
             right: 20,
             bottom: 0,
-            child: SingleChildScrollView(
-              child: Container(
-                width: contentWidth,
-                alignment: Alignment.center,
+            child: _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : _error != null
+                    ? Center(child: Text('错误: $_error'))
+                    : _userInfo != null
+                        ? SingleChildScrollView(
+                            child: Container(
+                              width: contentWidth,
+                              alignment: Alignment.center,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  // UserShow组件：头像，昵称，id
+                                  UserShow(
+                                    name: _userInfo!.nickname,
+                                    casId: 'id : ${_userInfo!.casId}',
+                                    avatarUrl: _userInfo!.avatarUrl,
+                                    change: false,
+                                  ),
+                                  SizedBox(height: 20),
 
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // UserShow组件：头像，昵称，id
-                    UserShow(
-                      name: '叮咚鸡',
-                      casId: 'id : 101010',
-                      avatarUrl: '',
-                      change: false,
-                    ),
-                    SizedBox(height: 20),
-                    
-                    // 获赞量、粉丝、接单量
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        // 获赞量
-                        Column(
-                          children: [
-                            Text(
-                              formatNumber(_likes),
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                                  // 获赞量、粉丝、接单量
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      // 获赞量
+                                      Column(
+                                        children: [
+                                          Text(
+                                            formatNumber(_userInfo!.totalLikes),
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text('获赞量'),
+                                        ],
+                                      ),
+
+                                      // 粉丝
+                                      Column(
+                                        children: [
+                                          Text(
+                                            formatNumber(_followers),
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text('粉丝'),
+                                        ],
+                                      ),
+
+                                      // 接单量
+                                      Column(
+                                        children: [
+                                          Text(
+                                            formatNumber(_userInfo!.totalOrders),
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text('接单量'),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 20),
+
+                                  // 关注按钮
+                                  GestureDetector(
+                                    onTap: _toggleFollow,
+                                    child: Container(
+                                      width: contentWidth,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        gradient: pinkGradient,
+                                        border: Border.all(color: primary3, width: 1),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        _isFollowing ? '已关注' : '关注',// 关注了就显示已关注
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+
+                                  // 显示作品列表
+                                  _works.isEmpty
+                                      ? Text('暂无作品')
+                                      : Column(
+                                          children: _works.map((work) {
+                                            return Work(
+                                              postId: work.postId,
+                                              avatarUrl: work.avatarUrl,
+                                              nickname: work.nickname,
+                                              description: work.content,
+                                              imageUrls: work.images,
+                                              likes: work.likeCount,
+                                              comments: work.commentCount,
+                                              isLiked: false,
+                                              type: 'my',//我的作品
+                                              gradient: pinkGradient,
+                                              onRefresh: _loadData,
+                                            );
+                                          }).toList(),
+                                        ),
+                                  SizedBox(height: 20),
+                                ],
                               ),
                             ),
-                            Text('获赞量'),
-                          ],
-                        ),
-
-                        // 粉丝
-                        Column(
-                          children: [
-                            Text(
-                              formatNumber(_followers),
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text('粉丝'),
-                          ],
-                        ),
-
-                        // 接单量
-                        Column(
-                          children: [
-                            Text(
-                              formatNumber(_orders),
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text('接单量'),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    
-                    // 关注按钮
-                    GestureDetector(
-                      onTap: _toggleFollow,
-                      child: Container(
-                        width: contentWidth,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: pinkGradient,
-                          border: Border.all(color: primary3, width: 1),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          _isFollowing ? '已关注' : '关注',// 关注了就显示已关注
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    
-                    // 显示作品
-                    Work(
-                      avatarUrl: '',
-                      nickname: '叮咚鸡',
-                      description: '一看就会的九种万能摄影构图公式！',
-                      imageUrls: List.generate(9, (index) => ''),
-                      likes: 1111,
-                      comments: 2222,
-                      type: 'sb',
-                      gradient: pinkGradient,
-                    ),
-                    SizedBox(height: 20),
-                  ],
-                ),
-              ),
-            ),
+                          )
+                        : Center(child: Text('暂无数据')),
           ),
         ],
       ),

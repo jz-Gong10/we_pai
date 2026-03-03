@@ -1,10 +1,13 @@
 //摄影师排行榜
 import 'package:flutter/material.dart';
+import 'package:we_pai/module/recieve_sheyingshijiedan.dart';
 import 'package:we_pai/ui/themes/colors.dart';
 import 'package:we_pai/ui/widget/button.dart';
 import 'package:we_pai/ui/widget/search.dart';
 import 'package:we_pai/ui/widget/show_youzhizuopin.dart';
 import 'package:we_pai/ui/widget/background.dart';
+import 'package:we_pai/module/recieve_sheyingshijiedan.dart';
+import 'package:we_pai/service/api_service.dart';
 
 class Array extends StatefulWidget {
   const Array({super.key});
@@ -14,48 +17,99 @@ class Array extends StatefulWidget {
 }
 
 class _ArrayState extends State<Array> {
+  final ApiService _apiService = ApiService();
+  String? _error;
+  bool _isLoading = false;
   bool _isRatingRanking = true;
   //测试数据
-  final List<Map<String, dynamic>> _photographers = [
-    {
-      'avatar': 'https://via.placeholder.com/48',
-      'nickname': '摄影师1',
-      'rating': 4.9,
-      'orders': 120,
-    },
-    {
-      'avatar': 'https://via.placeholder.com/48',
-      'nickname': '摄影师2',
-      'rating': 4.8,
-      'orders': 115,
-    },
-    {
-      'avatar': 'https://via.placeholder.com/48',
-      'nickname': '摄影师3',
-      'rating': 4.7,
-      'orders': 110,
-    },
-    {
-      'avatar': 'https://via.placeholder.com/48',
-      'nickname': '摄影师4',
-      'rating': 4.6,
-      'orders': 105,
-    },
-    {
-      'avatar': 'https://via.placeholder.com/48',
-      'nickname': '摄影师5',
-      'rating': 4.5,
-      'orders': 100,
-    },
-  ];
+  // final List<Map<String, dynamic>> _photographers = [
+  //   {
+  //     'avatar': 'https://via.placeholder.com/48',
+  //     'nickname': '摄影师1',
+  //     'rating': 4.9,
+  //     'orders': 120,
+  //   },
+  //   {
+  //     'avatar': 'https://via.placeholder.com/48',
+  //     'nickname': '摄影师2',
+  //     'rating': 4.8,
+  //     'orders': 115,
+  //   },
+  //   {
+  //     'avatar': 'https://via.placeholder.com/48',
+  //     'nickname': '摄影师3',
+  //     'rating': 4.7,
+  //     'orders': 110,
+  //   },
+  //   {
+  //     'avatar': 'https://via.placeholder.com/48',
+  //     'nickname': '摄影师4',
+  //     'rating': 4.6,
+  //     'orders': 105,
+  //   },
+  //   {
+  //     'avatar': 'https://via.placeholder.com/48',
+  //     'nickname': '摄影师5',
+  //     'rating': 4.5,
+  //     'orders': 100,
+  //   },
+  // ];
 
-  //可以切换是按评分还是按接单量排序
+  List<SYOrder> photographers = [];
+  List<SYOrder> photographers2 = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPhotographers();
+    _load();
+  }
+
+  Future<void> _loadPhotographers() async {
+    setState(() {
+      _error = null;
+      _isLoading = true;
+    });
+    try {
+      List<SYOrder> response = await _apiService.getSYOrder();
+      setState(() {
+        photographers = response;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _load() async {
+    setState(() {
+      _error = null;
+      _isLoading = true;
+    });
+    try {
+      List<SYOrder> response = await _apiService.getSYRating();
+      setState(() {
+        photographers2 = response;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
+
+  // 可以切换是按评分还是按接单量排序
   List<Map<String, dynamic>> get _sortedPhotographers {
     if (_isRatingRanking) {
-      return List.from(_photographers)
+      return List.from(photographers2)
         ..sort((a, b) => b['rating'].compareTo(a['rating']));
     } else {
-      return List.from(_photographers)
+      return List.from(photographers)
         ..sort((a, b) => b['orders'].compareTo(a['orders']));
     }
   }

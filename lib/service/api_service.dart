@@ -8,6 +8,7 @@ import 'package:we_pai/api/api_config.dart';
 import 'package:we_pai/net/http.dart';
 import 'package:flutter/material.dart';
 import '../model/work_model.dart';
+import '../module/recieve_sheyingshijiedan.dart';
 
 class ApiService {
   final Dio _dio = DioService().dio;
@@ -72,6 +73,36 @@ class ApiService {
         return List<String>.from(response.data);
       } else {
         throw Exception('获取公告失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // 获取摄影师订单列表排行榜
+  Future<List<SYOrder>> getSYOrder() async {
+    try {
+      Response response = await _dio.get('/photographer/ranking/orders');
+
+      if (response.statusCode == 200) {
+        return List<SYOrder>.from(response.data);
+      } else {
+        throw Exception('获取摄影师订单列表排行榜失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  //获取摄影师评分排行榜
+  Future<List<SYOrder>> getSYRating() async {
+    try {
+      Response response = await _dio.get('/photographer/ranking/ratings');
+
+      if (response.statusCode == 200) {
+        return List<SYOrder>.from(response.data);
+      } else {
+        throw Exception('获取摄影师评分排行榜失败: ${response.statusCode}');
       }
     } on DioException catch (e) {
       throw _handleDioError(e);

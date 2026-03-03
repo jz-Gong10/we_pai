@@ -22,7 +22,7 @@ class _ZhuyeState extends State<Zhuye> {
   bool _isVisible = true;
 
   final ApiService apiService = ApiService();
-  List<String> _announcement = [];
+  List<String> announcement = [];
 
   @override
   void initState() {
@@ -37,13 +37,13 @@ class _ZhuyeState extends State<Zhuye> {
       _isLoading = true;
     });
     try {
-      List<String> announcements = await apiService.getAnnouncements();
+      List<String> announcementsR = await apiService.getAnnouncements();
       setState(() {
-        _announcement = announcements;
+        announcement = announcementsR;
       });
     } catch (e) {
       setState(() {
-        _announcement = ['获取公告失败'];
+        announcement = ['获取公告失败'];
       });
     }
   }
@@ -73,7 +73,7 @@ class _ZhuyeState extends State<Zhuye> {
             right: 20,
             child: Center(
               child: ShowYouzhizuopin(
-                imageURL: _announcement.isNotEmpty ? _announcement.first : '',
+                imageURL: announcement.isNotEmpty ? announcement.first : '',
               ),
             ),
           ),

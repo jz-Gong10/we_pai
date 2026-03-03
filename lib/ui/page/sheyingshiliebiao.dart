@@ -40,10 +40,10 @@ class _SheyingshiliebiaoPageState extends State<SheyingshiliebiaoPage> {
       _isLoading = true;
     });
     try {
-      List<SYSList> _photographers = await _apiService.getPhotographers();
-      debugPrint('数据获取成功，数量: ${_photographers.length}'); //看看接没接到数据
+      List<SYSList> photographersR = await _apiService.getPhotographers();
+      debugPrint('数据获取成功，数量: ${photographersR.length}'); //看看接没接到数据
       setState(() {
-        photographers = _photographers;
+        photographers = photographersR;
 
         _isLoading = false;
       });

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:we_pai/service/api_service.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -8,8 +9,46 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  final List<String> _hotSuggestions = ['清新', '风景', '人像', '毕业照', '复古'];
-  final List<String> _searchHistory = ['学线移动', '难写', '算了，继续写'];
+  final ApiService _apiService = ApiService();
+
+  List<String> hotSuggestions = ['清新', '风景', '人像', '毕业照', '复古'];
+  List<String> searchHistory = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // 初始化搜索历史
+    _initSearchHistory();
+    // 初始化搜索推荐词
+    _initSearchRecommendations();
+  }
+
+  // 初始化搜索推荐词
+  Future<void> _initSearchRecommendations() async {
+    try {
+      List<String> recommendations = await _apiService
+          .getSearchRecommendations();
+      setState(() {
+        hotSuggestions = recommendations;
+      });
+    } catch (e) {
+      // 处理错误
+      print('获取搜索推荐词失败: $e');
+    }
+  }
+
+  // 初始化搜索历史
+  Future<void> _initSearchHistory() async {
+    try {
+      List<String> history = await _apiService.getSearchHistory();
+      setState(() {
+        searchHistory = history;
+      });
+    } catch (e) {
+      // 处理错误
+      print('获取搜索历史失败: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +87,7 @@ class _SearchState extends State<Search> {
                   child: Wrap(
                     spacing: 8,
                     runSpacing: 8,
-                    children: _hotSuggestions
+                    children: hotSuggestions
                         .map(
                           (suggestion) => Chip(
                             label: Text(
@@ -93,7 +132,7 @@ class _SearchState extends State<Search> {
                 ),
 
                 // 搜索历史记录列表
-                ..._searchHistory.map(
+                ...searchHistory.map(
                   (history) => ListTile(title: Text(history)),
                 ),
               ];

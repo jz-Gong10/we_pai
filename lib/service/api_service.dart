@@ -8,6 +8,8 @@ import 'package:we_pai/api/api_config.dart';
 import 'package:we_pai/net/http.dart';
 import 'package:flutter/material.dart';
 import '../model/work_model.dart';
+import '../module/recieve_sheyingshijiedan.dart';
+import '../module/recieve_kedan.dart';
 
 class ApiService {
   final Dio _dio = DioService().dio;
@@ -57,6 +59,98 @@ class ApiService {
         }).toList();
       } else {
         throw Exception('个人信息接收失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  //获取用户预约订单列表
+  Future<List<KedanOrder>> getKedan() async {
+    try {
+      Response response = await _dio.get('/order/photographer/pending');
+      KedanList responseData = response.data;
+      List<KedanOrder> listData = responseData.list;
+
+      if (response.statusCode == 200) {
+        return listData;
+      } else {
+        throw Exception('获取用户预约订单列表失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  //获取公告
+  Future<List<String>> getAnnouncements() async {
+    try {
+      Response response = await _dio.get('/user/announcements');
+
+      if (response.statusCode == 200) {
+        return List<String>.from(response.data);
+      } else {
+        throw Exception('获取公告失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  //获取搜索历史
+  Future<List<String>> getSearchHistory() async {
+    try {
+      Response response = await _dio.get('/photographer/search/history');
+
+      if (response.statusCode == 200) {
+        return List<String>.from(response.data);
+      } else {
+        throw Exception('获取搜索历史失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  //搜索推荐词
+  Future<List<String>> getSearchRecommendations() async {
+    try {
+      Response response = await _dio.get('/photographer/search/suggest');
+
+      if (response.statusCode == 200) {
+        return List<String>.from(response.data);
+      } else {
+        throw Exception('获取搜索推荐词失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // 获取摄影师订单列表排行榜
+  Future<List<SYOrder>> getSYOrder() async {
+    try {
+      Response response = await _dio.get('/photographer/ranking/orders');
+
+      if (response.statusCode == 200) {
+        return List<SYOrder>.from(response.data);
+      } else {
+        throw Exception('获取摄影师订单列表排行榜失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  //获取摄影师评分排行榜
+  Future<List<SYOrder>> getSYRating() async {
+    try {
+      Response response = await _dio.get('/photographer/ranking/ratings');
+
+      if (response.statusCode == 200) {
+        return List<SYOrder>.from(response.data);
+      } else {
+        throw Exception('获取摄影师评分排行榜失败: ${response.statusCode}');
       }
     } on DioException catch (e) {
       throw _handleDioError(e);

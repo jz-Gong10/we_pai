@@ -52,9 +52,11 @@ class _ArrayState extends State<Array> {
   //可以切换是按评分还是按接单量排序
   List<Map<String, dynamic>> get _sortedPhotographers {
     if (_isRatingRanking) {
-      return List.from(_photographers)..sort((a, b) => b['rating'].compareTo(a['rating']));
+      return List.from(_photographers)
+        ..sort((a, b) => b['rating'].compareTo(a['rating']));
     } else {
-      return List.from(_photographers)..sort((a, b) => b['orders'].compareTo(a['orders']));
+      return List.from(_photographers)
+        ..sort((a, b) => b['orders'].compareTo(a['orders']));
     }
   }
 
@@ -66,18 +68,9 @@ class _ArrayState extends State<Array> {
           Background(imagePath: 'lib/material/background2.png'),
 
           //返回按钮
-          Positioned(
-            top: 40,
-            left: 23,
-            child: AppBackButton(),
-          ),
+          Positioned(top: 40, left: 23, child: AppBackButton()),
           //搜索栏
-          Positioned(
-            top: 30,
-            left: 63,
-            right:20,
-            child: Search(),
-          ),
+          Positioned(top: 30, left: 63, right: 20, child: Search()),
 
           Positioned(
             top: 90,
@@ -88,7 +81,7 @@ class _ArrayState extends State<Array> {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-                  const ShowYouzhizuopin(),//这里在widget里面再完善一下
+                  const ShowYouzhizuopin(imageURL: ''), //这里在widget里面再完善一下
                   const SizedBox(height: 30),
                   _buildRankingToggle(),
                   const SizedBox(height: 40),
@@ -107,15 +100,14 @@ class _ArrayState extends State<Array> {
     );
   }
 
-  Widget _buildRankingToggle() {//切换评分排行榜还是接单排行榜的按钮
+  Widget _buildRankingToggle() {
+    //切换评分排行榜还是接单排行榜的按钮
     return Container(
       width: 280,
       height: 40,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          colors: [primary3, primary2],
-        ),
+        gradient: LinearGradient(colors: [primary3, primary2]),
       ),
       child: Row(
         children: [
@@ -128,7 +120,9 @@ class _ArrayState extends State<Array> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: _isRatingRanking ? Colors.white.withOpacity(0.3) : Colors.transparent,
+                  color: _isRatingRanking
+                      ? Colors.white.withOpacity(0.3)
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
@@ -142,10 +136,12 @@ class _ArrayState extends State<Array> {
                           blurRadius: 4.0,
                           color: Colors.grey,
                           offset: Offset(-1, 2), // 文字阴影偏移
-                        )
+                        ),
                       ],
                       fontSize: 14,
-                      fontWeight: _isRatingRanking ? FontWeight.bold : FontWeight.normal,
+                      fontWeight: _isRatingRanking
+                          ? FontWeight.bold
+                          : FontWeight.normal,
                     ),
                   ),
                 ),
@@ -161,7 +157,9 @@ class _ArrayState extends State<Array> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: !_isRatingRanking ? Colors.white.withOpacity(0.3) : Colors.transparent,
+                  color: !_isRatingRanking
+                      ? Colors.white.withOpacity(0.3)
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
@@ -175,10 +173,12 @@ class _ArrayState extends State<Array> {
                           blurRadius: 4.0,
                           color: Colors.grey,
                           offset: Offset(-1, 2), // 文字阴影偏移
-                        )
+                        ),
                       ],
                       fontSize: 14,
-                      fontWeight: !_isRatingRanking ? FontWeight.bold : FontWeight.normal,
+                      fontWeight: !_isRatingRanking
+                          ? FontWeight.bold
+                          : FontWeight.normal,
                     ),
                   ),
                 ),
@@ -196,17 +196,17 @@ class _ArrayState extends State<Array> {
         width: 250,
         height: 80,
         decoration: BoxDecoration(
-          color:primary2,
+          color: primary2,
           borderRadius: BorderRadius.circular(10),
 
           //边框阴影
           boxShadow: [
             BoxShadow(
-              color: Colors.grey, 
+              color: Colors.grey,
               blurRadius: 4, //模糊半径
               offset: Offset(0, 4), //偏移量(x, y)，向下偏移产生投影
             ),
-        ],
+          ],
         ),
         child: Stack(
           children: [
@@ -218,13 +218,13 @@ class _ArrayState extends State<Array> {
                 style: const TextStyle(
                   fontSize: 12,
                   color: Color.fromARGB(255, 222, 152, 115),
-                      //文字阴影
+                  //文字阴影
                   shadows: [
                     Shadow(
                       blurRadius: 2.0,
                       color: Colors.grey,
                       offset: Offset(0, 2), // 文字阴影偏移
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -253,14 +253,14 @@ class _ArrayState extends State<Array> {
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                      //文字阴影
-                      shadows: [
-                        Shadow(
-                          blurRadius: 4.0,
-                          color: Colors.grey,
-                          offset: Offset(0, 2), // 文字阴影偏移
-                        )
-                      ],
+                  //文字阴影
+                  shadows: [
+                    Shadow(
+                      blurRadius: 4.0,
+                      color: Colors.grey,
+                      offset: Offset(0, 2), // 文字阴影偏移
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -268,17 +268,19 @@ class _ArrayState extends State<Array> {
               top: 25,
               right: 12,
               child: Text(
-                _isRatingRanking ? '${photographer['rating']}' : '${photographer['orders']}单',
+                _isRatingRanking
+                    ? '${photographer['rating']}'
+                    : '${photographer['orders']}单',
                 style: const TextStyle(
                   fontSize: 18,
                   color: Color.fromARGB(255, 222, 152, 115),
-                      //文字阴影
+                  //文字阴影
                   shadows: [
                     Shadow(
                       blurRadius: 2.0,
                       color: Colors.grey,
                       offset: Offset(0, 2), // 文字阴影偏移
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -287,21 +289,22 @@ class _ArrayState extends State<Array> {
               bottom: 8,
               right: 12,
               child: GestureDetector(
-                onTap: () {//跳转逻辑（还没写）
+                onTap: () {
+                  //跳转逻辑（还没写）
                 },
                 child: Text(
                   'TA的主页',
                   style: TextStyle(
                     fontSize: 12,
                     color: Color.fromARGB(255, 222, 152, 115),
-                      //文字阴影
-                  shadows: [
-                    Shadow(
-                      blurRadius: 2.0,
-                      color: Colors.grey,
-                      offset: Offset(0, 2), // 文字阴影偏移
-                    )
-                  ],
+                    //文字阴影
+                    shadows: [
+                      Shadow(
+                        blurRadius: 2.0,
+                        color: Colors.grey,
+                        offset: Offset(0, 2), // 文字阴影偏移
+                      ),
+                    ],
                   ),
                 ),
               ),

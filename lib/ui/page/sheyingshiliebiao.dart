@@ -16,7 +16,7 @@ class SheyingshiliebiaoPage extends StatefulWidget {
 
 class _SheyingshiliebiaoPageState extends State<SheyingshiliebiaoPage> {
   final ApiService _apiService = ApiService();
-  List<SYSList> _photographers = [];
+  List<SYSList> photographers = [];
   int total = 0;
 
   String? _error;
@@ -40,10 +40,10 @@ class _SheyingshiliebiaoPageState extends State<SheyingshiliebiaoPage> {
       _isLoading = true;
     });
     try {
-      List<SYSList> photographers = await _apiService.getPhotographers();
-      debugPrint('数据获取成功，数量: ${photographers.length}'); //看看接没接到数据
+      List<SYSList> _photographers = await _apiService.getPhotographers();
+      debugPrint('数据获取成功，数量: ${_photographers.length}'); //看看接没接到数据
       setState(() {
-        _photographers = photographers;
+        photographers = _photographers;
 
         _isLoading = false;
       });
@@ -70,9 +70,9 @@ class _SheyingshiliebiaoPageState extends State<SheyingshiliebiaoPage> {
             child: Container(
               // color: Colors.red.withOpacity(0.3), //测试
               child: ListView.builder(
-                itemCount: _photographers.length,
+                itemCount: photographers.length,
                 itemBuilder: (context, index) {
-                  final SYSList pho = _photographers[index];
+                  final SYSList pho = photographers[index];
                   return SYSShowBlock(
                     nickname: pho.nickname,
                     avatarUrl: pho.avatarUrl,

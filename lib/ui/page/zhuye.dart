@@ -6,6 +6,7 @@ import 'package:we_pai/ui/widget/zhuye_low_edge.dart';
 import 'package:we_pai/ui/widget/options.dart';
 import 'package:we_pai/ui/widget/search.dart';
 import 'package:we_pai/ui/widget/show_youzhizuopin.dart';
+import 'package:we_pai/service/api_service.dart';
 
 class Zhuye extends StatefulWidget {
   const Zhuye({super.key});
@@ -15,14 +16,43 @@ class Zhuye extends StatefulWidget {
 }
 
 class _ZhuyeState extends State<Zhuye> {
+  String? _error;
+  bool _isLoading = false;
   String? _imagePath = 'lib/material/term_for_usage.png';
   bool _isVisible = true;
+
+  final ApiService apiService = ApiService();
+  List<String> _announcement = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAnnouncement();
+  }
+
+  // 从API获取公告
+  Future<void> _fetchAnnouncement() async {
+    setState(() {
+      _error = null;
+      _isLoading = true;
+    });
+    try {
+      List<String> announcements = await apiService.getAnnouncements();
+      setState(() {
+        _announcement = announcements;
+      });
+    } catch (e) {
+      setState(() {
+        _announcement = ['获取公告失败'];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    
+
     return Scaffold(
       body: Stack(
         children: [
@@ -41,7 +71,11 @@ class _ZhuyeState extends State<Zhuye> {
             top: screenHeight * 0.18, // 相对高度
             left: 20,
             right: 20,
-            child: Center(child: ShowYouzhizuopin()),
+            child: Center(
+              child: ShowYouzhizuopin(
+                imageURL: _announcement.isNotEmpty ? _announcement.first : '',
+              ),
+            ),
           ),
 
           //选项按钮容器
@@ -55,20 +89,55 @@ class _ZhuyeState extends State<Zhuye> {
                   // 计算容器宽度，最大396，最小280，根据屏幕宽度调整
                   double containerWidth = screenWidth * 0.8;
                   containerWidth = containerWidth.clamp(280.0, 396.0);
-                  
+
                   // 计算比例
                   double scale = containerWidth / 396.0;
-                  
+
                   return Container(
                     width: containerWidth, // 响应式宽度
                     height: 421 * scale, // 按比例调整高度
                     child: Stack(
                       children: [
-                        Positioned(left: 0, top: 0, child: Transform.scale(scale: scale, child: Kedanguangchang())),
-                        Positioned(left: 180 * scale, top: 0, child: Transform.scale(scale: scale, child: Sheyingshiliebiao())),
-                        Positioned(left: 0, top: 221 * scale, child: Transform.scale(scale: scale, child: Zuopinzhanshi())),
-                        Positioned(left: 186 * scale, top: 147 * scale, child: Transform.scale(scale: scale, child: Sheyingshijianquan())),
-                        Positioned(left: 186 * scale, top: 284 * scale, child: Transform.scale(scale: scale, child: Paihangbang())),
+                        Positioned(
+                          left: 0,
+                          top: 0,
+                          child: Transform.scale(
+                            scale: scale,
+                            child: Kedanguangchang(),
+                          ),
+                        ),
+                        Positioned(
+                          left: 180 * scale,
+                          top: 0,
+                          child: Transform.scale(
+                            scale: scale,
+                            child: Sheyingshiliebiao(),
+                          ),
+                        ),
+                        Positioned(
+                          left: 0,
+                          top: 221 * scale,
+                          child: Transform.scale(
+                            scale: scale,
+                            child: Zuopinzhanshi(),
+                          ),
+                        ),
+                        Positioned(
+                          left: 186 * scale,
+                          top: 147 * scale,
+                          child: Transform.scale(
+                            scale: scale,
+                            child: Sheyingshijianquan(),
+                          ),
+                        ),
+                        Positioned(
+                          left: 186 * scale,
+                          top: 284 * scale,
+                          child: Transform.scale(
+                            scale: scale,
+                            child: Paihangbang(),
+                          ),
+                        ),
                       ],
                     ),
                   );
@@ -86,7 +155,7 @@ class _ZhuyeState extends State<Zhuye> {
             left: screenWidth / 2 - 105 / 2,
             child: Post(),
           ),
-          
+
           //使用条款确认和消失
           Positioned.fill(
             child: Visibility(

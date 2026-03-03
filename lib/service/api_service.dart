@@ -63,6 +63,21 @@ class ApiService {
     }
   }
 
+  //获取公告
+  Future<List<String>> getAnnouncements() async {
+    try {
+      Response response = await _dio.get('/user/announcements');
+
+      if (response.statusCode == 200) {
+        return List<String>.from(response.data);
+      } else {
+        throw Exception('获取公告失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
   // 错误处理
   Exception _handleDioError(DioException e) {
     String message = e.message ?? '未知错误';

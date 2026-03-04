@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:we_pai/service/dio_service.dart';
 import 'package:we_pai/ui/page/array.dart';
@@ -43,53 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _loading = false;
 
   @override
-  void initState() {
-    super.initState();
-    _checkUrlParameters();
-  }
-
-  void _checkUrlParameters() {
-    // 检查URL参数，获取token
-    final uri = Uri.base;
-    final token = uri.queryParameters['token'];
-    if (token != null && token.isNotEmpty) {
-      _saveToken(token);
-    }
-  }
-
-  Future<void> _saveToken(String token) async {
-    // 保存token到Http类
-    Http().setToken(token);
-    // 保存token到shared_preferences
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token);
-    // 跳转到主页
-    navigate(context, Zhuye());
-    printToast("登录成功");
-  }
-
-  Future<void> _launchLoginUrl() async {
-    final loginUrl = 'https://i.sdu.edu.cn/cas/proxy/login/page?forward=https%3a%2f%2fwww.h10eaea4e.nyat.app%3a48561%2flogin';
-    if (await canLaunchUrl(Uri.parse(loginUrl))) {
-      await launchUrl(Uri.parse(loginUrl));
-    } else {
-      printToast("无法打开登录页面");
-    }
-  }
-
-  final String url =
-      'https://i.sdu.edu.cn/cas/proxy/login/page?forward=https%3a%2f%2fwww.h10eaea4e.nyat.app%3a48561%2flogin';
-
-  Future<void> _launchURL() async {
-    final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw '无法打开该网址: $url';
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -129,21 +83,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
 
-
-              // 登录按钮点击事件
-              onPressed: () async {
-                setState(() {
-                  _loading = true;
-                });
-                try {
-                  await _launchLoginUrl();
-                } catch (e) {
-                  printToast("登录失败：$e");
-                } finally {
-                  setState(() {
-                    _loading = false;
-                  });
-                }
+              // 暂时用这个直接跳转
+              onPressed: () async{
+                await _login();
+                // _launchURL();
+                // navigate(context, Zhuye());
+                //printToast("登录成功");
               },
 
 //               // 暂时用这个直接跳转
@@ -209,5 +154,49 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
+  }
+
+  Future<void> _login() async {
+    setState(() {
+      _loading = true;
+    });
+    try{
+      String url = 
+        'https://i.sdu.edu.cn/cas/proxy/login/page?forward=http%3A%2F%2F172.24.37.149%3A8080%2Flogin%3Fplatform%3Dmobile';
+      final authUrl = Uri.parse(url);
+      
+
+      final result = await FlutterWebAuth2.authenticate(
+        url: authUrl.toString(), 
+        callbackUrlScheme: 'wepai',
+      );
+
+      final backUri = Uri.parse(result);
+      debugPrint('$backUri\n-----------------');
+      final token = backUri.queryParameters['token'];
+      final casId = backUri.queryParameters['casId'];
+      final name = backUri.queryParameters['name'];
+      if(token == null ){
+        printToast("登录失败");
+        debugPrint("登录失败: token is null");
+        setState(() {
+          _loading = false;
+        });
+        return;
+      }
+      debugPrint("token: $token \ncasId: $casId \nname: $name");
+      // TODO 处理token，网络请求都需要加上token，后端就知道是谁请求的。
+      // 可以存到本地，之后启动程序先读取本地的token，如果有就直接到主页，没有就登录获取。
+      // 不存也行，就是每次打开app都要登录一次。
+      // 这样就登录完了，下面跳转主页，用replace，别push，不然点返回又回到登录页了。
+
+    } catch (e) {
+      printToast("登录失败: $e");
+      debugPrint("登录失败: $e");
+    } finally {
+      setState(() {
+        _loading = false;
+      });
+    }
   }
 }

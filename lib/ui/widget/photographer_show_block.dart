@@ -28,10 +28,18 @@ class _SYSShowBlockState extends State<SYSShowBlock> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 20),
       width: 350,
       height: 274,
       padding: EdgeInsets.all(16), // 添加内边距
-      color: Color.fromARGB(175, 169, 236, 204),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xffE0E9F1), Color(0xffEAEBD8)],
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

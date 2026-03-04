@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../model/work_model.dart';
 import '../module/recieve_sheyingshijiedan.dart';
 import '../module/recieve_kedan.dart';
+import '../module/recieve_sheyingshipingfen.dart';
 
 class ApiService {
   final Dio _dio = DioService().dio;
@@ -19,7 +20,12 @@ class ApiService {
     try {
       Response response = await _dio.get('/user/getProfile');
       if (response.statusCode == 200) {
-        return UserInfo.fromJson(response.data); //传回来的只有data里的东西
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['code'] == 200) {
+          return UserInfo.fromJson(responseData['data']);
+        } else {
+          throw Exception('获取个人信息失败: ${responseData['msg']}');
+        }
       } else {
         throw Exception('获取个人信息失败: ${response.statusCode}');
       }
@@ -31,10 +37,15 @@ class ApiService {
   // 获取单个用户信息
   Future<UserInfo> getUserById(int id) async {
     try {
-      Response response = await _dio.get('/user/info/{casId}');
+      Response response = await _dio.get('/user/info/$id');
 
       if (response.statusCode == 200) {
-        return UserInfo.fromJson(response.data);
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['code'] == 200) {
+          return UserInfo.fromJson(responseData['data']);
+        } else {
+          throw Exception('获取用户失败: ${responseData['msg']}');
+        }
       } else {
         throw Exception('获取用户失败: ${response.statusCode}');
       }
@@ -52,11 +63,13 @@ class ApiService {
       );
 
       if (response.statusCode == 200) {
-        SysModel responseData = response.data;
-        List<dynamic> listData = responseData.phoList;
-        return listData.map<SYSList>((json) {
-          return SYSList.fromJson(json);
-        }).toList();
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['code'] == 200) {
+          SysModel sysModel = SysModel.fromJson(responseData['data']);
+          return sysModel.phoList;
+        } else {
+          throw Exception('获取摄影师列表失败: ${responseData['msg']}');
+        }
       } else {
         throw Exception('个人信息接收失败: ${response.statusCode}');
       }
@@ -69,11 +82,14 @@ class ApiService {
   Future<List<KedanOrder>> getKedan() async {
     try {
       Response response = await _dio.get('/order/photographer/pending');
-      KedanList responseData = response.data;
-      List<KedanOrder> listData = responseData.list;
-
       if (response.statusCode == 200) {
-        return listData;
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['code'] == 200) {
+          KedanList kedanList = KedanList.fromJson(responseData['data']);
+          return kedanList.list;
+        } else {
+          throw Exception('获取用户预约订单列表失败: ${responseData['msg']}');
+        }
       } else {
         throw Exception('获取用户预约订单列表失败: ${response.statusCode}');
       }
@@ -88,7 +104,12 @@ class ApiService {
       Response response = await _dio.get('/user/announcements');
 
       if (response.statusCode == 200) {
-        return List<String>.from(response.data);
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['code'] == 200) {
+          return List<String>.from(responseData['data']);
+        } else {
+          throw Exception('获取公告失败: ${responseData['msg']}');
+        }
       } else {
         throw Exception('获取公告失败: ${response.statusCode}');
       }
@@ -103,7 +124,12 @@ class ApiService {
       Response response = await _dio.get('/photographer/search/history');
 
       if (response.statusCode == 200) {
-        return List<String>.from(response.data);
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['code'] == 200) {
+          return List<String>.from(responseData['data']);
+        } else {
+          throw Exception('获取搜索历史失败: ${responseData['msg']}');
+        }
       } else {
         throw Exception('获取搜索历史失败: ${response.statusCode}');
       }
@@ -118,7 +144,12 @@ class ApiService {
       Response response = await _dio.get('/photographer/search/suggest');
 
       if (response.statusCode == 200) {
-        return List<String>.from(response.data);
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['code'] == 200) {
+          return List<String>.from(responseData['data']);
+        } else {
+          throw Exception('获取搜索推荐词失败: ${responseData['msg']}');
+        }
       } else {
         throw Exception('获取搜索推荐词失败: ${response.statusCode}');
       }
@@ -133,7 +164,14 @@ class ApiService {
       Response response = await _dio.get('/photographer/ranking/orders');
 
       if (response.statusCode == 200) {
-        return List<SYOrder>.from(response.data);
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['code'] == 200) {
+          return List<SYOrder>.from(
+            responseData['data'].map((item) => SYOrder.fromJson(item)),
+          );
+        } else {
+          throw Exception('获取摄影师订单列表排行榜失败: ${responseData['msg']}');
+        }
       } else {
         throw Exception('获取摄影师订单列表排行榜失败: ${response.statusCode}');
       }
@@ -143,12 +181,19 @@ class ApiService {
   }
 
   //获取摄影师评分排行榜
-  Future<List<SYOrder>> getSYRating() async {
+  Future<List<SYRate>> getSYRating() async {
     try {
       Response response = await _dio.get('/photographer/ranking/ratings');
 
       if (response.statusCode == 200) {
-        return List<SYOrder>.from(response.data);
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['code'] == 200) {
+          return List<SYRate>.from(
+            responseData['data'].map((item) => SYRate.fromJson(item)),
+          );
+        } else {
+          throw Exception('获取摄影师评分排行榜失败: ${responseData['msg']}');
+        }
       } else {
         throw Exception('获取摄影师评分排行榜失败: ${response.statusCode}');
       }
@@ -173,6 +218,28 @@ class ApiService {
     return Exception(message);
   }
 
+  // 更新用户资料
+  Future<Map<String, dynamic>> updateUserProfile(
+    Map<String, dynamic> profileData,
+  ) async {
+    try {
+      Response response = await _dio.post('/user/profile', data: profileData);
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['code'] == 200) {
+          return responseData['data'];
+        } else {
+          throw Exception('更新资料失败: ${responseData['msg']}');
+        }
+      } else {
+        throw Exception('更新资料失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
   // 获取个人作品列表
   Future<WorkResponse> getMyWorks(
     int pageNum,
@@ -190,7 +257,12 @@ class ApiService {
       );
 
       if (response.statusCode == 200) {
-        return WorkResponse.fromJson(response.data);
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['code'] == 200) {
+          return WorkResponse.fromJson(responseData['data']);
+        } else {
+          throw Exception('获取作品列表失败: ${responseData['msg']}');
+        }
       } else {
         throw Exception('获取作品列表失败: ${response.statusCode}');
       }

@@ -82,41 +82,11 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
 
               // 暂时用这个直接跳转
-              onPressed: () async{
+              onPressed: () async {
+                navigate(context, Zhuye());
                 await _login();
-                // _launchURL();
-                // navigate(context, Zhuye());
-                //printToast("登录成功");
               },
 
-              // 别删这段代码！！！千万别删，这是登录按钮的网络请求代码，但虚拟机不能访问，不便于调试就先注释掉了
-              // onPressed: () async {
-              //   setState(() {
-              //     _loading = true;
-              //   });
-              //   try {
-              //     final response = await Http().get(
-              //       path: '/login',
-              //       queryParameters: {
-              //         'token':
-              //             'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJjYXNJRCI6IjIwMjMwMDE0MTAzNCIsIm5hbWUiOiLmlrnotoUiLCJleHAiOjE3NzA2NTUxNTB9.FWLq2cVjJ0YAfVdFwsqE_bQbYnHqgZ0H_yjQnOLas-8', // 添加token参数
-              //       },
-              //     );
-              // if (!mounted) return;
-              //     if (response.statusCode == 200) {
-              //       navigate(context, Zhuye());
-              //       printToast("登录成功");
-              //     } else {
-              //       debugPrint("请求失败: \\${response.statusCode}");
-              //     }
-              //   } finally {
-              //     if (mounted) {
-              //       setState(() {
-              //         _loading = false;
-              //       });
-              //     }
-              //   }
-              // },
               child: Text(
                 '登录',
                 style: TextStyle(
@@ -153,14 +123,13 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _loading = true;
     });
-    try{
-      String url = 
-        'https://i.sdu.edu.cn/cas/proxy/login/page?forward=http%3A%2F%2F172.24.37.149%3A8080%2Flogin%3Fplatform%3Dmobile';
+    try {
+      String url =
+          'https://i.sdu.edu.cn/cas/proxy/login/page?forward=http%3A%2F%2F172.24.37.149%3A8080%2Flogin%3Fplatform%3Dmobile';
       final authUrl = Uri.parse(url);
-      
 
       final result = await FlutterWebAuth2.authenticate(
-        url: authUrl.toString(), 
+        url: authUrl.toString(),
         callbackUrlScheme: 'wepai',
       );
 
@@ -169,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
       final token = backUri.queryParameters['token'];
       final casId = backUri.queryParameters['casId'];
       final name = backUri.queryParameters['name'];
-      if(token == null ){
+      if (token == null) {
         printToast("登录失败");
         debugPrint("登录失败: token is null");
         setState(() {
@@ -178,11 +147,25 @@ class _MyHomePageState extends State<MyHomePage> {
         return;
       }
       debugPrint("token: $token \ncasId: $casId \nname: $name");
-      // TODO 处理token，网络请求都需要加上token，后端就知道是谁请求的。
-      // 可以存到本地，之后启动程序先读取本地的token，如果有就直接到主页，没有就登录获取。
-      // 不存也行，就是每次打开app都要登录一次。
-      // 这样就登录完了，下面跳转主页，用replace，别push，不然点返回又回到登录页了。
 
+      // 存储token到本地
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token);
+      if (casId != null) {
+        await prefs.setString('casId', casId);
+      }
+      if (name != null) {
+        await prefs.setString('name', name);
+      }
+
+      // 设置Dio的token
+      DioService().setToken(token);
+
+      // 跳转到主页
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Zhuye()),
+      );
     } catch (e) {
       printToast("登录失败: $e");
       debugPrint("登录失败: $e");

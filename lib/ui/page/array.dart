@@ -8,6 +8,7 @@ import 'package:we_pai/ui/widget/show_youzhizuopin.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/module/recieve_sheyingshijiedan.dart';
 import 'package:we_pai/service/api_service.dart';
+import 'package:we_pai/module/recieve_sheyingshipingfen.dart';
 
 class Array extends StatefulWidget {
   const Array({super.key});
@@ -56,7 +57,7 @@ class _ArrayState extends State<Array> {
   // ];
 
   List<SYOrder> photographers = [];
-  List<SYOrder> photographers2 = [];
+  List<SYRate> photographers2 = [];
 
   @override
   void initState() {
@@ -90,7 +91,7 @@ class _ArrayState extends State<Array> {
       _isLoading = true;
     });
     try {
-      List<SYOrder> response = await _apiService.getSYRating();
+      List<SYRate> response = await _apiService.getSYRating();
       setState(() {
         photographers2 = response;
         _isLoading = false;
@@ -104,13 +105,13 @@ class _ArrayState extends State<Array> {
   }
 
   // 可以切换是按评分还是按接单量排序
-  List<Map<String, dynamic>> get _sortedPhotographers {
+  List<dynamic> get _sortedPhotographers {
     if (_isRatingRanking) {
       return List.from(photographers2)
-        ..sort((a, b) => b['rating'].compareTo(a['rating']));
+        ..sort((a, b) => b.avgScore.compareTo(a.avgScore)); // 使用avgScore排序
     } else {
       return List.from(photographers)
-        ..sort((a, b) => b['orders'].compareTo(a['orders']));
+        ..sort((a, b) => b.orderCount.compareTo(a.orderCount));
     }
   }
 
@@ -244,7 +245,24 @@ class _ArrayState extends State<Array> {
     );
   }
 
-  Widget _buildPhotographerCard(int index, Map<String, dynamic> photographer) {
+  Widget _buildPhotographerCard(int index, dynamic photographer) {
+    // 提取共同属性
+    String avatarUrl = '';
+    String nickname = '';
+    String displayValue = '';
+
+    if (photographer is SYOrder) {
+      avatarUrl = photographer.avatarUrl;
+      nickname = photographer.nickname;
+      displayValue = _isRatingRanking
+          ? '${photographer.orderCount}'
+          : '${photographer.orderCount}单';
+    } else if (photographer is SYRate) {
+      avatarUrl = photographer.avatarUrl;
+      nickname = photographer.nickname;
+      displayValue = '${photographer.avgScore}';
+    }
+
     return Center(
       child: Container(
         width: 250,
@@ -292,8 +310,11 @@ class _ArrayState extends State<Array> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: NetworkImage(photographer['avatar']),
+                    image: NetworkImage(avatarUrl),
                     fit: BoxFit.cover,
+                    onError: (_, __) {
+                      // 图片加载失败时显示默认头像
+                    },
                   ),
                 ),
               ),
@@ -302,7 +323,7 @@ class _ArrayState extends State<Array> {
               top: 12,
               left: 60,
               child: Text(
-                photographer['nickname'],
+                nickname,
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
@@ -322,9 +343,7 @@ class _ArrayState extends State<Array> {
               top: 25,
               right: 12,
               child: Text(
-                _isRatingRanking
-                    ? '${photographer['rating']}'
-                    : '${photographer['orders']}单',
+                displayValue,
                 style: const TextStyle(
                   fontSize: 18,
                   color: Color.fromARGB(255, 222, 152, 115),

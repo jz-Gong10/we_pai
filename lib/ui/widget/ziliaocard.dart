@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:we_pai/ui/themes/colors.dart';
 import 'package:we_pai/ui/widget/button.dart';
+import 'package:we_pai/service/api_service.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 //这里先写个带横线的文本输入框
 class lineInput extends StatelessWidget {
@@ -9,11 +11,7 @@ class lineInput extends StatelessWidget {
   final TextEditingController? controller;
   final String? labelText;
 
-  const lineInput({
-    super.key,
-    this.controller, 
-    this.labelText,
-  });
+  const lineInput({super.key, this.controller, this.labelText});
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +34,8 @@ class Ziliaocard extends StatefulWidget {
   State<Ziliaocard> createState() => _ZiliaocardState();
 }
 
-class _ZiliaocardState extends State<Ziliaocard>{
-  File? _image;//用户选择的图片会存储字_image中
+class _ZiliaocardState extends State<Ziliaocard> {
+  File? _image; //用户选择的图片会存储字_image中
 
   //文本输入框控制器
   final TextEditingController _nicknameController = TextEditingController();
@@ -45,85 +43,66 @@ class _ZiliaocardState extends State<Ziliaocard>{
   final TextEditingController _contactController = TextEditingController();
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Container(
       //大的容器
-      margin:EdgeInsets.all(16),
+      margin: EdgeInsets.all(16),
       width: MediaQuery.of(context).size.width - 40,
-      
-      decoration:BoxDecoration(
+
+      decoration: BoxDecoration(
         //渐变
         gradient: LinearGradient(
-          begin: Alignment.topCenter, 
-          end: Alignment.bottomCenter, 
-          colors: [
-            primary1,
-            primary2,
-          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [primary1, primary2],
         ),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: primary3, 
-          width: 1,
-        ),
+        border: Border.all(color: primary3, width: 1),
       ),
 
-      child:SingleChildScrollView(
-        child:Padding(
+      child: SingleChildScrollView(
+        child: Padding(
           padding: EdgeInsets.all(16),
-          child:Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          //头像行
-          Row(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              //选择头像文本
-              Text(
-                '选择头像',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey.shade600, 
-                ),
+              //头像行
+              Row(
+                children: [
+                  //选择头像文本
+                  Text(
+                    '选择头像',
+                    style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+                  ),
+
+                  Spacer(), //占据中间空间
+
+                  PickSingleImage(
+                    onImageSelected: (File? image) {
+                      setState(() {
+                        _image = image;
+                      });
+                    },
+                  ),
+                ],
               ),
 
-              Spacer(),//占据中间空间
-
-              PickSingleImage(
-                onImageSelected: (File? image) {
-                  setState(() {
-                    _image = image;
-                  });
-                },
-              ),
+              //分割线
+              Divider(color: primary3, height: 30, thickness: 1),
+              //昵称输入框
+              lineInput(controller: _nicknameController, labelText: '请输入你的昵称'),
+              //分割线
+              Divider(color: primary3, height: 30, thickness: 1),
+              //性别输入框
+              lineInput(controller: _genderController, labelText: '请输入你的性别'),
+              //分割线
+              Divider(color: primary3, height: 30, thickness: 1),
+              //联系方式输入框
+              lineInput(controller: _contactController, labelText: '请输入你的联系方式'),
             ],
           ),
-
-          //分割线
-          Divider(color:primary3,height:30,thickness: 1,),
-          //昵称输入框
-          lineInput(
-            controller: _nicknameController,
-            labelText: '请输入你的昵称',
-          ),
-          //分割线
-          Divider(color:primary3,height:30,thickness: 1,),
-          //性别输入框
-          lineInput(
-            controller: _genderController,
-            labelText: '请输入你的性别',
-          ),
-            //分割线
-          Divider(color:primary3,height:30,thickness: 1,),
-          //联系方式输入框
-            lineInput(
-              controller: _contactController,
-              labelText: '请输入你的联系方式',
-            ),
-          ],
-        ),
         ),
       ),
-      
     );
   }
 }
@@ -136,7 +115,7 @@ class Ziliaocard1 extends StatefulWidget {
   State<Ziliaocard1> createState() => _Ziliaocard1State();
 }
 
-class _Ziliaocard1State extends State<Ziliaocard1>{
+class _Ziliaocard1State extends State<Ziliaocard1> {
   File? _image;
 
   //文本输入框控制器
@@ -150,122 +129,87 @@ class _Ziliaocard1State extends State<Ziliaocard1>{
   final TextEditingController _noticeController = TextEditingController();
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Container(
       //大的容器
-      margin:EdgeInsets.all(16),
+      margin: EdgeInsets.all(16),
       width: MediaQuery.of(context).size.width - 40,
-      
-      decoration:BoxDecoration(
+
+      decoration: BoxDecoration(
         //渐变
         gradient: LinearGradient(
-          begin: Alignment.topCenter, 
-          end: Alignment.bottomCenter, 
-          colors: [
-            primary1,
-            primary2,
-          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [primary1, primary2],
         ),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: primary3, 
-          width: 1,
-        ),
+        border: Border.all(color: primary3, width: 1),
       ),
 
-      child:SingleChildScrollView(
-        child:Padding(
+      child: SingleChildScrollView(
+        child: Padding(
           padding: EdgeInsets.all(16),
-          child:Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          //头像行
-          Row(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              //选择头像文本
-              Text(
-                '选择头像',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey.shade600, 
-                ),
+              //头像行
+              Row(
+                children: [
+                  //选择头像文本
+                  Text(
+                    '选择头像',
+                    style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+                  ),
+
+                  Spacer(), //占据中间空间
+
+                  PickSingleImage(
+                    onImageSelected: (File? image) {
+                      setState(() {
+                        _image = image;
+                      });
+                    },
+                  ),
+                ],
               ),
 
-              Spacer(),//占据中间空间
+              //分割线
+              Divider(color: primary3, height: 30, thickness: 1),
+              //昵称输入框
+              lineInput(controller: _nicknameController, labelText: '请输入你的昵称'),
+              Divider(color: primary3, height: 30, thickness: 1),
 
-              PickSingleImage(
-                onImageSelected: (File? image) {
-                  setState(() {
-                    _image = image;
-                  });
-                },
-              ),
+              //性别输入框
+              lineInput(controller: _genderController, labelText: '请输入你的性别'),
+              Divider(color: primary3, height: 30, thickness: 1),
+
+              //联系方式输入框
+              lineInput(controller: _contactController, labelText: '请输入你的联系方式'),
+              Divider(color: primary3, height: 30, thickness: 1),
+
+              //个人简介输入框
+              lineInput(controller: _introController, labelText: '请输入你的个人介绍'),
+              Divider(color: primary3, height: 30, thickness: 1),
+
+              //设备输入框
+              lineInput(controller: _equipController, labelText: '请输入你的设备'),
+              Divider(color: primary3, height: 30, thickness: 1),
+
+              //风格输入框
+              lineInput(controller: _styleController, labelText: '请输入你擅长的风格'),
+              Divider(color: primary3, height: 30, thickness: 1),
+
+              //价格输入框
+              lineInput(controller: _priceController, labelText: '请输入你的价目表'),
+              Divider(color: primary3, height: 30, thickness: 1),
+
+              //约拍须知输入框
+              lineInput(controller: _noticeController, labelText: '请输入你的约拍须知'),
+              //
             ],
           ),
-
-          //分割线
-          Divider(color:primary3,height:30,thickness: 1,),
-          //昵称输入框
-          lineInput(
-            controller: _nicknameController,
-            labelText: '请输入你的昵称',
-          ),
-          Divider(color:primary3,height:30,thickness: 1,),
-
-          //性别输入框
-          lineInput(
-            controller: _genderController,
-            labelText: '请输入你的性别',
-          ),
-          Divider(color:primary3,height:30,thickness: 1,),
-
-          //联系方式输入框
-          lineInput(
-            controller: _contactController,
-            labelText: '请输入你的联系方式',
-          ),
-          Divider(color:primary3,height:30,thickness: 1,),
-
-          //个人简介输入框
-          lineInput(
-            controller: _introController,
-            labelText: '请输入你的个人介绍',
-          ),
-          Divider(color:primary3,height:30,thickness: 1,),
-
-          //设备输入框
-          lineInput(
-            controller: _equipController,
-            labelText: '请输入你的设备',
-          ),
-          Divider(color:primary3,height:30,thickness: 1,),
-
-          //风格输入框
-          lineInput(
-            controller: _styleController,
-            labelText: '请输入你擅长的风格',
-          ),
-          Divider(color:primary3,height:30,thickness: 1,),
-
-          //价格输入框
-          lineInput(
-            controller: _priceController,
-            labelText: '请输入你的价目表',
-          ),
-          Divider(color:primary3,height:30,thickness: 1,),
-
-          //约拍须知输入框
-          lineInput(
-            controller: _noticeController,
-            labelText: '请输入你的约拍须知',
-          ),
-          //
-          ],
-        ),
         ),
       ),
-      
     );
   }
 }
-

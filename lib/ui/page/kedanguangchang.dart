@@ -3,6 +3,7 @@ import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/search.dart';
 import 'package:we_pai/service/api_service.dart';
 import 'package:we_pai/ui/widget/show_youzhizuopin.dart';
+import 'package:we_pai/module/recieve_kedan.dart';
 
 class KedanguangchangPage extends StatefulWidget {
   const KedanguangchangPage({super.key});
@@ -14,11 +15,27 @@ class KedanguangchangPage extends StatefulWidget {
 class _KedanguangchangState extends State<KedanguangchangPage> {
   final ApiService apiService = ApiService();
   List<String> announcement = ['暂无公告'];
+  List<KedanOrder> kedanList = [];
 
   @override
   void initState() {
     super.initState();
     _fetchAnnouncement();
+  }
+
+  Future<void> _kedan() async {
+    try {
+      List<KedanOrder> _kedanList = await apiService.getKedan();
+      setState(() {
+        if (_kedanList.isNotEmpty) {
+          kedanList = _kedanList;
+        }
+      });
+    } catch (e) {
+      setState(() {
+        kedanList = [];
+      });
+    }
   }
 
   Future<void> _fetchAnnouncement() async {
@@ -105,19 +122,23 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
                   ListView(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      _buildTaskCard(
-                        category: '毕业照约拍',
-                        salary: '50r/h',
-                        needEquipment: true,
-                      ),
-                      const SizedBox(height: 16),
-                      _buildTaskCard(
-                        category: '小动物',
-                        salary: '60r/h',
-                        needEquipment: false,
-                      ),
-                    ],
+                    children: kedanList.isEmpty
+                        ? [const Center(child: Text('暂无订单'))]
+                        : kedanList
+                              .map(
+                                (order) => Column(
+                                  children: [
+                                    _buildTaskCard(
+                                      category: order.type,
+                                      salary:
+                                          '${order.price}r/${order.duration}',
+                                      needEquipment: order.needEquipment,
+                                    ),
+                                    const SizedBox(height: 16),
+                                  ],
+                                ),
+                              )
+                              .toList(),
                   ),
             ),
           ),

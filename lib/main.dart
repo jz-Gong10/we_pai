@@ -18,8 +18,6 @@ import 'package:we_pai/ui/page/drafts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 
-
-
 //测试
 void main() => runApp(MyApp());
 
@@ -28,8 +26,54 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //return MaterialApp(home: MyHomePage());
-    return MaterialApp(home: MyWorks());//all_works
+    return MaterialApp(home: SplashPage());
+  }
+}
+
+// 启动页，检查是否有本地token
+class SplashPage extends StatefulWidget {
+  const SplashPage({super.key});
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  @override
+  void initState() {
+    super.initState();
+    _checkToken();//检查是否本地有token
+  }
+
+  Future<void> _checkToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token != null && token.isNotEmpty) {
+      // 有token，设置到Http并跳转到主页
+      Http().setToken(token);
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => Zhuye()),
+        );
+      }
+    } else {
+      // 没有token，跳转到登录页
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => MyHomePage()),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 }
 
@@ -83,47 +127,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
 
-              // 暂时用这个直接跳转
-              onPressed: () async{
+              // 登录按钮点击事件
+              onPressed: () async {
                 await _login();
-                // _launchURL();
-                // navigate(context, Zhuye());
-                //printToast("登录成功");
               },
 
-//               // 暂时用这个直接跳转
-//               onPressed: () {
-//                 _launchURL();
-//                 navigate(context, Zhuye());
-//               },
-
-              // 别删这段代码！！！千万别删，这是登录按钮的网络请求代码，但虚拟机不能访问，不便于调试就先注释掉了
-              // onPressed: () async {
-              //     _loading = true;
-              //   });
-              //   try {
-              //     final response = await Http().get(
-              //       path: '/login',
-              //       queryParameters: {
-              //         'token':
-              //             'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJjYXNJRCI6IjIwMjMwMDE0MTAzNCIsIm5hbWUiOiLmlrnotoUiLCJleHAiOjE3NzA2NTUxNTB9.FWLq2cVjJ0YAfVdFwsqE_bQbYnHqgZ0H_yjQnOLas-8', // 添加token参数
-              //       },
-              //     );
-              // if (!mounted) return;
-              //     if (response.statusCode == 200) {
-              //       navigate(context, Zhuye());
-              //       printToast("登录成功");
-              //     } else {
-              //       debugPrint("请求失败: \\${response.statusCode}");
-              //     }
-              //   } finally {
-              //     if (mounted) {
-              //       setState(() {
-              //         _loading = false;
-              //       });
-              //     }
-              //   }
-              // },
               child: Text(
                 '登录',
                 style: TextStyle(
@@ -160,23 +168,22 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _loading = true;
     });
-    try{
-      String url = 
-        'https://i.sdu.edu.cn/cas/proxy/login/page?forward=http%3A%2F%2F172.24.37.149%3A8080%2Flogin%3Fplatform%3Dmobile';
+    try {//跳转到山大的登录页
+      String url =
+          'https://i.sdu.edu.cn/cas/proxy/login/page?forward=http%3A%2F%2F172.24.37.149%3A8080%2Flogin%3Fplatform%3Dmobile';
       final authUrl = Uri.parse(url);
-      
 
       final result = await FlutterWebAuth2.authenticate(
-        url: authUrl.toString(), 
+        url: authUrl.toString(),
         callbackUrlScheme: 'wepai',
       );
 
       final backUri = Uri.parse(result);
       debugPrint('$backUri\n-----------------');
-      final token = backUri.queryParameters['token'];
+      final token = backUri.queryParameters['token'];//获取token
       final casId = backUri.queryParameters['casId'];
       final name = backUri.queryParameters['name'];
-      if(token == null ){
+      if (token == null) {//获取token失败
         printToast("登录失败");
         debugPrint("登录失败: token is null");
         setState(() {

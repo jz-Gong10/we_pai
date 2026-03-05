@@ -15,8 +15,8 @@ class DioService {
       _dioInitialized = true;
     }
     return _dio;
-  }//当首次调用dio时初始化dio对象
-  
+  } //当首次调用dio时初始化dio对象
+
   bool _dioInitialized = false;
 
   void init() {
@@ -75,9 +75,12 @@ class DioService {
     );
   }
 
-  // 模拟获取token的方法
+  // 从SharedPreferences获取token
   String? _getToken() {
     // 实际应用中从SharedPreferences获取
+    // 这里简化处理，实际应该使用SharedPreferences
+    // 注意：由于是同步方法，这里无法直接使用SharedPreferences
+    // 但拦截器会在每次请求时调用，所以token会通过setToken方法设置
     return null;
   }
 
@@ -128,6 +131,10 @@ class DioService {
 
   // 设置token（登录后调用）
   void setToken(String token) {
+    if (!_dioInitialized) {
+      init();
+      _dioInitialized = true;
+    }
     _dio.options.headers['Authorization'] = 'Bearer $token';
   }
 

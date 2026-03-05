@@ -223,7 +223,18 @@ class ApiService {
     Map<String, dynamic> profileData,
   ) async {
     try {
-      Response response = await _dio.post('/user/profile', data: profileData);
+      // 过滤掉空值字段
+      Map<String, dynamic> filteredData = {};
+      profileData.forEach((key, value) {
+        if (value != null && value.toString().isNotEmpty) {
+          filteredData[key] = value;
+        }
+      });
+
+      Response response = await _dio.post(
+        '/user/updateProfile',
+        data: filteredData,
+      );
 
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = response.data;

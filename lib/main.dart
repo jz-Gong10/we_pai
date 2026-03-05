@@ -2,20 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:we_pai/service/dio_service.dart';
-import 'package:we_pai/ui/page/array.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/page/zhuye.dart';
 import 'package:we_pai/ui/widget/print.dart';
-import 'net/http.dart';
 import 'package:we_pai/ui/widget/progress_indicator.dart';
-import 'package:we_pai/ui/widget/print.dart';
-import 'package:we_pai/service/api_service.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:dio/dio.dart';
-import 'package:we_pai/ui/page/my_works.dart';
-import 'package:we_pai/ui/page/wode.dart';
-import 'package:we_pai/ui/page/drafts.dart';
-import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 //测试
@@ -81,9 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
 
-              // 暂时用这个直接跳转
               onPressed: () async {
-                navigate(context, Zhuye());
                 await _login();
               },
 

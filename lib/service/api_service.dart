@@ -239,7 +239,7 @@ class ApiService {
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = response.data;
         if (responseData['code'] == 200) {
-          return responseData['data'];
+          return responseData['data'] ?? {};
         } else {
           throw Exception('更新资料失败: ${responseData['msg']}');
         }

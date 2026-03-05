@@ -2,17 +2,18 @@ class UserInfo {
   int role;
   String avatarUrl;
   int sex;
-  String equipment;
+  List<String> equipment;
   String casId;
   String phone;
   String name;
   String nickname;
   int completedOrders;
-  String style;
+  List<String> style;
   String detail;
   int totalLikes;
   int totalOrders;
-  String photographerType;
+  List<String> photographerType;
+  bool agreement;
 
   UserInfo({
     required this.role,
@@ -29,6 +30,7 @@ class UserInfo {
     required this.totalLikes,
     required this.totalOrders,
     required this.photographerType,
+    required this.agreement,
   });
 
   factory UserInfo.fromJson(Map<String, dynamic> json) {
@@ -36,17 +38,18 @@ class UserInfo {
       role: json['role'],
       avatarUrl: json['avatarUrl'],
       sex: json['sex'],
-      equipment: json['equipment'],
+      equipment: List<String>.from(json['equipment']),
       casId: json['casId'],
       phone: json['phone'],
       name: json['name'],
       nickname: json['nickname'],
       completedOrders: json['completedOrders'],
-      style: json['style'],
+      style: List<String>.from(json['style']),
       detail: json['detail'],
       totalLikes: json['totalLikes'],
       totalOrders: json['totalOrders'],
-      photographerType: json['photographerType'],
+      photographerType: List<String>.from(json['photographerType']),
+      agreement: json['agreement'],
     );
   }
 
@@ -65,11 +68,12 @@ class UserInfo {
       'detail': detail,
       'totalOrders': totalOrders,
       'photographerType': photographerType,
+      'agreement': agreement,
     };
   }
 
   @override
   String toString() {
-    return 'UserInfo{role : $role,avatarUrl: $avatarUrl,sex: $sex,equipment: $equipment,casId:$casId,phone:$phone,name:$name,nickname:$nickname,completedOrders:$completedOrders,style:$style,detial:$detail,totalOrders:$totalOrders,photographerType:$photographerType}';
+    return 'UserInfo{role: $role, avatarUrl: $avatarUrl, sex: $sex, equipment: $equipment, casId: $casId, phone: $phone, name: $name, nickname: $nickname, completedOrders: $completedOrders, style: $style, detail: $detail, totalLikes: $totalLikes, totalOrders: $totalOrders, photographerType: $photographerType, agreement: $agreement}';
   }
 }

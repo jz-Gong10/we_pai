@@ -45,8 +45,7 @@ class _UserShowState extends State<UserShow> {
               borderRadius: BorderRadius.all(Radius.circular(50)),
             ),
             clipBehavior: Clip.hardEdge,
-            child:
-                (widget.avatarUrl.isNotEmpty)
+            child: (widget.avatarUrl.isNotEmpty)
                 ? Image.network(
                     widget.avatarUrl,
                     fit: BoxFit.cover,
@@ -54,21 +53,13 @@ class _UserShowState extends State<UserShow> {
                       // 图片加载失败时显示默认头像
                       return Container(
                         color: qianhui,
-                        child: Icon(
-                          Icons.person,
-                          size: 50,
-                          color: Colors.grey,
-                        ),
+                        child: Icon(Icons.person, size: 50, color: Colors.grey),
                       );
                     },
                   )
                 : Container(
                     color: qianhui,
-                    child: Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.grey,
-                    ),
+                    child: Icon(Icons.person, size: 50, color: Colors.grey),
                   ), // 无URL时显示默认头像
           ),
 
@@ -98,7 +89,10 @@ class _UserShowState extends State<UserShow> {
                           margin: EdgeInsets.only(right: 10),
                           child: IconButton(
                             onPressed: () {
-                              navigate(context, Wanshanziliao(userType: 'photographer'));
+                              navigate(
+                                context,
+                                Wanshanziliao(userType: 'photographer'),
+                              );
                             },
                             icon: Icon(Icons.edit),
                           ),

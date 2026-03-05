@@ -17,7 +17,7 @@ class Wode extends StatefulWidget {
 class _WodeState extends State<Wode> {
   final ApiService _apiService = ApiService();
   String? _error;
-  String name = '未知用户';
+  String name = '暂无昵称';
   String casId = '000000';
   String avatarUrl = '';
 
@@ -39,15 +39,20 @@ class _WodeState extends State<Wode> {
       // 并发请求示例
       var userInfo = await _apiService.getUserInfo();
 
+      // 打印获取的数据，用于调试
+      print('User Info: ${userInfo.toString()}');
+
       setState(() {
-        name = userInfo.name;
-        casId = userInfo.casId;
-        avatarUrl = userInfo.avatarUrl;
+        name = userInfo.nickname ?? userInfo.name;
+        name = name ?? '暂无昵称';
+        casId = userInfo.casId ?? '000000';
+        avatarUrl = userInfo.avatarUrl ?? '';
       });
     } catch (e) {
       setState(() {
         _error = e.toString();
       });
+      print('加载用户信息失败: $e');
     }
   }
 
@@ -78,13 +83,31 @@ class _WodeState extends State<Wode> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // 用户信息
-                  UserShow(
-                    change: true, // 我自己的主页我当然可以改啦
-                    name: name,
-                    casId: casId,
-                    avatarUrl: avatarUrl ?? '',
-                  ),
-                  SizedBox(height: 20),
+                  _error != null
+                      ? Container(
+                          padding: EdgeInsets.all(16),
+                          margin: EdgeInsets.only(bottom: 20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.red.withOpacity(0.1),
+                            border: Border.all(color: Colors.red, width: 1),
+                          ),
+                          child: Text(
+                            '加载失败: $_error',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        )
+                      : Column(
+                          children: [
+                            UserShow(
+                              change: true, // 我自己的主页我当然可以改啦
+                              name: name,
+                              casId: casId,
+                              avatarUrl: avatarUrl,
+                            ),
+                            SizedBox(height: 20),
+                          ],
+                        ),
 
                   // 我的预约单板块
                   Container(

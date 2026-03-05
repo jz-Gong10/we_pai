@@ -319,8 +319,8 @@ class _WodeState extends State<Wode> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Judge(),
-                          ), //点击跳转到评价页面
+                            builder: (context) => Judge(), //点击跳转到评价页面
+                          ),
                         );
                       },
                       child: Container(

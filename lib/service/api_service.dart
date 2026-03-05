@@ -410,4 +410,36 @@ class ApiService {
       throw _handleDioError(e);
     }
   }
+
+  // 评价订单
+  Future<void> rateOrder({
+    required int orderId,
+    required int photoScore,
+    required int timeScore,
+    required int commScore,
+    String? content,
+  }) async {
+    try {
+      Response response = await _dio.post('/order/rate', data: {
+        'orderId': orderId,
+        'photoScore': photoScore,
+        'timeScore': timeScore,
+        'commScore': commScore,
+        'content': content ?? '',
+      });
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['code'] == 200) {
+          return;
+        } else {
+          throw Exception('评价失败: ${responseData['msg']}');
+        }
+      } else {
+        throw Exception('评价失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
 }

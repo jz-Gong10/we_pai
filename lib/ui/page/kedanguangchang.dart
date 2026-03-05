@@ -20,7 +20,6 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
   @override
   void initState() {
     super.initState();
-    _fetchAnnouncement();
   }
 
   Future<void> _kedan() async {
@@ -34,21 +33,6 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
     } catch (e) {
       setState(() {
         kedanList = [];
-      });
-    }
-  }
-
-  Future<void> _fetchAnnouncement() async {
-    try {
-      List<String> announcementsR = await apiService.getAnnouncements();
-      setState(() {
-        if (announcementsR.isNotEmpty) {
-          announcement = announcementsR;
-        }
-      });
-    } catch (e) {
-      setState(() {
-        announcement = ['获取公告失败'];
       });
     }
   }
@@ -79,7 +63,7 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
             top: 172,
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 306),
-              child: ShowYouzhizuopin(imageURL: announcement[0]),
+              child: ShowYouzhizuopin(),
             ),
           ),
 

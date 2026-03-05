@@ -136,7 +136,7 @@ class _ArrayState extends State<Array> {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-                  const ShowYouzhizuopin(imageURL: ''), //这里在widget里面再完善一下
+                  const ShowYouzhizuopin(), //这里在widget里面再完善一下
                   const SizedBox(height: 30),
                   _buildRankingToggle(),
                   const SizedBox(height: 40),

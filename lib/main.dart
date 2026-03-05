@@ -15,7 +15,6 @@ import 'package:we_pai/ui/page/wode.dart';
 import 'package:we_pai/ui/page/drafts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
-import 'package:we_pai/ui/page/kedanguangchang.dart';
 import 'package:we_pai/net/http.dart';
 
 //测试
@@ -26,7 +25,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: KedanguangchangPage());//先暂时改成这个
+    return MaterialApp(home: Wode());//先暂时改成这个
   }
 }
 

@@ -20,6 +20,7 @@ class _WodeState extends State<Wode> {
   String name = '未知用户';
   String casId = '000000';
   String avatarUrl = '';
+  int role = 2; // 用户角色：1=普通用户，2=摄影师
 
   // 展开/收起状态
   bool _isReservationExpanded = false; // 预约单展开状态
@@ -43,6 +44,7 @@ class _WodeState extends State<Wode> {
         name = userInfo.name;
         casId = userInfo.casId;
         avatarUrl = userInfo.avatarUrl;
+        role = userInfo.role;
       });
     } catch (e) {
       setState(() {
@@ -86,7 +88,7 @@ class _WodeState extends State<Wode> {
                   ),
                   SizedBox(height: 20),
 
-                  // 我的预约单板块
+                  // 我的预约单板块（所有角色都显示）
                   Container(
                     width: contentWidth,
                     decoration: BoxDecoration(
@@ -162,108 +164,113 @@ class _WodeState extends State<Wode> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
 
-                  // 我的约拍客单
-                  Container(
-                    width: contentWidth,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: pinkGradient,
-                      border: Border.all(color: primary3, width: 1),
-                    ),
-                    child: Column(
-                      children: [
-                        // 标题栏
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _isOrderExpanded = !_isOrderExpanded;
-                            });
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 15,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '我的约拍客单（客单管理）',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Icon(
-                                  _isOrderExpanded
-                                      ? Icons.arrow_circle_up
-                                      : Icons.arrow_circle_down,
-                                  size: 20,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        // 展开内容
-                        if (_isOrderExpanded)
-                          Column(
-                            children: [
-                              Divider(height: 1, color: primary3),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 10,
-                                ),
-                                child: Column(
-                                  children: [
-                                    // 客单项目
-                                    _buildOrderItem('毕业季帮拍，需自带设备。', '对接中'),
-                                    Divider(height: 1, color: primary3),
-                                    _buildOrderItem('毕业季帮拍，需自带设备。', '已完成'),
-                                    Divider(height: 1, color: primary3),
-                                    _buildOrderItem('毕业季帮拍，需自带设备。', '已完成'),
-                                    Divider(height: 1, color: primary3),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20),
-
-                  // 我的作品
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyWorks()),
-                      );
-                    },
-                    child: Container(
+                  // role=2：显示我的约拍客单和展开内容
+                  if (role == 2) ...[
+                    SizedBox(height: 20),
+                    Container(
                       width: contentWidth,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         gradient: pinkGradient,
                         border: Border.all(color: primary3, width: 1),
                       ),
-                      child: Text(
-                        '我的作品',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      child: Column(
+                        children: [
+                          // 标题栏
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _isOrderExpanded = !_isOrderExpanded;
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 15,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '我的约拍客单（客单管理）',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Icon(
+                                    _isOrderExpanded
+                                        ? Icons.arrow_circle_up
+                                        : Icons.arrow_circle_down,
+                                    size: 20,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          // 展开内容
+                          if (_isOrderExpanded)
+                            Column(
+                              children: [
+                                Divider(height: 1, color: primary3),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 10,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      // 客单项目
+                                      _buildOrderItem('毕业季帮拍，需自带设备。', '对接中'),
+                                      Divider(height: 1, color: primary3),
+                                      _buildOrderItem('毕业季帮拍，需自带设备。', '已完成'),
+                                      Divider(height: 1, color: primary3),
+                                      _buildOrderItem('毕业季帮拍，需自带设备。', '已完成'),
+                                      Divider(height: 1, color: primary3),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+
+                  // role=2：显示我的作品
+                  if (role == 2) ...[
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyWorks()),
+                        );
+                      },
+                      child: Container(
+                        width: contentWidth,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 15,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: pinkGradient,
+                          border: Border.all(color: primary3, width: 1),
+                        ),
+                        child: Text(
+                          '我的作品',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
+
                   SizedBox(height: 40),
                 ],
               ),

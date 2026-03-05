@@ -20,10 +20,10 @@ class _WodeState extends State<Wode> {
   String name = '未知用户';
   String casId = '000000';
   String avatarUrl = '';
-  
+
   // 展开/收起状态
-  bool _isReservationExpanded = false;// 预约单展开状态
-  bool _isOrderExpanded = false;// 客单展开状态
+  bool _isReservationExpanded = false; // 预约单展开状态
+  bool _isOrderExpanded = false; // 客单展开状态
 
   @override
   void initState() {
@@ -79,7 +79,7 @@ class _WodeState extends State<Wode> {
                 children: [
                   // 用户信息
                   UserShow(
-                    change: true,// 我自己的主页我当然可以改啦
+                    change: true, // 我自己的主页我当然可以改啦
                     name: name,
                     casId: casId,
                     avatarUrl: avatarUrl ?? '',
@@ -103,7 +103,10 @@ class _WodeState extends State<Wode> {
                             });
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 15,
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -115,7 +118,9 @@ class _WodeState extends State<Wode> {
                                   ),
                                 ),
                                 Icon(
-                                  _isReservationExpanded ? Icons.arrow_circle_up : Icons.arrow_circle_down,
+                                  _isReservationExpanded
+                                      ? Icons.arrow_circle_up
+                                      : Icons.arrow_circle_down,
                                   size: 20,
                                 ),
                               ],
@@ -129,13 +134,23 @@ class _WodeState extends State<Wode> {
                             children: [
                               Divider(height: 1, color: primary3),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 10,
+                                ),
                                 child: Column(
                                   children: [
                                     // 预约单项目
-                                    _buildReservationItem('毕业季帮拍，需自带设备。', '对接中'),
+                                    _buildReservationItem(
+                                      '毕业季帮拍，需自带设备。',
+                                      '对接中',
+                                    ),
                                     Divider(height: 1, color: primary3),
-                                    _buildReservationItem('个人写真，需自带设备。', '已完成', showEvaluate: true),
+                                    _buildReservationItem(
+                                      '个人写真，需自带设备。',
+                                      '已完成',
+                                      showEvaluate: true,
+                                    ),
                                     Divider(height: 1, color: primary3),
                                     _buildReservationItem('风景，需自带设备。', '待接单'),
                                     Divider(height: 1, color: primary3),
@@ -155,7 +170,7 @@ class _WodeState extends State<Wode> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       gradient: pinkGradient,
-                      border: Border.all(color: primary3, width: 1),  
+                      border: Border.all(color: primary3, width: 1),
                     ),
                     child: Column(
                       children: [
@@ -167,7 +182,10 @@ class _WodeState extends State<Wode> {
                             });
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 15,
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -179,7 +197,9 @@ class _WodeState extends State<Wode> {
                                   ),
                                 ),
                                 Icon(
-                                  _isOrderExpanded ? Icons.arrow_circle_up : Icons.arrow_circle_down,
+                                  _isOrderExpanded
+                                      ? Icons.arrow_circle_up
+                                      : Icons.arrow_circle_down,
                                   size: 20,
                                 ),
                               ],
@@ -193,7 +213,10 @@ class _WodeState extends State<Wode> {
                             children: [
                               Divider(height: 1, color: primary3),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 10,
+                                ),
                                 child: Column(
                                   children: [
                                     // 客单项目
@@ -223,7 +246,10 @@ class _WodeState extends State<Wode> {
                     },
                     child: Container(
                       width: contentWidth,
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         gradient: pinkGradient,
@@ -249,25 +275,23 @@ class _WodeState extends State<Wode> {
   }
 
   // 构建预约单项目
-  Widget _buildReservationItem(String description, String status, {bool showEvaluate = false}) {
+  Widget _buildReservationItem(
+    String description,
+    String status, {
+    bool showEvaluate = false,
+  }) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text('预算'),
-            ],
-          ),
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [Text('预算')]),
           SizedBox(height: 8),
-          
+
           Text(description),
           SizedBox(height: 10),
-          
+
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -287,11 +311,16 @@ class _WodeState extends State<Wode> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Judge()),//点击跳转到评价页面
+                          MaterialPageRoute(
+                            builder: (context) => Judge(),
+                          ), //点击跳转到评价页面
                         );
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 3,
+                        ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.grey[200],
@@ -317,14 +346,9 @@ class _WodeState extends State<Wode> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 第一行：预算在右上角
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text('预算'),
-            ],
-          ),
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [Text('预算')]),
           SizedBox(height: 8),
-          
+
           Row(
             children: [
               // 头像展示的小方框（这里先做成了默认头像）
@@ -335,22 +359,18 @@ class _WodeState extends State<Wode> {
                   color: qianhui,
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: Icon(
-                  Icons.person,
-                  size: 20,
-                  color: Colors.grey,
-                ),
+                child: Icon(Icons.person, size: 20, color: Colors.grey),
               ),
               SizedBox(width: 8),
               Text('叮咚鸡'),
             ],
           ),
-          
+
           // 描述
           SizedBox(height: 8),
           Text(description),
           SizedBox(height: 10),
-          
+
           // 状态按钮
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

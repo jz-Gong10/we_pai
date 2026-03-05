@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:we_pai/service/dio_service.dart';
-import 'package:we_pai/ui/page/array.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/page/zhuye.dart';
 import 'package:we_pai/ui/widget/print.dart';
-import 'net/http.dart';
 import 'package:we_pai/ui/widget/progress_indicator.dart';
 import 'package:we_pai/ui/widget/print.dart';
 import 'package:we_pai/service/api_service.dart';
@@ -18,6 +16,7 @@ import 'package:we_pai/ui/page/drafts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'package:we_pai/ui/page/kedanguangchang.dart';
+import 'package:we_pai/net/http.dart';
 
 //测试
 void main() => runApp(MyApp());

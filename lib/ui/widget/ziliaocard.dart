@@ -99,11 +99,44 @@ class _ZiliaocardState extends State<Ziliaocard> {
               Divider(color: primary3, height: 30, thickness: 1),
               //联系方式输入框
               lineInput(controller: _contactController, labelText: '请输入你的联系方式'),
+
+              //提交按钮
+              SizedBox(height: 30),
+              ElevatedButton(onPressed: _submitProfile, child: Text('提交资料')),
             ],
           ),
         ),
       ),
     );
+  }
+
+  //提交资料
+  Future<void> _submitProfile() async {
+    try {
+      //收集输入信息
+      Map<String, dynamic> profileData = {
+        'nickname': _nicknameController.text,
+        'gender': _genderController.text,
+        'contactInfo': _contactController.text,
+      };
+
+      //发送网络请求
+      await ApiService().updateUserProfile(profileData);
+
+      //显示成功提示
+      Fluttertoast.showToast(
+        msg: '资料更新成功',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
+    } catch (e) {
+      //显示错误提示
+      Fluttertoast.showToast(
+        msg: '资料更新失败: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
+    }
   }
 }
 
@@ -205,11 +238,48 @@ class _Ziliaocard1State extends State<Ziliaocard1> {
 
               //约拍须知输入框
               lineInput(controller: _noticeController, labelText: '请输入你的约拍须知'),
-              //
+
+              //提交按钮
+              SizedBox(height: 30),
+              ElevatedButton(onPressed: _submitProfile, child: Text('提交资料')),
             ],
           ),
         ),
       ),
     );
+  }
+
+  //提交资料
+  Future<void> _submitProfile() async {
+    try {
+      //收集输入信息
+      Map<String, dynamic> profileData = {
+        'nickname': _nicknameController.text,
+        'gender': _genderController.text,
+        'contactInfo': _contactController.text,
+        'introduction': _introController.text,
+        'equipment': _equipController.text,
+        'style': _styleController.text,
+        'price': _priceController.text,
+        'notice': _noticeController.text,
+      };
+
+      //发送网络请求
+      await ApiService().updateUserProfile(profileData);
+
+      //显示成功提示
+      Fluttertoast.showToast(
+        msg: '资料更新成功',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
+    } catch (e) {
+      //显示错误提示
+      Fluttertoast.showToast(
+        msg: '资料更新失败: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
+    }
   }
 }

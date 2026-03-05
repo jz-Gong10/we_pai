@@ -5,6 +5,7 @@ import 'package:we_pai/service/api_service.dart';
 import 'package:we_pai/ui/widget/show_youzhizuopin.dart';
 import 'package:we_pai/module/recieve_kedan.dart';
 import 'package:we_pai/ui/themes/colors.dart';
+import 'package:we_pai/ui/page/my_yyd.dart';
 
 class KedanguangchangPage extends StatefulWidget {
   const KedanguangchangPage({super.key});
@@ -189,18 +190,26 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
                         ),
                         const SizedBox(width: 10),
                         // 我的预约单按钮
-                        Container(
-                          width: orderWidth,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 201, 201, 201),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Center(child: Text('我\n的\n预\n约\n单\n', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-                              ],
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const Yuyuedan()),
+                            );
+                          },
+                          child: Container(
+                            width: orderWidth,
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 201, 201, 201),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Center(child: Text('我\n的\n预\n约\n单\n', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+                                ],
+                              ),
                             ),
                           ),
                         ),

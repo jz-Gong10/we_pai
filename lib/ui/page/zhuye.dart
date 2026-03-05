@@ -6,7 +6,6 @@ import 'package:we_pai/ui/widget/zhuye_low_edge.dart';
 import 'package:we_pai/ui/widget/options.dart';
 import 'package:we_pai/ui/widget/search.dart';
 import 'package:we_pai/ui/widget/show_youzhizuopin.dart';
-import 'package:we_pai/service/api_service.dart';
 
 class Zhuye extends StatefulWidget {
   const Zhuye({super.key});
@@ -20,33 +19,6 @@ class _ZhuyeState extends State<Zhuye> {
   bool _isLoading = false;
   String? _imagePath = 'lib/material/term_for_usage.png';
   bool _isVisible = true;
-
-  final ApiService apiService = ApiService();
-  List<String> announcement = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchAnnouncement();
-  }
-
-  // 从API获取公告
-  Future<void> _fetchAnnouncement() async {
-    setState(() {
-      _error = null;
-      _isLoading = true;
-    });
-    try {
-      List<String> announcementsR = await apiService.getAnnouncements();
-      setState(() {
-        announcement = announcementsR;
-      });
-    } catch (e) {
-      setState(() {
-        announcement = ['获取公告失败'];
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,11 +43,7 @@ class _ZhuyeState extends State<Zhuye> {
             top: screenHeight * 0.18, // 相对高度
             left: 20,
             right: 20,
-            child: Center(
-              child: ShowYouzhizuopin(
-                imageURL: announcement.isNotEmpty ? announcement.first : '',
-              ),
-            ),
+            child: Center(child: ShowYouzhizuopin()),
           ),
 
           //选项按钮容器

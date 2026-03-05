@@ -28,10 +28,22 @@ class _SYSShowBlockState extends State<SYSShowBlock> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 20),
       width: 350,
       height: 274,
       padding: EdgeInsets.all(16), // 添加内边距
-      color: Color.fromARGB(175, 169, 236, 204),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xffE0E9F1), Color(0xffEAEBD8)],
+        ),
+        border: Border.all(
+          color: Colors.black,
+          width: 1,
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -74,7 +86,7 @@ class _SYSShowBlockState extends State<SYSShowBlock> {
                     ),
                   ),
                   Text(
-                    widget.casId,
+                    'id:${widget.casId}',
                     style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                 ],
@@ -82,7 +94,12 @@ class _SYSShowBlockState extends State<SYSShowBlock> {
 
               Spacer(), // 添加弹性空间
               // 接单量
-              Text('${widget.orderCount}\n接单量'),
+              Text(
+                '${widget.orderCount}\n接单量',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
 
@@ -90,11 +107,11 @@ class _SYSShowBlockState extends State<SYSShowBlock> {
 
           Text('设备：${widget.equipment}'),
 
-          Text('风格：${widget.style}'),
+          Text('擅长风格：${widget.style}'),
 
           SizedBox(height: 8),
 
-          Text('类型：${widget.type}'),
+          Text('擅长类型：${widget.type}'),
         ],
       ),
     );

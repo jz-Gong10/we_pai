@@ -17,6 +17,7 @@ import 'package:we_pai/ui/page/wode.dart';
 import 'package:we_pai/ui/page/drafts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
+import 'package:we_pai/ui/page/kedanguangchang.dart';
 
 //测试
 void main() => runApp(MyApp());
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: SplashPage());
+    return MaterialApp(home: KedanguangchangPage());//先暂时改成这个
   }
 }
 
@@ -192,11 +193,25 @@ class _MyHomePageState extends State<MyHomePage> {
         return;
       }
       debugPrint("token: $token \ncasId: $casId \nname: $name");
-      // TODO 处理token，网络请求都需要加上token，后端就知道是谁请求的。
-      // 可以存到本地，之后启动程序先读取本地的token，如果有就直接到主页，没有就登录获取。
-      // 不存也行，就是每次打开app都要登录一次。
-      // 这样就登录完了，下面跳转主页，用replace，别push，不然点返回又回到登录页了。
 
+      // 存储token到本地
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token);
+      if (casId != null) {
+        await prefs.setString('casId', casId);
+      }
+      if (name != null) {
+        await prefs.setString('name', name);
+      }
+
+      // 设置Dio的token
+      DioService().setToken(token);
+
+      // 跳转到主页
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Zhuye()),
+      );
     } catch (e) {
       printToast("登录失败: $e");
       debugPrint("登录失败: $e");

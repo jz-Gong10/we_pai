@@ -7,7 +7,12 @@ class SysModel {
   SysModel({required this.total, required this.phoList});
 
   factory SysModel.fromJson(Map<String, dynamic> json) {
-    return SysModel(total: json['total'], phoList: json['list']);
+    return SysModel(
+      total: json['total'],
+      phoList: List<SYSList>.from(
+        json['list'].map((item) => SYSList.fromJson(item)),
+      ),
+    );
   }
 
   Map<String, dynamic> toJson() {

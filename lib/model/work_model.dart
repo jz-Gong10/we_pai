@@ -6,17 +6,13 @@ class WorkResponse {
   final WorkData data;
   final String msg;
 
-  WorkResponse({
-    required this.code,
-    required this.data,
-    required this.msg,
-  });
+  WorkResponse({required this.code, required this.data, required this.msg});
 
   factory WorkResponse.fromJson(Map<String, dynamic> json) {
     return WorkResponse(
-      code: json['code'],
-      data: WorkData.fromJson(json['data']),
-      msg: json['msg'],
+      code: json['code'] is int ? json['code'] : 0,
+      data: WorkData.fromJson(json['data'] ?? {}),
+      msg: json['msg'] ?? '',
     );
   }
 }
@@ -26,17 +22,17 @@ class WorkData {
   final int pages;
   final List<WorkItem> list;
 
-  WorkData({
-    required this.total,
-    required this.pages,
-    required this.list,
-  });
+  WorkData({required this.total, required this.pages, required this.list});
 
   factory WorkData.fromJson(Map<String, dynamic> json) {
     return WorkData(
-      total: json['total'],
-      pages: json['pages'],
-      list: (json['list'] as List).map((item) => WorkItem.fromJson(item)).toList(),
+      total: json['total'] is int ? json['total'] : 0,
+      pages: json['pages'] is int ? json['pages'] : 0,
+      list: json['list'] is List
+          ? (json['list'] as List)
+                .map((item) => WorkItem.fromJson(item))
+                .toList()
+          : [],
     );
   }
 }
@@ -85,16 +81,16 @@ class WorkItem {
 
     return WorkItem(
       images: imagesList,
-      postId: json['post_id'],
-      avatarUrl: json['avatar_url'],
-      userId: json['user_id'],
-      nickname: json['nickname'],
-      createdAt: json['created_at'],
-      likeCount: json['likeCount'],
-      type: json['type'],
-      title: json['title'],
-      content: json['content'],
-      status: json['status'],
+      postId: json['post_id'] is int ? json['post_id'] : 0,
+      avatarUrl: json['avatar_url'] ?? '',
+      userId: json['user_id'] is int ? json['user_id'] : 0,
+      nickname: json['nickname'] ?? '',
+      createdAt: json['created_at'] ?? '',
+      likeCount: json['likeCount'] is int ? json['likeCount'] : 0,
+      type: json['type'] ?? '',
+      title: json['title'] ?? '',
+      content: json['content'] ?? '',
+      status: json['status'] is int ? json['status'] : 0,
     );
   }
 }

@@ -50,46 +50,51 @@ class _MyWorksState extends State<MyWorks> {
       body: Stack(
         children: [
           Background(imagePath: 'lib/material/background2.png'),
-          
-          Positioned(top: 30, left: 23, right: 23, child: UpEdge(title: '我的作品')),
+
+          Positioned(
+            top: 40,
+            left: 23,
+            right: 23,
+            child: UpEdge(title: '我的作品'),
+          ),
 
           Padding(
             padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
             child: _isLoading
                 ? Center(child: CircularProgressIndicator())
                 : _error != null
-                    ? Center(child: Text('错误: $_error'))
-                    : _works.isEmpty
-                        ? Center(child: Text('暂无作品'))
-                        : ListView.builder(
-                            itemCount: _works.length,
-                            itemBuilder: (context, index) {
-                              final work = _works[index];
-                              return Work(
-                                type: 'my',
-                                avatarUrl: work.avatarUrl,
-                                nickname: work.nickname,
-                                description: work.content,
-                                imageUrls: work.images,
-                                likes: work.likeCount,
-                                comments: 0, // API中没有评论数，暂时设为0
-                                gradient: lhGradient,
+                ? Center(child: Text('错误: $_error'))
+                : _works.isEmpty
+                ? Center(child: Text('暂无作品'))
+                : ListView.builder(
+                    itemCount: _works.length,
+                    itemBuilder: (context, index) {
+                      final work = _works[index];
+                      return Work(
+                        type: 'my',
+                        avatarUrl: work.avatarUrl,
+                        nickname: work.nickname,
+                        description: work.content,
+                        imageUrls: work.images,
+                        likes: work.likeCount,
+                        comments: 0, // API中没有评论数，暂时设为0
+                        gradient: lhGradient,
 
-                                onLike: () {
-                                  // 点赞逻辑
-                                  print('Liked work ${work.postId}');
-                                },
-                                onComment: () {
-                                  // 评论逻辑
-                                  print('Commented on work ${work.postId}');
-                                },
-                                onDelete: () {
-                                  // 删除逻辑
-                                  print('Deleted work ${work.postId}');
-                                },
-                              );
-                            },
-                          ),
+                        onLike: () {
+                          // 点赞逻辑
+                          print('Liked work ${work.postId}');
+                        },
+                        onComment: () {
+                          // 评论逻辑
+                          print('Commented on work ${work.postId}');
+                        },
+                        onDelete: () {
+                          // 删除逻辑
+                          print('Deleted work ${work.postId}');
+                        },
+                      );
+                    },
+                  ),
           ),
         ],
       ),

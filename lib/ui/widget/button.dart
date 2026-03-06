@@ -11,7 +11,14 @@ class CustomButton extends StatelessWidget {
   final double height;
   final double fontSize;
 
-  const CustomButton({super.key, required this.text, required this.onPressed, this.width = 389, this.height = 71,this.fontSize = 24});
+  const CustomButton({
+    super.key,
+    required this.text,
+    required this.onPressed,
+    this.width = 389,
+    this.height = 71,
+    this.fontSize = 24,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +28,13 @@ class CustomButton extends StatelessWidget {
       decoration: BoxDecoration(
         //渐变
         gradient: LinearGradient(
-          begin: Alignment.topCenter, 
-          end: Alignment.bottomCenter, 
-          colors: [
-            primary1, 
-            primary2, 
-          ],
-        ), 
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [primary1, primary2],
+        ),
 
-        border: Border.all(color: primary3,width: 1), 
-        borderRadius: BorderRadius.circular(10), 
+        border: Border.all(color: primary3, width: 1),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: TextButton(
         onPressed: onPressed,
@@ -50,7 +54,7 @@ class CustomButton extends StatelessWidget {
 //编辑按钮
 class EditButton extends CustomButton {
   EditButton({required super.onPressed})
-      : super(text: '编辑', width: 70, height: 30,fontSize: 18);
+    : super(text: '编辑', width: 70, height: 30, fontSize: 18);
 }
 
 //无边框，“提交”和“保存草稿”的模板
@@ -58,16 +62,20 @@ class BorderLessButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const BorderLessButton({super.key, required this.text, required this.onPressed});
+  const BorderLessButton({
+    super.key,
+    required this.text,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 100,
-      height:50,
+      height: 50,
       decoration: BoxDecoration(
-        color: primary2, 
-        borderRadius: BorderRadius.circular(15), 
+        color: primary2,
+        borderRadius: BorderRadius.circular(15),
       ),
       child: Center(
         child: TextButton(
@@ -96,15 +104,15 @@ class AppBackButton extends StatelessWidget {
   const AppBackButton({
     super.key,
     this.onTap,
-    this.width = 15,
-    this.height = 15,
+    this.width = 30,
+    this.height = 30,
     this.assetPath = 'lib/material/return.png',
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap ?? () => Navigator.pop(context),//默认返回上一个页面
+      onTap: onTap ?? () => Navigator.pop(context), //默认返回上一个页面
       child: Image.asset(
         assetPath,
         width: width,
@@ -121,7 +129,8 @@ class ClassButton extends StatelessWidget {
   final String text;
   final bool isSelected;
 
-   const ClassButton({super.key, 
+  const ClassButton({
+    super.key,
     required this.text,
     required this.isSelected,
     required this.onTap,
@@ -132,16 +141,17 @@ class ClassButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        child:AnimatedContainer(//来点动画（）
+        child: AnimatedContainer(
+          //来点动画（）
           duration: Duration(milliseconds: 200),
           curve: Curves.easeInOut,
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          
-          width:100,
-          height:35,
+
+          width: 100,
+          height: 35,
 
           decoration: BoxDecoration(
-            color: qianhui, 
+            color: qianhui,
             borderRadius: BorderRadius.circular(8),
             border: isSelected
                 ? Border.all(color: Colors.black, width: 2.0)
@@ -150,10 +160,7 @@ class ClassButton extends StatelessWidget {
 
           child: Text(
             text,
-            style: TextStyle(
-              color: Colors.black87,
-              fontSize: 12,
-            ),
+            style: TextStyle(color: Colors.black87, fontSize: 12),
           ),
         ),
       ),
@@ -173,17 +180,17 @@ class SubmitButton extends StatelessWidget {
       width: 240,
       height: 60,
       decoration: BoxDecoration(
-        color: primary2, 
-        
+        color: primary2,
+
         //边框阴影
         boxShadow: [
           BoxShadow(
-            color: primary3, 
+            color: primary3,
             blurRadius: 8, //模糊半径
             offset: Offset(0, 4), //偏移量(x, y)，向下偏移产生投影
           ),
         ],
-        
+
         borderRadius: BorderRadius.circular(30), // 大圆角
       ),
 
@@ -212,7 +219,7 @@ class SubmitButton extends StatelessWidget {
                       blurRadius: 3.0,
                       color: Colors.grey,
                       offset: Offset(0, 2), // 文字阴影偏移
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -232,7 +239,7 @@ class PickImage extends StatefulWidget {
   State<PickImage> createState() => _PickImageState();
 }
 
-class _PickImageState extends State<PickImage>{
+class _PickImageState extends State<PickImage> {
   //用于存储选择的图片文件
   final List<File> _images = [];
 
@@ -240,34 +247,37 @@ class _PickImageState extends State<PickImage>{
   final ImagePicker _picker = ImagePicker();
 
   //选择图片方法
-  Future<void> _pickImage() async{
+  Future<void> _pickImage() async {
     //如果图片数量已经达到九张，直接提示并返回
     if (_images.length >= 9) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('最多只能上传 9 张图片')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('最多只能上传 9 张图片')));
       return;
     }
 
     //弹出底部选择菜单，从相册选择或者拍照
     showModalBottomSheet(
-      context: context, 
+      context: context,
       builder: (BuildContext context) {
         return SafeArea(
-          
           child: Wrap(
             children: [
               ListTile(
-                leading:Icon(Icons.photo_library),
+                leading: Icon(Icons.photo_library),
                 title: const Text('从相册选择'),
 
                 onTap: () async {
                   Navigator.pop(context); // 关闭菜单
                   final List<XFile> images = await _picker.pickMultiImage();
-                  if (images != null && images.isNotEmpty) {//存在并且包含内容
+                  if (images != null && images.isNotEmpty) {
+                    //存在并且包含内容
                     // 仅添加不超过上限9的图片
                     final int available = 9 - _images.length;
-                    final List<File> toAdd = images.take(available).map((xFile) => File(xFile.path)).toList();
+                    final List<File> toAdd = images
+                        .take(available)
+                        .map((xFile) => File(xFile.path))
+                        .toList();
                     if (toAdd.isNotEmpty) {
                       setState(() {
                         _images.addAll(toAdd);
@@ -277,12 +287,14 @@ class _PickImageState extends State<PickImage>{
                 },
               ),
               ListTile(
-                leading:Icon(Icons.photo_camera), 
+                leading: Icon(Icons.photo_camera),
                 title: const Text('拍照'),
-                
+
                 onTap: () async {
                   Navigator.pop(context); // 关闭菜单
-                  final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+                  final XFile? image = await _picker.pickImage(
+                    source: ImageSource.camera,
+                  );
                   if (image != null && _images.length < 9) {
                     setState(() {
                       _images.add(File(image.path));
@@ -306,8 +318,9 @@ class _PickImageState extends State<PickImage>{
 
   //有图片显示缩略图，没满九张有加号
   @override
-  Widget build(BuildContext context){
-    return Wrap(//使用wrap包裹图片，自动换行
+  Widget build(BuildContext context) {
+    return Wrap(
+      //使用wrap包裹图片，自动换行
       spacing: 10,
       runSpacing: 10,
       children: [
@@ -341,7 +354,7 @@ class _PickImageState extends State<PickImage>{
                     child: Icon(Icons.close, size: 12, color: Colors.white),
                   ),
                 ),
-              )
+              ),
             ],
           );
         }),
@@ -361,7 +374,7 @@ class _PickImageState extends State<PickImage>{
               child: Icon(Icons.add_a_photo, size: 30, color: Colors.black),
             ),
           ),
-        ],
+      ],
     );
   }
 }
@@ -376,23 +389,25 @@ class PickSingleImage extends StatefulWidget {
   State<PickSingleImage> createState() => _PickSingleImageState();
 }
 
-class _PickSingleImageState extends State<PickSingleImage>{
+class _PickSingleImageState extends State<PickSingleImage> {
   File? _image;
   final ImagePicker _picker = ImagePicker();
 
-  Future<void> _pickImage() async{
+  Future<void> _pickImage() async {
     showModalBottomSheet(
-      context: context, 
+      context: context,
       builder: (BuildContext context) {
         return SafeArea(
           child: Wrap(
             children: [
               ListTile(
-                leading:Icon(Icons.photo_library),
+                leading: Icon(Icons.photo_library),
                 title: const Text('从相册选择'),
                 onTap: () async {
                   Navigator.pop(context);
-                  final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+                  final XFile? image = await _picker.pickImage(
+                    source: ImageSource.gallery,
+                  );
                   if (image != null) {
                     setState(() {
                       _image = File(image.path);
@@ -402,11 +417,13 @@ class _PickSingleImageState extends State<PickSingleImage>{
                 },
               ),
               ListTile(
-                leading:Icon(Icons.photo_camera), 
+                leading: Icon(Icons.photo_camera),
                 title: const Text('拍照'),
                 onTap: () async {
                   Navigator.pop(context);
-                  final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+                  final XFile? image = await _picker.pickImage(
+                    source: ImageSource.camera,
+                  );
                   if (image != null) {
                     setState(() {
                       _image = File(image.path);
@@ -423,7 +440,7 @@ class _PickSingleImageState extends State<PickSingleImage>{
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _pickImage,
       child: Container(
@@ -432,10 +449,14 @@ class _PickSingleImageState extends State<PickSingleImage>{
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: qianhui,
-          image: _image != null ? DecorationImage(image: FileImage(_image!), fit: BoxFit.cover) : null,
+          image: _image != null
+              ? DecorationImage(image: FileImage(_image!), fit: BoxFit.cover)
+              : null,
         ),
         alignment: Alignment.center,
-        child: _image == null ? Icon(Icons.add_a_photo, size: 30, color: Colors.black) : null,
+        child: _image == null
+            ? Icon(Icons.add_a_photo, size: 30, color: Colors.black)
+            : null,
       ),
     );
   }

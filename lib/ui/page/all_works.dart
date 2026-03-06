@@ -18,7 +18,10 @@ class _MyWorksState extends State<MyWorks> {
       'avatarUrl': 'https://via.placeholder.com/48',
       'nickname': '叮咚鸡',
       'description': '一看就会的九种万能摄影构图公式！',
-      'imageUrls': List.generate(9, (index) => 'https://via.placeholder.com/100'),
+      'imageUrls': List.generate(
+        9,
+        (index) => 'https://via.placeholder.com/100',
+      ),
       'likes': 1111,
       'comments': 2222,
     },
@@ -26,7 +29,10 @@ class _MyWorksState extends State<MyWorks> {
       'avatarUrl': 'https://via.placeholder.com/48',
       'nickname': '叮咚鸡',
       'description': '今年涨幅最多的光影街拍合集（附拍摄技巧）',
-      'imageUrls': List.generate(9, (index) => 'https://via.placeholder.com/100'),
+      'imageUrls': List.generate(
+        9,
+        (index) => 'https://via.placeholder.com/100',
+      ),
       'likes': 1111,
       'comments': 2222,
     },
@@ -34,7 +40,10 @@ class _MyWorksState extends State<MyWorks> {
       'avatarUrl': 'https://via.placeholder.com/48',
       'nickname': '叮咚鸡',
       'description': '原来这就是摄影眼！如何发现角落里的美',
-      'imageUrls': List.generate(3, (index) => 'https://via.placeholder.com/100'),
+      'imageUrls': List.generate(
+        3,
+        (index) => 'https://via.placeholder.com/100',
+      ),
       'likes': 1111,
       'comments': 2222,
     },
@@ -46,8 +55,13 @@ class _MyWorksState extends State<MyWorks> {
       body: Stack(
         children: [
           Background(imagePath: 'lib/material/background2.png'),
-          
-          Positioned(top: 30, left: 23, right: 23, child: UpEdge(title: '摄影实践圈')),
+
+          Positioned(
+            top: 40,
+            left: 23,
+            right: 23,
+            child: UpEdge(title: '摄影实践圈'),
+          ),
 
           Padding(
             padding: const EdgeInsets.only(top: 100, left: 20, right: 20),

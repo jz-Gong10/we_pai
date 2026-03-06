@@ -272,7 +272,7 @@ class ApiService {
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = response.data;
         if (responseData['code'] == 200) {
-          return WorkResponse.fromJson(responseData['data']);
+          return WorkResponse.fromJson(responseData);
         } else {
           throw Exception('获取作品列表失败: ${responseData['msg']}');
         }

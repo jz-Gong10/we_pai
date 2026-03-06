@@ -67,7 +67,7 @@ class _WodeState extends State<Wode> {
           Background(imagePath: 'lib/material/background2.png'),
 
           Positioned(
-            top: 30,
+            top: 40,
             left: 23,
             right: 23,
             child: UpEdge(title: '个人主页'),

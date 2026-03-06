@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:we_pai/module/order_model.dart';
 import 'package:we_pai/module/recieve_sheyinghsiliebiao.dart';
 import 'package:we_pai/module/sys_model.dart';
 import '../module/recieve_zishenxinxi.dart';
@@ -92,6 +93,25 @@ class ApiService {
         }
       } else {
         throw Exception('获取用户预约订单列表失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  //我的约拍客单
+  Future<OrderResponse> getMyOrders(int pageNum, int pageSize) async {
+    try {
+      Response response = await _dio.get(
+        '/order/my-orders',
+        queryParameters: {'pageNum': pageNum, 'pageSize': pageSize},
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        return OrderResponse.fromJson(responseData);
+      } else {
+        throw Exception('获取订单列表失败: ${response.statusCode}');
       }
     } on DioException catch (e) {
       throw _handleDioError(e);

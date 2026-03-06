@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:we_pai/service/api_service.dart';
+import 'package:we_pai/module/order_model.dart';
 import 'package:we_pai/ui/themes/colors.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/up_edge.dart';
@@ -20,6 +21,7 @@ class _WodeState extends State<Wode> {
   String name = '暂无昵称';
   String casId = '000000';
   String avatarUrl = '';
+  List<Order> _orders = [];
 
   // 展开/收起状态
   bool _isReservationExpanded = false; // 预约单展开状态
@@ -38,15 +40,18 @@ class _WodeState extends State<Wode> {
     try {
       // 并发请求示例
       var userInfo = await _apiService.getUserInfo();
+      var orderResponse = await _apiService.getMyOrders(1, 10);
 
       // 打印获取的数据，用于调试
       print('User Info: ${userInfo.toString()}');
+      print('Orders: ${orderResponse.data?.list?.length ?? 0}');
 
       setState(() {
         // 确保所有字段都是非空字符串
         name = (userInfo.nickname ?? userInfo.name ?? '暂无昵称').toString();
         casId = (userInfo.casId ?? '000000').toString();
         avatarUrl = (userInfo.avatarUrl ?? '').toString();
+        _orders = orderResponse.data?.list ?? [];
       });
     } catch (e) {
       setState(() {
@@ -243,12 +248,14 @@ class _WodeState extends State<Wode> {
                                 child: Column(
                                   children: [
                                     // 客单项目
-                                    _buildOrderItem('毕业季帮拍，需自带设备。', '对接中'),
-                                    Divider(height: 1, color: primary3),
-                                    _buildOrderItem('毕业季帮拍，需自带设备。', '已完成'),
-                                    Divider(height: 1, color: primary3),
-                                    _buildOrderItem('毕业季帮拍，需自带设备。', '已完成'),
-                                    Divider(height: 1, color: primary3),
+                                    ..._orders.map((order) {
+                                      return Column(
+                                        children: [
+                                          _buildOrderItem(order),
+                                          Divider(height: 1, color: primary3),
+                                        ],
+                                      );
+                                    }).toList(),
                                   ],
                                 ),
                               ),
@@ -361,7 +368,25 @@ class _WodeState extends State<Wode> {
   }
 
   // 客单
-  Widget _buildOrderItem(String description, String status) {
+  Widget _buildOrderItem(Order order) {
+    String statusText = '';
+    switch (order.status) {
+      case 0:
+        statusText = '待接单';
+        break;
+      case 1:
+        statusText = '对接中';
+        break;
+      case 2:
+        statusText = '已完成';
+        break;
+      case 3:
+        statusText = '已取消';
+        break;
+      default:
+        statusText = '未知状态';
+    }
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(vertical: 10),
@@ -369,12 +394,15 @@ class _WodeState extends State<Wode> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 第一行：预算在右上角
-          Row(mainAxisAlignment: MainAxisAlignment.end, children: [Text('预算')]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [Text('预算: ${order.price ?? 0}元')],
+          ),
           SizedBox(height: 8),
 
           Row(
             children: [
-              // 头像展示的小方框（这里先做成了默认头像）
+              // 头像展示的小方框
               Container(
                 width: 30,
                 height: 30,
@@ -382,16 +410,34 @@ class _WodeState extends State<Wode> {
                   color: qianhui,
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: Icon(Icons.person, size: 20, color: Colors.grey),
+                child:
+                    order.targetAvatar != null && order.targetAvatar!.isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: Image.network(
+                          order.targetAvatar!,
+                          fit: BoxFit.cover,
+                          width: 30,
+                          height: 30,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(
+                              Icons.person,
+                              size: 20,
+                              color: Colors.grey,
+                            );
+                          },
+                        ),
+                      )
+                    : Icon(Icons.person, size: 20, color: Colors.grey),
               ),
               SizedBox(width: 8),
-              Text('叮咚鸡'),
+              Text(order.targetName ?? '未知用户'),
             ],
           ),
 
           // 描述
           SizedBox(height: 8),
-          Text(description),
+          Text('${order.type ?? ''} - ${order.remark ?? '无备注'}'),
           SizedBox(height: 10),
 
           // 状态按钮
@@ -404,7 +450,7 @@ class _WodeState extends State<Wode> {
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.grey[200],
                 ),
-                child: Text(status),
+                child: Text(statusText),
               ),
             ],
           ),

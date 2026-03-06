@@ -103,7 +103,7 @@ class ApiService {
   Future<OrderResponse> getMyOrders(int pageNum, int pageSize) async {
     try {
       Response response = await _dio.get(
-        '/order/my-orders',
+        '/order/list',
         queryParameters: {'pageNum': pageNum, 'pageSize': pageSize},
       );
 

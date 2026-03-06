@@ -226,7 +226,10 @@ class SubmitButton extends StatelessWidget {
 
 //图片选择器（最多九张）
 class PickImage extends StatefulWidget {
-  const PickImage({super.key});
+  final List<File>? images;
+  final Function(List<File>)? onImagesChanged;
+
+  const PickImage({super.key, this.images, this.onImagesChanged});
 
   @override
   State<PickImage> createState() => _PickImageState();
@@ -234,10 +237,26 @@ class PickImage extends StatefulWidget {
 
 class _PickImageState extends State<PickImage>{
   //用于存储选择的图片文件
-  final List<File> _images = [];
+  late List<File> _images;
 
   //图片选择器
   final ImagePicker _picker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+    _images = widget.images ?? [];
+  }
+
+  @override
+  void didUpdateWidget(PickImage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.images != null && widget.images != oldWidget.images) {
+      setState(() {
+        _images = widget.images!;
+      });
+    }
+  }
 
   //选择图片方法
   Future<void> _pickImage() async{
@@ -272,6 +291,9 @@ class _PickImageState extends State<PickImage>{
                       setState(() {
                         _images.addAll(toAdd);
                       });
+                      if (widget.onImagesChanged != null) {
+                        widget.onImagesChanged!(_images);
+                      }
                     }
                   }
                 },
@@ -287,6 +309,9 @@ class _PickImageState extends State<PickImage>{
                     setState(() {
                       _images.add(File(image.path));
                     });
+                    if (widget.onImagesChanged != null) {
+                      widget.onImagesChanged!(_images);
+                    }
                   }
                 },
               ),
@@ -302,6 +327,9 @@ class _PickImageState extends State<PickImage>{
     setState(() {
       _images.removeAt(index);
     });
+    if (widget.onImagesChanged != null) {
+      widget.onImagesChanged!(_images);
+    }
   }
 
   //有图片显示缩略图，没满九张有加号

@@ -116,6 +116,21 @@ class Http {
     );
   }
 
+  /// DELETE请求
+  Future<Response<T>> delete<T>({
+    required String path,
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
+    return await _dio.delete<T>(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+    );
+  }
+
   //设置token
   void setToken(String token) {
     Http._token = token;

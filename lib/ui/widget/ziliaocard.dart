@@ -4,6 +4,7 @@ import 'package:we_pai/ui/themes/colors.dart';
 import 'package:we_pai/ui/widget/button.dart';
 import 'package:we_pai/service/api_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:we_pai/ui/page/wode.dart';
 
 //这里先写个带横线的文本输入框
 class lineInput extends StatelessWidget {
@@ -116,9 +117,12 @@ class _ZiliaocardState extends State<Ziliaocard> {
       //收集输入信息
       Map<String, dynamic> profileData = {
         'nickname': _nicknameController.text,
-        'gender': _genderController.text,
-        'contactInfo': _contactController.text,
+        'sex': _genderController.text == '男' ? 1 : 0,
+        'phone': _contactController.text,
       };
+
+      //打印输入内容，用于调试
+      print('提交的资料: $profileData');
 
       //发送网络请求
       await ApiService().updateUserProfile(profileData);
@@ -128,6 +132,12 @@ class _ZiliaocardState extends State<Ziliaocard> {
         msg: '资料更新成功',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
+      );
+
+      //导航回个人主页
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Wode()),
       );
     } catch (e) {
       //显示错误提示
@@ -158,8 +168,8 @@ class _Ziliaocard1State extends State<Ziliaocard1> {
   final TextEditingController _introController = TextEditingController();
   final TextEditingController _equipController = TextEditingController();
   final TextEditingController _styleController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _noticeController = TextEditingController();
+  // final TextEditingController _priceController = TextEditingController();
+  // final TextEditingController _noticeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -232,12 +242,12 @@ class _Ziliaocard1State extends State<Ziliaocard1> {
               lineInput(controller: _styleController, labelText: '请输入你擅长的风格'),
               Divider(color: primary3, height: 30, thickness: 1),
 
-              //价格输入框
-              lineInput(controller: _priceController, labelText: '请输入你的价目表'),
-              Divider(color: primary3, height: 30, thickness: 1),
+              // //价格输入框
+              // lineInput(controller: _priceController, labelText: '请输入你的价目表'),
+              // Divider(color: primary3, height: 30, thickness: 1),
 
-              //约拍须知输入框
-              lineInput(controller: _noticeController, labelText: '请输入你的约拍须知'),
+              // //约拍须知输入框
+              // lineInput(controller: _noticeController, labelText: '请输入你的约拍须知'),
 
               //提交按钮
               SizedBox(height: 30),
@@ -255,14 +265,24 @@ class _Ziliaocard1State extends State<Ziliaocard1> {
       //收集输入信息
       Map<String, dynamic> profileData = {
         'nickname': _nicknameController.text,
-        'gender': _genderController.text,
-        'contactInfo': _contactController.text,
-        'introduction': _introController.text,
-        'equipment': _equipController.text,
-        'style': _styleController.text,
-        'price': _priceController.text,
-        'notice': _noticeController.text,
+        'sex': _genderController.text == '男' ? 1 : 0,
+        'phone': _contactController.text,
+        'detail': _introController.text,
+        'photographer': {
+          'style': _styleController.text
+              .split(',')
+              .map((s) => s.trim())
+              .toList(),
+          'equipment': _equipController.text
+              .split(',')
+              .map((s) => s.trim())
+              .toList(),
+          'type': [], // 可以根据需要添加类型输入
+        },
       };
+
+      //打印输入内容，用于调试
+      print('提交的资料: $profileData');
 
       //发送网络请求
       await ApiService().updateUserProfile(profileData);
@@ -272,6 +292,12 @@ class _Ziliaocard1State extends State<Ziliaocard1> {
         msg: '资料更新成功',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
+      );
+
+      //导航回个人主页
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Wode()),
       );
     } catch (e) {
       //显示错误提示

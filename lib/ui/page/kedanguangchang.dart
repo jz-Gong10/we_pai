@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/search.dart';
 import 'package:we_pai/service/api_service.dart';
-import 'package:we_pai/ui/widget/show_youzhizuopin.dart';
+import 'package:we_pai/ui/widget/show_anoucement.dart';
 import 'package:we_pai/module/recieve_kedan.dart';
 import 'package:we_pai/ui/themes/colors.dart';
 import 'package:we_pai/ui/page/my_yyd.dart';
@@ -23,7 +23,6 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
   @override
   void initState() {
     super.initState();
-    _fetchAnnouncement();
     _loadTasks();
   }
 
@@ -123,21 +122,6 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
     }
   }
 
-  Future<void> _fetchAnnouncement() async {
-    try {
-      List<String> announcementsR = await apiService.getAnnouncements();
-      setState(() {
-        if (announcementsR.isNotEmpty) {
-          announcement = announcementsR;
-        }
-      });
-    } catch (e) {
-      setState(() {
-        announcement = ['获取公告失败'];
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -186,7 +170,7 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
                         // 公告列表
                         Container(
                           width: announcementWidth,
-                          child: ShowYouzhizuopin(imageURL: announcement[0]),
+                          child: ShowAnouncement(),
                         ),
                         const SizedBox(width: 10),
                         // 我的预约单按钮

@@ -4,7 +4,7 @@ import 'package:we_pai/module/recieve_sheyingshijiedan.dart';
 import 'package:we_pai/ui/themes/colors.dart';
 import 'package:we_pai/ui/widget/button.dart';
 import 'package:we_pai/ui/widget/search.dart';
-import 'package:we_pai/ui/widget/show_youzhizuopin.dart';
+import 'package:we_pai/ui/widget/show_anoucement.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/module/recieve_sheyingshijiedan.dart';
 import 'package:we_pai/service/api_service.dart';
@@ -136,7 +136,7 @@ class _ArrayState extends State<Array> {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-                  const ShowYouzhizuopin(imageURL: ''), //这里在widget里面再完善一下
+                  const ShowAnouncement(), //这里在widget里面再完善一下
                   const SizedBox(height: 30),
                   _buildRankingToggle(),
                   const SizedBox(height: 40),

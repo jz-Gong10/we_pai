@@ -95,3 +95,19 @@ class ApiDetail {
     }
   }
 }
+
+//删除草稿的接口调用方法
+class ApiDelete {
+  static Future<DraftResponse> deleteDraft(int orderId) async {
+    final response = await Http().delete(
+      path: '/order/draft/delete/$orderId',
+    );
+
+    if (response.statusCode == 200) {
+      final dynamic body = response.data is String ? json.decode(response.data) : response.data;
+      return DraftResponse.fromJson(body);
+    } else {
+      throw Exception('接口请求失败：${response.statusCode}');
+    }
+  }
+}

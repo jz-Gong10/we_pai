@@ -239,7 +239,7 @@ class ApiService {
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = response.data;
         if (responseData['code'] == 200) {
-          return responseData['data'];
+          return responseData['data'] ?? {};
         } else {
           throw Exception('更新资料失败: ${responseData['msg']}');
         }
@@ -437,6 +437,33 @@ class ApiService {
         }
       } else {
         throw Exception('评价失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // 提交问题反馈
+  Future<Map<String, dynamic>> submitFeedback(
+    String content,
+    String contact,
+    String image,
+  ) async {
+    try {
+      Response response = await _dio.post(
+        '/user/feedback',
+        data: {'content': content, 'contact': contact, 'image': image},
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['code'] == 200) {
+          return responseData['data'] ?? {};
+        } else {
+          throw Exception('提交反馈失败: ${responseData['msg']}');
+        }
+      } else {
+        throw Exception('提交反馈失败: ${response.statusCode}');
       }
     } on DioException catch (e) {
       throw _handleDioError(e);

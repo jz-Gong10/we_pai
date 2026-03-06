@@ -39,23 +39,17 @@ class UserInfo {
       agreement: json['agreement'] ?? false,
       avatarUrl: json['avatarUrl'],
       sex: json['sex'],
-      equipment: json['equipment'] != null
-          ? List<String>.from(json['equipment'])
-          : [],
+      equipment: List<String>.from(json['equipment'] ?? []),
       casId: json['casId'],
       phone: json['phone'],
       name: json['name'],
       nickname: json['nickname'],
       completedOrders: json['completedOrders'],
-      style: json['style'] != null
-          ? List<String>.from(json['style'])
-          : [],
+      style: List<String>.from(json['style'] ?? []),
       detail: json['detail'],
       totalLikes: json['totalLikes'],
       totalOrders: json['totalOrders'],
-      photographerType: json['photographerType'] != null
-          ? List<String>.from(json['photographerType'])
-          : [],
+      photographerType: List<String>.from(json['photographerType'] ?? []),
     );
   }
 
@@ -81,6 +75,6 @@ class UserInfo {
 
   @override
   String toString() {
-    return 'UserInfo{role: $role, agreement: $agreement, avatarUrl: $avatarUrl, sex: $sex, equipment: $equipment, casId: $casId, phone: $phone, name: $name, nickname: $nickname, completedOrders: $completedOrders, style: $style, detail: $detail, totalLikes: $totalLikes, totalOrders: $totalOrders, photographerType: $photographerType}';
+    return 'UserInfo{role: $role, avatarUrl: $avatarUrl, sex: $sex, equipment: $equipment, casId: $casId, phone: $phone, name: $name, nickname: $nickname, completedOrders: $completedOrders, style: $style, detail: $detail, totalLikes: $totalLikes, totalOrders: $totalOrders, photographerType: $photographerType, agreement: $agreement}';
   }
 }

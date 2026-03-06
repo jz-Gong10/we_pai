@@ -3,7 +3,6 @@ import 'package:we_pai/module/recieve_sheyinghsiliebiao.dart';
 import 'package:we_pai/module/sys_model.dart';
 import '../module/recieve_zishenxinxi.dart';
 import '../module/announcement_model.dart';
-import 'dio_service.dart';
 import 'package:we_pai/service/dio_service.dart';
 import 'package:we_pai/api/api_config.dart';
 import 'package:we_pai/net/http.dart';

@@ -1,31 +1,35 @@
 class SYSList {
-  String avatarUrl;
-  String casId;
-  String nickname;
-  List<String> style;
-  int orderCount;
-  List<String> type;
-  List<String> equipment;
+  String? avatarUrl;
+  String? casId;
+  String? nickname;
+  List<String>? style;
+  int? orderCount;
+  List<String>? type;
+  List<String>? equipment;
 
   SYSList({
-    required this.avatarUrl,
-    required this.casId,
-    required this.nickname,
-    required this.style,
-    required this.orderCount,
-    required this.type,
-    required this.equipment,
+    this.avatarUrl,
+    this.casId,
+    this.nickname,
+    this.style,
+    this.orderCount,
+    this.type,
+    this.equipment,
   });
 
   factory SYSList.fromJson(Map<String, dynamic> json) {
     return SYSList(
-      avatarUrl: json['avatar_url'],
-      casId: json['cas_id'],
-      nickname: json['nickname'],
-      orderCount: json['order_count'],
-      equipment: List<String>.from(json['equipment'] ?? []),
-      style: List<String>.from(json['style'] ?? []),
-      type: List<String>.from(json['type'] ?? []),
+      avatarUrl: json['avatar_url']?.toString(),
+      casId: json['cas_id']?.toString(),
+      nickname: json['nickname']?.toString(),
+      orderCount: json['order_count'] is int
+          ? json['order_count']
+          : int.tryParse(json['order_count']?.toString() ?? '0'),
+      equipment: json['equipment'] != null
+          ? List<String>.from(json['equipment'])
+          : [],
+      style: json['style'] != null ? List<String>.from(json['style']) : [],
+      type: json['type'] != null ? List<String>.from(json['type']) : [],
     );
   }
 

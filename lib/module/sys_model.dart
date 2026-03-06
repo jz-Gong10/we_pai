@@ -1,17 +1,21 @@
 import 'package:we_pai/module/recieve_sheyinghsiliebiao.dart';
 
 class SysModel {
-  int total;
+  int? total;
   List<SYSList> phoList;
 
-  SysModel({required this.total, required this.phoList});
+  SysModel({this.total, required this.phoList});
 
   factory SysModel.fromJson(Map<String, dynamic> json) {
     return SysModel(
-      total: json['total'],
-      phoList: List<SYSList>.from(
-        json['list'].map((item) => SYSList.fromJson(item)),
-      ),
+      total: json['total'] is int
+          ? json['total']
+          : int.tryParse(json['total']?.toString() ?? '0'),
+      phoList: json['list'] != null
+          ? List<SYSList>.from(
+              json['list'].map((item) => SYSList.fromJson(item)),
+            )
+          : [],
     );
   }
 

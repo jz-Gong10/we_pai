@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:we_pai/service/api_service.dart';
+import 'package:we_pai/module/announcement_model.dart';
 import 'dart:async';
 
 class ShowYouzhizuopin extends StatefulWidget {
@@ -11,7 +12,7 @@ class ShowYouzhizuopin extends StatefulWidget {
 
 class _ShowYouzhizuopinState extends State<ShowYouzhizuopin> {
   final ApiService apiService = ApiService();
-  List<String> announcement = [];
+  List<Announcement> announcement = [];
   bool _isLoading = false;
   String? _error;
 
@@ -28,14 +29,14 @@ class _ShowYouzhizuopinState extends State<ShowYouzhizuopin> {
       _isLoading = true;
     });
     try {
-      List<String> announcementsR = await apiService.getAnnouncements();
+      List<Announcement> announcementsR = await apiService.getAnnouncements();
       setState(() {
         announcement = announcementsR;
         _isLoading = false;
       });
     } catch (e) {
       setState(() {
-        announcement = ['获取公告失败: $e'];
+        _error = '获取公告失败: $e';
         _isLoading = false;
       });
     }
@@ -57,7 +58,9 @@ class _ShowYouzhizuopinState extends State<ShowYouzhizuopin> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(
-                    announcement[index],
+                    announcement[index].title +
+                        '\n' +
+                        announcement[index].content,
                     style: TextStyle(color: Colors.white),
                   ),
                 );

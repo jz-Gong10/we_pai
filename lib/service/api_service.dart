@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:we_pai/module/recieve_sheyinghsiliebiao.dart';
 import 'package:we_pai/module/sys_model.dart';
 import '../module/recieve_zishenxinxi.dart';
+import '../module/announcement_model.dart';
 import 'dio_service.dart';
 import 'package:we_pai/service/dio_service.dart';
 import 'package:we_pai/api/api_config.dart';
@@ -99,14 +100,15 @@ class ApiService {
   }
 
   //获取公告
-  Future<List<String>> getAnnouncements() async {
+  Future<List<Announcement>> getAnnouncements() async {
     try {
       Response response = await _dio.get('/user/announcements');
 
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = response.data;
         if (responseData['code'] == 200) {
-          return List<String>.from(responseData['data']);
+          List<dynamic> data = responseData['data'];
+          return data.map((item) => Announcement.fromJson(item)).toList();
         } else {
           throw Exception('获取公告失败: ${responseData['msg']}');
         }

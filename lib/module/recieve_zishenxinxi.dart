@@ -1,36 +1,36 @@
 class UserInfo {
-  int role;
-  String avatarUrl;
-  int sex;
-  List<String> equipment;
-  String casId;
-  String phone;
-  String name;
-  String nickname;
-  int completedOrders;
-  List<String> style;
-  String detail;
-  int totalLikes;
-  int totalOrders;
-  List<String> photographerType;
-  bool agreement;
+  int? role;
+  String? avatarUrl;
+  int? sex;
+  List<String>? equipment;
+  String? casId;
+  String? phone;
+  String? name;
+  String? nickname;
+  int? completedOrders;
+  List<String>? style;
+  String? detail;
+  int? totalLikes;
+  int? totalOrders;
+  List<String>? photographerType;
+  bool? agreement;
 
   UserInfo({
-    required this.role,
-    required this.avatarUrl,
-    required this.sex,
-    required this.equipment,
-    required this.casId,
-    required this.phone,
-    required this.name,
-    required this.nickname,
-    required this.completedOrders,
-    required this.style,
-    required this.detail,
-    required this.totalLikes,
-    required this.totalOrders,
-    required this.photographerType,
-    required this.agreement,
+    this.role,
+    this.avatarUrl,
+    this.sex,
+    this.equipment,
+    this.casId,
+    this.phone,
+    this.name,
+    this.nickname,
+    this.completedOrders,
+    this.style,
+    this.detail,
+    this.totalLikes,
+    this.totalOrders,
+    this.photographerType,
+    this.agreement,
   });
 
   factory UserInfo.fromJson(Map<String, dynamic> json) {
@@ -38,17 +38,21 @@ class UserInfo {
       role: json['role'],
       avatarUrl: json['avatarUrl'],
       sex: json['sex'],
-      equipment: List<String>.from(json['equipment']),
+      equipment: json['equipment'] != null
+          ? List<String>.from(json['equipment'])
+          : null,
       casId: json['casId'],
       phone: json['phone'],
       name: json['name'],
       nickname: json['nickname'],
       completedOrders: json['completedOrders'],
-      style: List<String>.from(json['style']),
+      style: json['style'] != null ? List<String>.from(json['style']) : null,
       detail: json['detail'],
       totalLikes: json['totalLikes'],
       totalOrders: json['totalOrders'],
-      photographerType: List<String>.from(json['photographerType']),
+      photographerType: json['photographerType'] != null
+          ? List<String>.from(json['photographerType'])
+          : null,
       agreement: json['agreement'],
     );
   }

@@ -43,10 +43,10 @@ class _WodeState extends State<Wode> {
       print('User Info: ${userInfo.toString()}');
 
       setState(() {
-        name = userInfo.nickname ?? userInfo.name;
-        name = name ?? '暂无昵称';
-        casId = userInfo.casId ?? '000000';
-        avatarUrl = userInfo.avatarUrl ?? '';
+        // 确保所有字段都是非空字符串
+        name = (userInfo.nickname ?? userInfo.name ?? '暂无昵称').toString();
+        casId = (userInfo.casId ?? '000000').toString();
+        avatarUrl = (userInfo.avatarUrl ?? '').toString();
       });
     } catch (e) {
       setState(() {

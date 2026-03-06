@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:we_pai/ui/themes/colors.dart';
 import 'package:we_pai/service/api_service.dart';
+import 'package:we_pai/ui/page/comments.dart';
 
 class Work extends StatefulWidget {
   final int postId;
@@ -97,51 +98,39 @@ class _WorkState extends State<Work> {
     }
   }
 
-  // 评论
+  // 查看评论
   Future<void> _handleComment() async {
-    final TextEditingController commentController = TextEditingController();
-    final result = await showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(//通过弹窗的形式评论，没另外做页面了
-        title: const Text('发表评论'),
-        content: TextField(
-          controller: commentController,
-          decoration: const InputDecoration(
-            hintText: '请输入评论内容',
-          ),
-          maxLines: 3,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('取消'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(commentController.text),
-            child: const Text('发送'),
-          ),
-        ],
-      ),
-    );
-
-    if (result != null && result.isNotEmpty) {
-      try {
-        await _apiService.commentPost(widget.postId, result);
-        setState(() {
-          _currentComments++;
-        });
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('评论成功')),
+    try {
+      // 获取评论列表
+      final commentResponse = await _apiService.getComments(widget.postId);
+      if (commentResponse.code == 200) {
+        // 转换评论数据类型
+        final comments = commentResponse.data.list.map((item) {
+          return CommentItem(
+            avatarUrl: item.avatarUrl,
+            nickname: item.nickname,
+            content: item.content,
+            createdAt: item.createdAt,
           );
-        }
-      } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('评论失败: $e')),
-          );
-        }
+        }).toList();
+        // 跳转到评论页面
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Comments(
+              comments: comments,
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('获取评论失败: ${commentResponse.msg}')),
+        );
       }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('获取评论失败: $e')),
+      );
     }
   }
 
@@ -293,19 +282,22 @@ class _WorkState extends State<Work> {
               ),
               Row(
                 children: [
-                  GestureDetector(//评论
-                    onTap: _handleComment,//评论逻辑，写在上面
-                    child: const SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: Icon(
-                        Icons.comment_outlined,
-                        size: 20,
+                  ElevatedButton.icon(
+                    onPressed: _handleComment,//评论逻辑，写在上面
+                    icon: const Icon(
+                      Icons.comment_outlined,
+                      size: 20,
+                    ),
+                    label: Text('$_currentComments'),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
                       ),
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                      side: BorderSide(color: borderColor, width: 1),
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  Text('$_currentComments'),
                 ],
               ),
               if (widget.type != 'all' && widget.type != 'sb')//只有自己可以删除

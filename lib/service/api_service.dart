@@ -8,6 +8,7 @@ import 'package:we_pai/api/api_config.dart';
 import 'package:we_pai/net/http.dart';
 import 'package:flutter/material.dart';
 import '../model/work_model.dart';
+import '../model/announcement_model.dart';
 import '../module/recieve_sheyingshijiedan.dart';
 import '../module/recieve_kedan.dart';
 import '../module/recieve_sheyingshipingfen.dart';
@@ -99,14 +100,15 @@ class ApiService {
   }
 
   //获取公告
-  Future<List<String>> getAnnouncements() async {
+  Future<List<AnnouncementItem>> getAnnouncements() async {
     try {
       Response response = await _dio.get('/user/announcements');
 
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = response.data;
         if (responseData['code'] == 200) {
-          return List<String>.from(responseData['data']);
+          final announcementResponse = AnnouncementResponse.fromJson(responseData);
+          return announcementResponse.data;
         } else {
           throw Exception('获取公告失败: ${responseData['msg']}');
         }

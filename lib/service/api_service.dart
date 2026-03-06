@@ -56,11 +56,11 @@ class ApiService {
   }
 
   // 获取摄影师列表
-  Future<List<SYSList>> getPhotographers() async {
+  Future<List<SYSList>> getPhotographers({String keyword = ''}) async {
     try {
       Response response = await _dio.get(
         '/photographer/list',
-        queryParameters: {'pageNum': '1', 'pageSize': '10', 'keyword': ''},
+        queryParameters: {'pageNum': '1', 'pageSize': '10', 'keyword': keyword},
       );
 
       if (response.statusCode == 200) {

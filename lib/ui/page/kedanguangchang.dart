@@ -20,6 +20,7 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
   @override
   void initState() {
     super.initState();
+    _kedan();
   }
 
   Future<void> _kedan() async {
@@ -113,10 +114,11 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
                                 (order) => Column(
                                   children: [
                                     _buildTaskCard(
-                                      category: order.type,
+                                      category: order.type ?? '未知类型',
                                       salary:
-                                          '${order.price}r/${order.duration}',
-                                      needEquipment: order.needEquipment,
+                                          '${order.price ?? 0}r/${order.duration ?? '未知'}',
+                                      needEquipment:
+                                          order.needEquipment ?? false,
                                     ),
                                     const SizedBox(height: 16),
                                   ],
@@ -132,9 +134,9 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
   }
 
   Widget _buildTaskCard({
-    required String category,
+    required String? category,
     required String salary,
-    required bool needEquipment,
+    required bool? needEquipment,
   }) {
     return Card(
       elevation: 4,
@@ -167,7 +169,7 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
             ),
             const SizedBox(height: 16),
             Text(
-              '分类: $category',
+              '分类: ${category ?? '未知类型'}',
               style: const TextStyle(color: Colors.orange, fontSize: 16),
             ),
             Text(
@@ -175,7 +177,7 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
               style: const TextStyle(color: Colors.orange, fontSize: 16),
             ),
             Text(
-              '是否需要专业设备: ${needEquipment ? '是' : '否'}',
+              '是否需要专业设备: ${needEquipment ?? false ? '是' : '否'}',
               style: const TextStyle(color: Colors.orange, fontSize: 16),
             ),
             const SizedBox(height: 16),

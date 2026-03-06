@@ -13,7 +13,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   final ApiService _apiService = ApiService();
 
-  List<String> hotSuggestions = ['清新', '风景', '人像', '毕业照', '复古', '花开富贵'];
+  List<String> hotSuggestions = ['清新', '风景', '人像', '毕业照', '复古', '花开富贵', '析阳'];
   List<String> searchHistory = [];
   List<SYSList> searchResults = [];
   bool isSearching = false;

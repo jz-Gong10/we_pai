@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
           //We拍图片
           Positioned(
-            top: 150,
+            top: 250,
             left: 30,
             right: 30,
             child: Container(
@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
           //登录按钮
           Positioned(
-            top: 550,
+            top: 730,
             left: MediaQuery.of(context).size.width / 2 - 132,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(

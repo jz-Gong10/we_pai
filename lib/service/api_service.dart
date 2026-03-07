@@ -13,6 +13,7 @@ import '../model/announcement_model.dart';
 import '../module/recieve_sheyingshijiedan.dart';
 import '../module/recieve_kedan.dart';
 import '../module/recieve_sheyingshipingfen.dart';
+import '../module/user_detail_model.dart';
 
 class ApiService {
   final Dio _dio = DioService().dio;
@@ -50,6 +51,25 @@ class ApiService {
         }
       } else {
         throw Exception('获取用户失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  // 获取用户详情信息
+  Future<UserDetailResponse> getUserDetail(String casId) async {
+    try {
+      Response response = await _dio.get(
+        '/user/detail',
+        queryParameters: {'casId': casId},
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        return UserDetailResponse.fromJson(responseData);
+      } else {
+        throw Exception('获取用户详情失败: ${response.statusCode}');
       }
     } on DioException catch (e) {
       throw _handleDioError(e);

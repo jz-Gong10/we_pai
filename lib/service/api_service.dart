@@ -60,7 +60,7 @@ class ApiService {
   Future<UserDetailResponse> getUserDetail(String casId) async {
     try {
       Response response = await _dio.get(
-        '/user/detail',
+        '/user/info/$casId',
         queryParameters: {'casId': casId},
       );
 

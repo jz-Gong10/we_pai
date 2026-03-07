@@ -1,6 +1,7 @@
 //摄影师排行榜
 import 'package:flutter/material.dart';
 import 'package:we_pai/module/recieve_sheyingshijiedan.dart';
+import 'package:we_pai/ui/page/clientdetail.dart';
 import 'package:we_pai/ui/themes/colors.dart';
 import 'package:we_pai/ui/widget/button.dart';
 import 'package:we_pai/ui/widget/search.dart';
@@ -104,14 +105,20 @@ class _ArrayState extends State<Array> {
     }
   }
 
+  // 导航方法
+  void navigate(Widget page) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+  }
+
   // 可以切换是按评分还是按接单量排序
   List<dynamic> get _sortedPhotographers {
     if (_isRatingRanking) {
-      return List.from(photographers2)
-        ..sort((a, b) => b.avgScore.compareTo(a.avgScore)); // 使用avgScore排序
+      return List.from(photographers2)..sort(
+        (a, b) => (b.avgScore ?? 0).compareTo(a.avgScore ?? 0),
+      ); // 使用avgScore排序
     } else {
       return List.from(photographers)
-        ..sort((a, b) => b.orderCount.compareTo(a.orderCount));
+        ..sort((a, b) => (b.orderCount ?? 0).compareTo(a.orderCount ?? 0));
     }
   }
 
@@ -363,7 +370,7 @@ class _ArrayState extends State<Array> {
               right: 12,
               child: GestureDetector(
                 onTap: () {
-                  //跳转逻辑（还没写）
+                  navigate(Clientdetail(casId: photographer.casId));
                 },
                 child: Text(
                   'TA的主页',

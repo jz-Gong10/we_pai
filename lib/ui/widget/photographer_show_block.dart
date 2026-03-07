@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:we_pai/ui/page/clientdetail.dart';
 
 class SYSShowBlock extends StatefulWidget {
   final String? nickname;
@@ -28,95 +27,83 @@ class SYSShowBlock extends StatefulWidget {
 class _SYSShowBlockState extends State<SYSShowBlock> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (widget.casId != null && widget.casId!.isNotEmpty) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Clientdetail(casId: widget.casId!),
-            ),
-          );
-        }
-      },
-      child: Container(
-        margin: EdgeInsets.only(bottom: 20),
-        width: 350,
-        height: 274,
-        padding: EdgeInsets.all(16), // 添加内边距
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xffE0E9F1), Color(0xffEAEBD8)],
+    return Container(
+      margin: EdgeInsets.only(bottom: 20),
+      width: 350,
+      height: 274,
+      padding: EdgeInsets.all(16), // 添加内边距
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xffE0E9F1), Color(0xffEAEBD8)],
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              // 头像
+              Container(
+                width: 40,
+                height: 40,
+                margin: EdgeInsets.all(11),
+                child: (widget.avatarUrl?.isNotEmpty ?? false)
+                    ? Image.network(
+                        widget.avatarUrl!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          // 图片加载失败时显示默认头像
+                          return Icon(
+                            Icons.person,
+                            size: 24,
+                            color: Colors.grey,
+                          );
+                        },
+                      )
+                    : Icon(
+                        Icons.person,
+                        size: 24,
+                        color: Colors.grey,
+                      ), // 无URL时显示默认头像
+              ),
+
+              // 昵称和ID
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.nickname ?? '未知用户',
+                    style: TextStyle(
+                      fontSize: 16, // 稍微调小字号
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    widget.casId ?? '000000',
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ],
+              ),
+
+              Spacer(), // 添加弹性空间
+              // 接单量
+              Text('${widget.orderCount ?? 0}\n接单量'),
+            ],
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                // 头像
-                Container(
-                  width: 40,
-                  height: 40,
-                  margin: EdgeInsets.all(11),
-                  child: (widget.avatarUrl?.isNotEmpty ?? false)
-                      ? Image.network(
-                          widget.avatarUrl!,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            // 图片加载失败时显示默认头像
-                            return Icon(
-                              Icons.person,
-                              size: 24,
-                              color: Colors.grey,
-                            );
-                          },
-                        )
-                      : Icon(
-                          Icons.person,
-                          size: 24,
-                          color: Colors.grey,
-                        ), // 无URL时显示默认头像
-                ),
 
-                // 昵称和ID
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.nickname ?? '未知用户',
-                      style: TextStyle(
-                        fontSize: 16, // 稍微调小字号
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      widget.casId ?? '000000',
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
-                  ],
-                ),
+          SizedBox(height: 16), // 添加间距
 
-                Spacer(), // 添加弹性空间
-                // 接单量
-                Text('${widget.orderCount ?? 0}\n接单量'),
-              ],
-            ),
+          Text('设备：${widget.equipment?.join(', ') ?? '无'}'),
 
-            SizedBox(height: 16), // 添加间距
+          Text('风格：${widget.style?.join(', ') ?? '无'}'),
 
-            Text('设备：${widget.equipment?.join(', ') ?? '无'}'),
+          SizedBox(height: 8),
 
-            Text('风格：${widget.style?.join(', ') ?? '无'}'),
-
-            SizedBox(height: 8),
-
-            Text('类型：${widget.type?.join(', ') ?? '无'}'),
-          ],
-        ),
+          Text('类型：${widget.type?.join(', ') ?? '无'}'),
+        ],
       ),
     );
   }

@@ -54,7 +54,7 @@ class CustomButton extends StatelessWidget {
 //编辑按钮
 class EditButton extends CustomButton {
   EditButton({required super.onPressed})
-    : super(text: '编辑', width: 70, height: 30, fontSize: 18);
+    : super(text: '编辑', width: 100, height: 40, fontSize: 14);
 }
 
 //无边框，“提交”和“保存草稿”的模板

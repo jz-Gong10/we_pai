@@ -29,9 +29,9 @@ class _FabiaozuopinState extends State<Fabiaozuopin> {
   // 发布帖子
   Future<void> _publishPost() async {
     if (_contentController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('请输入内容')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('请输入内容')));
       return;
     }
 
@@ -49,24 +49,32 @@ class _FabiaozuopinState extends State<Fabiaozuopin> {
 
       // 添加图片文件
       for (int i = 0; i < _selectedImages.length; i++) {
-        formData.files.add(MapEntry(
-          'images[$i]',
-          await MultipartFile.fromFile(_selectedImages[i].path, filename: 'image$i.jpg'),
-        ));
+        formData.files.add(
+          MapEntry(
+            'images[$i]',
+            await MultipartFile.fromFile(
+              _selectedImages[i].path,
+              filename: 'image$i.jpg',
+            ),
+          ),
+        );
       }
 
       // 调用API
       final response = await Http().post(
         path: '/square/publish',
         data: formData,
+        options: Options(contentType: 'multipart/form-data'),
       );
 
       if (response.statusCode == 200) {
-        final responseData = response.data is String ? json.decode(response.data) : response.data;
+        final responseData = response.data is String
+            ? json.decode(response.data)
+            : response.data;
         if (responseData['code'] == 200) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('发布成功')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('发布成功')));
           // 清空输入和图片
           _contentController.clear();
           setState(() {
@@ -78,15 +86,15 @@ class _FabiaozuopinState extends State<Fabiaozuopin> {
           );
         }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('发布失败，请稍后重试')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('发布失败，请稍后重试')));
       }
     } catch (e) {
       print('发布失败: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('网络错误，请稍后重试')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('网络错误，请稍后重试')));
     } finally {
       setState(() {
         _isPublishing = false;
@@ -97,21 +105,15 @@ class _FabiaozuopinState extends State<Fabiaozuopin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-      ),
+      appBar: AppBar(automaticallyImplyLeading: false),
 
       body: Stack(
         children: [
           Background(imagePath: 'lib/material/background2.png'),
 
           // 返回按钮
-          Positioned(
-            top: 20,
-            left: 9,
-            child: AppBackButton(),
-          ),
-          
+          Positioned(top: 20, left: 9, child: AppBackButton()),
+
           //发表按钮
           Positioned(
             top: 15,
@@ -121,21 +123,25 @@ class _FabiaozuopinState extends State<Fabiaozuopin> {
               height: 30,
               fontSize: 10,
               text: _isPublishing ? '发布中...' : '发表',
-              onPressed: _isPublishing ? () {} : () { _publishPost(); },
+              onPressed: _isPublishing
+                  ? () {}
+                  : () {
+                      _publishPost();
+                    },
             ),
           ),
-          
+
           //粉色框框
           Positioned(
             top: 60,
-            left:20,
+            left: 20,
             child: PostInput(
               controller: _contentController,
               onImagesSelected: _handleImagesSelected,
               initialImages: _selectedImages,
             ),
           ),
-          ],
+        ],
       ),
     );
   }
@@ -161,7 +167,8 @@ class PostInput extends StatefulWidget {
 
 class _PostInputState extends State<PostInput> {
   final TextEditingController _internalController = TextEditingController();
-  TextEditingController get _controller => widget.controller ?? _internalController;
+  TextEditingController get _controller =>
+      widget.controller ?? _internalController;
   List<File> _images = [];
 
   @override
@@ -201,7 +208,7 @@ class _PostInputState extends State<PostInput> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,//长度包裹子组件
+        mainAxisSize: MainAxisSize.min, //长度包裹子组件
         children: [
           TextField(
             controller: _controller,
@@ -220,10 +227,7 @@ class _PostInputState extends State<PostInput> {
             onChanged: widget.onChanged,
           ),
           SizedBox(height: 16),
-          PickImage(
-            images: _images,
-            onImagesChanged: _updateImages,
-          ),
+          PickImage(images: _images, onImagesChanged: _updateImages),
         ],
       ),
     );

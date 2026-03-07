@@ -21,7 +21,7 @@ class ApiService {
   // 获得自身信息
   Future<UserInfo> getUserInfo() async {
     try {
-      Response response = await _dio.get('/user/getProfile');//获取自身信息
+      Response response = await _dio.get('/user/getProfile'); //获取自身信息
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = response.data;
         if (responseData['code'] == 200) {
@@ -60,10 +60,14 @@ class ApiService {
   // 获取用户详情信息
   Future<UserDetailResponse> getUserDetail(String casId) async {
     try {
+      print('开始获取用户详情，casId: $casId');
       Response response = await _dio.get(
         '/user/info/$casId',
         queryParameters: {'casId': casId},
       );
+
+      print('获取用户详情响应状态码: ${response.statusCode}');
+      print('获取用户详情响应数据: ${response.data}');
 
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = response.data;
@@ -72,7 +76,14 @@ class ApiService {
         throw Exception('获取用户详情失败: ${response.statusCode}');
       }
     } on DioException catch (e) {
+      print('获取用户详情 Dio 异常: $e');
+      print('异常类型: ${e.type}');
+      print('异常消息: ${e.message}');
+      print('异常响应: ${e.response}');
       throw _handleDioError(e);
+    } catch (e) {
+      print('获取用户详情其他异常: $e');
+      throw Exception('获取用户详情失败: $e');
     }
   }
 
@@ -147,7 +158,9 @@ class ApiService {
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = response.data;
         if (responseData['code'] == 200) {
-          final announcementResponse = AnnouncementResponse.fromJson(responseData);
+          final announcementResponse = AnnouncementResponse.fromJson(
+            responseData,
+          );
           return announcementResponse.data;
         } else {
           throw Exception('获取公告失败: ${responseData['msg']}');
@@ -327,10 +340,10 @@ class ApiService {
   // 获取所有作品列表
   Future<WorkResponse> getAllWorks(int pageNum, int pageSize) async {
     try {
-      Response response = await _dio.get('/square/posts', queryParameters: {
-        'pageNum': pageNum,
-        'pageSize': pageSize,
-      });
+      Response response = await _dio.get(
+        '/square/posts',
+        queryParameters: {'pageNum': pageNum, 'pageSize': pageSize},
+      );
 
       if (response.statusCode == 200) {
         return WorkResponse.fromJson(response.data);
@@ -369,10 +382,10 @@ class ApiService {
   // 评论
   Future<void> commentPost(int postId, String content) async {
     try {
-      Response response = await _dio.post('/square/comment', data: {
-        'postId': postId,
-        'content': content,
-      });
+      Response response = await _dio.post(
+        '/square/comment',
+        data: {'postId': postId, 'content': content},
+      );
       if (response.statusCode != 200) {
         throw Exception('评论失败: ${response.statusCode}');
       }
@@ -424,12 +437,15 @@ class ApiService {
   }
 
   // 获取待接任务列表（客单广场）
-  Future<List<Map<String, dynamic>>> getTaskList({int pageNum = 1, int pageSize = 10}) async {
+  Future<List<Map<String, dynamic>>> getTaskList({
+    int pageNum = 1,
+    int pageSize = 10,
+  }) async {
     try {
-      Response response = await _dio.get('/order/lobby', queryParameters: {
-        'pageNum': pageNum,
-        'pageSize': pageSize,
-      });
+      Response response = await _dio.get(
+        '/order/lobby',
+        queryParameters: {'pageNum': pageNum, 'pageSize': pageSize},
+      );
 
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = response.data;
@@ -462,13 +478,16 @@ class ApiService {
     String? content,
   }) async {
     try {
-      Response response = await _dio.post('/order/rate', data: {
-        'orderId': orderId,
-        'photoScore': photoScore,
-        'timeScore': timeScore,
-        'commScore': commScore,
-        'content': content ?? '',
-      });
+      Response response = await _dio.post(
+        '/order/rate',
+        data: {
+          'orderId': orderId,
+          'photoScore': photoScore,
+          'timeScore': timeScore,
+          'commScore': commScore,
+          'content': content ?? '',
+        },
+      );
 
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = response.data;

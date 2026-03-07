@@ -272,8 +272,8 @@ class _ArrayState extends State<Array> {
 
     return Center(
       child: Container(
-        width: 250,
-        height: 80,
+        width: 350,
+        height: 120,
         decoration: BoxDecoration(
           color: primary2,
           borderRadius: BorderRadius.circular(10),

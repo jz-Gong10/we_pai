@@ -61,8 +61,8 @@ class _NewdraftState extends State<Newdraft> {
     final m = d.month.toString().padLeft(2, '0');
     final day = d.day.toString().padLeft(2, '0');
     final h = d.hour.toString().padLeft(2, '0');
-    final min = d.minute.toString().padLeft(2, '0'); 
-     return '$y-$m-$day $h:$min:00'; 
+    final min = d.minute.toString().padLeft(2, '0');
+    return '$y-$m-$day $h:$min:00';
   }
 
   //提交实现逻辑
@@ -82,9 +82,15 @@ class _NewdraftState extends State<Newdraft> {
 
     try {
       await ApiPost.createOrder(payload);
-      await SuccessPostWidget.show(context, text: '提交成功', duration: const Duration(seconds: 2));
+      await SuccessPostWidget.show(
+        context,
+        text: '提交成功',
+        duration: const Duration(seconds: 2),
+      );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('提交失败：$e')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('提交失败：$e')));
     }
   }
 
@@ -106,9 +112,15 @@ class _NewdraftState extends State<Newdraft> {
 
     try {
       await ApiSave.saveOrder(payload);
-      await SuccessSaveDraftWidget.show(context, text: '保存草稿成功', duration: const Duration(seconds: 2));
+      await SuccessSaveDraftWidget.show(
+        context,
+        text: '保存草稿成功',
+        duration: const Duration(seconds: 2),
+      );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('保存草稿失败：$e')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('保存草稿失败：$e')));
     }
   }
 
@@ -126,82 +138,86 @@ class _NewdraftState extends State<Newdraft> {
           Padding(
             padding: const EdgeInsets.only(right: 30),
             child: IconButton(
-              icon: widget.draft != null 
-                ? const Icon(Icons.delete, color: Colors.black) 
-                : const Icon(Icons.drafts_outlined, color: Colors.black),
-              onPressed: widget.draft != null 
-                ? () async {
-                    // 显示删除确认对话框
-                    final confirm = await showDialog<bool>(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('确认删除'),
-                        content: const Text('确定要删除这个草稿吗？'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(false),
-                            child: const Text('取消'),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(true),
-                            child: const Text('确认'),
-                          ),
-                        ],
-                      ),
-                    );
-                    
-                    if (confirm == true && widget.draft?.orderId != null) {
-                      try {
-                        // 调用删除接口
-                        final response = await ApiDelete.deleteDraft(widget.draft!.orderId!);
-                        if (response.code == 200) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('删除成功')),
+              icon: const Icon(Icons.delete, color: Colors.black),
+              onPressed: widget.draft != null
+                  ? () async {
+                      // 显示删除确认对话框
+                      final confirm = await showDialog<bool>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('确认删除'),
+                          content: const Text('确定要删除这个草稿吗？'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: const Text('取消'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(true),
+                              child: const Text('确认'),
+                            ),
+                          ],
+                        ),
+                      );
+
+                      if (confirm == true && widget.draft?.orderId != null) {
+                        try {
+                          // 调用删除接口
+                          final response = await ApiDelete.deleteDraft(
+                            widget.draft!.orderId!,
                           );
-                          // 返回草稿列表页面
-                          Navigator.push(
+                          if (response.code == 200) {
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(SnackBar(content: Text('删除成功')));
+                            // 返回草稿列表页面
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const DisplayDrafts(),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('删除失败: ${response.msg}')),
+                            );
+                          }
+                        } catch (e) {
+                          ScaffoldMessenger.of(
                             context,
-                            MaterialPageRoute(builder: (context) => const DisplayDrafts()),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('删除失败: ${response.msg}')),
-                          );
+                          ).showSnackBar(SnackBar(content: Text('删除失败: $e')));
                         }
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('删除失败: $e')),
-                        );
                       }
                     }
-                  }
-                : () {
-                    // 显示放弃草稿确认对话框
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('放弃草稿'),
-                        content: const Text('确定要放弃当前草稿吗？'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('取消'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              // 跳转到草稿列表页面
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const DisplayDrafts()),
-                              );
-                            },
-                            child: const Text('确认'),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                  : () {
+                      // 显示放弃草稿确认对话框
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('放弃草稿'),
+                          content: const Text('确定要放弃当前草稿吗？'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text('取消'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                // 跳转到草稿列表页面
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const DisplayDrafts(),
+                                  ),
+                                );
+                              },
+                              child: const Text('确认'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
             ),
           ),
         ],
@@ -210,29 +226,46 @@ class _NewdraftState extends State<Newdraft> {
       body: Stack(
         children: [
           Background(imagePath: 'lib/material/background2.png'),
-          
+
           //草稿编辑项
           ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              StartTimePicker(initialDate: _shootTime, onChanged: (d) => setState(() => _shootTime = d)),
-              DurationInputWidget(onChanged: (v) => setState(() => _duration = v)),
-              LocationInputWidget(onChanged: (v) => setState(() => _location = v)),
-              PeopleInputWidget(onChanged: (v) {
-                final n = int.tryParse(v) ?? 1;
-                setState(() => _subjectCount = n);
-              }),
-              RewardInputWidget(onChanged: (v) {
-                final p = double.tryParse(v) ?? 0;
-                setState(() => _price = p);
-              }),
-              EquipmentInputWidget(onChanged: (b) => setState(() => _needEquipment = b)),
+              StartTimePicker(
+                initialDate: _shootTime,
+                onChanged: (d) => setState(() => _shootTime = d),
+              ),
+              DurationInputWidget(
+                onChanged: (v) => setState(() => _duration = v),
+              ),
+              LocationInputWidget(
+                onChanged: (v) => setState(() => _location = v),
+              ),
+              PeopleInputWidget(
+                onChanged: (v) {
+                  final n = int.tryParse(v) ?? 1;
+                  setState(() => _subjectCount = n);
+                },
+              ),
+              RewardInputWidget(
+                onChanged: (v) {
+                  final p = double.tryParse(v) ?? 0;
+                  setState(() => _price = p);
+                },
+              ),
+              EquipmentInputWidget(
+                onChanged: (b) => setState(() => _needEquipment = b),
+              ),
               StyleInputWidget(onChanged: (v) => setState(() => _type = v)),
-              ContactInputWidget(onChanged: (v) => setState(() => _contactInfo = v)),
-              PhotographerInputWidget(onChanged: (b) => setState(() => _wantPhotographer = b)),
+              ContactInputWidget(
+                onChanged: (v) => setState(() => _contactInfo = v),
+              ),
+              PhotographerInputWidget(
+                onChanged: (b) => setState(() => _wantPhotographer = b),
+              ),
               OtherInputWidget(onChanged: (v) => setState(() => _remark = v)),
-              SizedBox(height: 50), 
-              
+              SizedBox(height: 50),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -242,19 +275,18 @@ class _NewdraftState extends State<Newdraft> {
                       await _handleSubmit();
                     },
                   ),
-                  SizedBox(width: 50), 
+                  SizedBox(width: 50),
                   BorderLessButton(
                     text: '保存草稿',
                     onPressed: () async {
                       await _handleSaveDraft();
                     },
                   ),
-                  
                 ],
               ),
             ],
           ),
-          ],
+        ],
       ),
     );
   }

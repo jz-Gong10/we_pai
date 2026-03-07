@@ -1,6 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../api/api_config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DioService {
   static final DioService _instence = DioService._internal();
@@ -8,6 +12,7 @@ class DioService {
   DioService._internal();
 
   late Dio _dio;
+  String? _token; // 添加实例变量存储token
 
   Dio get dio {
     if (!_dioInitialized) {
@@ -52,9 +57,17 @@ class DioService {
   // 认证拦截器 - 自动添加token
   Interceptor _authInterceptor() {
     return InterceptorsWrapper(
-      onRequest: (options, handler) {
-        // 从本地存储获取token（这里简化处理）
-        String? token = _getToken();
+      onRequest: (options, handler) async {
+        // 从实例变量获取token
+        String? token = _token;
+        if (token == null) {
+          // 如果实例变量中没有token，尝试从SharedPreferences获取
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          token = prefs.getString('token');
+          if (token != null) {
+            _token = token; // 更新实例变量
+          }
+        }
         if (token != null) {
           options.headers['Authorization'] = 'Bearer $token';
         }
@@ -75,13 +88,10 @@ class DioService {
     );
   }
 
-  // 从SharedPreferences获取token
-  String? _getToken() {
-    // 实际应用中从SharedPreferences获取
-    // 这里简化处理，实际应该使用SharedPreferences
-    // 注意：由于是同步方法，这里无法直接使用SharedPreferences
-    // 但拦截器会在每次请求时调用，所以token会通过setToken方法设置
-    return null;
+  // 从SharedPreferences获取token（保留此方法以保持兼容性）
+  Future<String?> _getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
   }
 
   // 错误处理
@@ -131,6 +141,7 @@ class DioService {
 
   // 设置token（登录后调用）
   void setToken(String token) {
+    _token = token; // 更新实例变量
     if (!_dioInitialized) {
       init();
       _dioInitialized = true;
@@ -140,6 +151,7 @@ class DioService {
 
   // 清除token（退出登录时调用）
   void clearToken() {
+    _token = null; // 清除实例变量
     _dio.options.headers.remove('Authorization');
   }
 }

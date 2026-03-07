@@ -40,24 +40,33 @@ class _ClientdetailState extends State<Clientdetail> {
       _error = '';
     });
     try {
+      print('开始加载用户详情，casId: ${widget.casId}');
       var response = await _apiService.getUserDetail(widget.casId);
+      print('获取用户详情响应: ${response.code}, ${response.msg}');
       if (response.data != null) {
+        print('用户详情数据: ${response.data!.nickname}, ${response.data!.casId}');
         setState(() {
           _name = response.data!.nickname ?? '未知用户';
           _avatarUrl = response.data!.avatarUrl ?? '';
           _likes = response.data!.totalLikes ?? 0;
           _orders = response.data!.totalOrders ?? 0;
         });
+      } else {
+        print('用户详情数据为空');
+        setState(() {
+          _error = '用户详情数据为空';
+        });
       }
     } catch (e) {
+      print('加载用户详情失败: $e');
       setState(() {
         _error = '加载用户详情失败: $e';
       });
-      print('加载用户详情失败: $e');
     } finally {
       setState(() {
         _isLoading = false;
       });
+      print('加载用户详情完成');
     }
   }
 
@@ -92,7 +101,7 @@ class _ClientdetailState extends State<Clientdetail> {
           Background(imagePath: 'lib/material/background2.png'),
 
           Positioned(
-            top: 20,
+            top: 40,
             left: 23,
             right: 23,
             child: UpEdge(title: '用户详情页'),

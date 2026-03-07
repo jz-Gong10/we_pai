@@ -12,15 +12,12 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   final ApiService _apiService = ApiService();
-  final SearchController _searchController = SearchController();
 
   List<String> hotSuggestions = ['清新', '风景', '人像', '毕业照', '复古', '花开富贵', '析阳'];
   List<String> searchHistory = [];
   List<SYSList> searchResults = [];
   bool isSearching = false;
   String? searchKeyword;
-
-  static const Color searchBarColor = Color.fromARGB(255, 201, 201, 201);
 
   @override
   void initState() {
@@ -29,12 +26,6 @@ class _SearchState extends State<Search> {
     _initSearchHistory();
     // 初始化搜索推荐词
     _initSearchRecommendations();
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
   }
 
   // 初始化搜索推荐词
@@ -106,51 +97,34 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return SizedBox(
-          width: constraints.maxWidth,
-          child: SearchAnchor(
-            searchController: _searchController,
-            viewBackgroundColor: searchBarColor,
-            viewConstraints: BoxConstraints(
-              maxWidth: constraints.maxWidth,
-            ),
-            viewLeading: IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                // 点击搜索按钮执行搜索逻辑
-                if (_searchController.text.isNotEmpty) {
-                  _performSearch(_searchController.text);
+    return SizedBox(
+      child: SearchAnchor(
+        builder: (BuildContext context, SearchController controller) {
+          return SizedBox(
+            width: 355,
+            height: 40,
+            child: SearchBar(
+              controller: controller,
+              leading: const Icon(Icons.search),
+              backgroundColor: WidgetStateProperty.all(
+                const Color.fromARGB(200, 201, 201, 201),
+              ),
+              onTap: () {
+                controller.openView();
+              },
+              onChanged: (value) {
+                if (!controller.isOpen) {
+                  controller.openView();
                 }
               },
+              onSubmitted: (value) {
+                _performSearch(value);
+              },
             ),
-            viewOnSubmitted: (value) {
-              _performSearch(value);
-            },
-            builder: (BuildContext context, SearchController controller) {
-              return SearchBar(
-                controller: controller,
-                padding: const WidgetStatePropertyAll<EdgeInsets>(
-                  EdgeInsets.symmetric(horizontal: 16.0),
-                ),
-                onTap: () {
-                  controller.openView();
-                },
-                onChanged: (_) {
-                  controller.openView();
-                },
-                onSubmitted: (value) {
-                  _performSearch(value);
-                },
-                leading: const Icon(Icons.search),
-                backgroundColor: const WidgetStatePropertyAll<Color>(
-                  searchBarColor,
-                ),
-              );
-            },
-            suggestionsBuilder:
-                (BuildContext context, SearchController controller) {
+          );
+        },
+        suggestionsBuilder:
+            (BuildContext context, SearchController controller) {
               // 如果正在搜索，显示加载状态
               if (isSearching) {
                 return [
@@ -274,9 +248,7 @@ class _SearchState extends State<Search> {
                 ),
               ];
             },
-          ),
-        );
-      },
+      ),
     );
   }
 }

@@ -15,7 +15,7 @@ class Work extends StatefulWidget {
   final bool isLiked;
   final String type; // 'all' or 'my' or 'sb'
   //all,sb没有删除，my有删除
-  final Gradient? gradient;// lhGradient或者pinkGradient
+  final Gradient? gradient; // lhGradient或者pinkGradient
   final VoidCallback? onRefresh;
 
   const Work({
@@ -53,6 +53,7 @@ class _WorkState extends State<Work> {
 
   // 查看大图
   void _viewImage(BuildContext context, String imageUrl) {
+    if (imageUrl.isEmpty) return;
     showDialog(
       context: context,
       builder: (context) {
@@ -65,6 +66,11 @@ class _WorkState extends State<Work> {
               child: Image.network(
                 imageUrl,
                 fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  return Center(
+                    child: Icon(Icons.image_not_supported, color: Colors.white),
+                  );
+                },
               ),
             ),
           ),
@@ -76,7 +82,8 @@ class _WorkState extends State<Work> {
   // 点赞/取消点赞
   Future<void> _handleLike() async {
     try {
-      if (_isLiked) {//?
+      if (_isLiked) {
+        //?
         await _apiService.unlikePost(widget.postId);
         setState(() {
           _isLiked = false;
@@ -91,9 +98,9 @@ class _WorkState extends State<Work> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('操作失败: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('操作失败: $e')));
       }
     }
   }
@@ -113,13 +120,12 @@ class _WorkState extends State<Work> {
             createdAt: item.createdAt,
           );
         }).toList();
-        // 跳转到评论页面
+        // 跳转到评论页面，传递 postId
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Comments(
-              comments: comments,
-            ),
+            builder: (context) =>
+                Comments(comments: comments, postId: widget.postId),
           ),
         );
       } else {
@@ -128,9 +134,9 @@ class _WorkState extends State<Work> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('获取评论失败: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('获取评论失败: $e')));
     }
   }
 
@@ -158,16 +164,16 @@ class _WorkState extends State<Work> {
       try {
         await _apiService.deletePost(widget.postId);
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('删除成功')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('删除成功')));
         }
         widget.onRefresh?.call();
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('删除失败: $e')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('删除失败: $e')));
         }
       }
     }
@@ -197,16 +203,23 @@ class _WorkState extends State<Work> {
           // 头像和昵称
           Row(
             children: [
-              Container(//头像
+              Container(
+                //头像
                 width: avatarSize,
                 height: avatarSize,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
-                  image: DecorationImage(
-                    image: NetworkImage(widget.avatarUrl),
-                    fit: BoxFit.cover,
-                  ),
+                  color: Colors.grey[200],
+                  image: widget.avatarUrl.isNotEmpty
+                      ? DecorationImage(
+                          image: NetworkImage(widget.avatarUrl),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
                 ),
+                child: widget.avatarUrl.isEmpty
+                    ? Icon(Icons.person, color: Colors.grey)
+                    : null,
               ),
               const SizedBox(width: 12),
               Text(
@@ -222,9 +235,7 @@ class _WorkState extends State<Work> {
           const SizedBox(height: 8),
           Text(
             widget.description,
-            style: const TextStyle(
-              fontSize: 14,
-            ),
+            style: const TextStyle(fontSize: 14),
             softWrap: true,
             overflow: TextOverflow.visible,
           ),
@@ -241,18 +252,26 @@ class _WorkState extends State<Work> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
+              final imageUrl = widget.imageUrls[index];
               return GestureDetector(
-                onTap: () => _viewImage(context, widget.imageUrls[index]),
+                onTap: () =>
+                    imageUrl.isNotEmpty ? _viewImage(context, imageUrl) : null,
                 child: Container(
                   width: imageSize,
                   height: imageSize,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    image: DecorationImage(
-                      image: NetworkImage(widget.imageUrls[index]),
-                      fit: BoxFit.cover,
-                    ),
+                    color: Colors.grey[200],
+                    image: imageUrl.isNotEmpty
+                        ? DecorationImage(
+                            image: NetworkImage(imageUrl),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
                   ),
+                  child: imageUrl.isEmpty
+                      ? Icon(Icons.image_not_supported, color: Colors.grey)
+                      : null,
                 ),
               );
             },
@@ -264,8 +283,9 @@ class _WorkState extends State<Work> {
             children: [
               Row(
                 children: [
-                  GestureDetector(//点赞
-                    onTap: _handleLike,//点赞逻辑，写在上面
+                  GestureDetector(
+                    //点赞
+                    onTap: _handleLike, //点赞逻辑，写在上面
                     child: SizedBox(
                       width: 24,
                       height: 24,
@@ -283,11 +303,8 @@ class _WorkState extends State<Work> {
               Row(
                 children: [
                   ElevatedButton.icon(
-                    onPressed: _handleComment,//评论逻辑，写在上面
-                    icon: const Icon(
-                      Icons.comment_outlined,
-                      size: 20,
-                    ),
+                    onPressed: _handleComment, //评论逻辑，写在上面
+                    icon: const Icon(Icons.comment_outlined, size: 20),
                     label: Text('$_currentComments'),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -300,16 +317,14 @@ class _WorkState extends State<Work> {
                   ),
                 ],
               ),
-              if (widget.type != 'all' && widget.type != 'sb')//只有自己可以删除
-                GestureDetector(//删除
-                  onTap: _handleDelete,//删除逻辑，写在上面
+              if (widget.type != 'all' && widget.type != 'sb') //只有自己可以删除
+                GestureDetector(
+                  //删除
+                  onTap: _handleDelete, //删除逻辑，写在上面
                   child: const SizedBox(
                     width: 24,
                     height: 24,
-                    child: Icon(
-                      Icons.delete_outline,
-                      size: 20,
-                    ),
+                    child: Icon(Icons.delete_outline, size: 20),
                   ),
                 ),
             ],

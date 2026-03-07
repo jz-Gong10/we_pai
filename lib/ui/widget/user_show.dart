@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:we_pai/ui/page/wanshanziliao.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/themes/colors.dart';
+import 'package:we_pai/module/recieve_zishenxinxi.dart';
+import 'package:we_pai/module/recieve_zishenxinxi.dart';
+import 'package:we_pai/module/recieve_zishenxinxi.dart';
+import 'package:we_pai/module/recieve_zishenxinxi.dart';
+import 'package:we_pai/module/recieve_zishenxinxi.dart';
+import 'package:we_pai/module/recieve_zishenxinxi.dart';
 
 class UserShow extends StatefulWidget {
   final String name;
   final String casId;
   final String? avatarUrl;
   final bool change;
+  final UserInfo? userInfo;
 
   const UserShow({
     super.key,
@@ -15,6 +22,7 @@ class UserShow extends StatefulWidget {
     required this.casId,
     this.avatarUrl,
     required this.change,
+    this.userInfo,
   });
 
   @override
@@ -91,7 +99,10 @@ class _UserShowState extends State<UserShow> {
                             onPressed: () {
                               navigate(
                                 context,
-                                Wanshanziliao(userType: 'photographer'),
+                                Wanshanziliao(
+                                  userType: 'photographer',
+                                  userInfo: widget.userInfo,
+                                ),
                               );
                             },
                             icon: Icon(Icons.edit),

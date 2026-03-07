@@ -7,6 +7,7 @@ import 'package:we_pai/ui/widget/up_edge.dart';
 import 'package:we_pai/ui/widget/user_show.dart';
 import 'package:we_pai/ui/page/my_works.dart';
 import 'package:we_pai/ui/page/judge.dart';
+import 'package:we_pai/module/recieve_zishenxinxi.dart';
 
 class Wode extends StatefulWidget {
   const Wode({super.key});
@@ -23,6 +24,7 @@ class _WodeState extends State<Wode> {
   String avatarUrl = '';
   int role = 2; // 用户角色：1=普通用户，2=摄影师
   List<Order> _orders = [];
+  UserInfo? _userInfo; // 存储用户信息
 
   // 展开/收起状态
   bool _isReservationExpanded = false; // 预约单展开状态
@@ -53,6 +55,7 @@ class _WodeState extends State<Wode> {
         casId = (userInfo.casId ?? '000000').toString();
         avatarUrl = (userInfo.avatarUrl ?? '').toString();
         _orders = orderResponse.data?.list ?? [];
+        _userInfo = userInfo; // 存储用户信息
       });
     } catch (e) {
       setState(() {
@@ -110,6 +113,7 @@ class _WodeState extends State<Wode> {
                               name: name,
                               casId: casId,
                               avatarUrl: avatarUrl,
+                              userInfo: _userInfo,
                             ),
                             SizedBox(height: 20),
                           ],
@@ -217,7 +221,8 @@ class _WodeState extends State<Wode> {
                                 vertical: 15,
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     '我的约拍客单（客单管理）',
@@ -349,7 +354,10 @@ class _WodeState extends State<Wode> {
                         );
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 3,
+                        ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.grey[200],

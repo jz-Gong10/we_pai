@@ -11,13 +11,18 @@ class Fankui extends StatelessWidget {
       body: Stack(
         children: [
           Background(imagePath: 'lib/material/background2.png'),
-          
-          Positioned(top: 30, left: 23, right: 23, child: UpEdge(title: '意见反馈')),
 
-           Align(
-            alignment: Alignment.center, 
+          Positioned(
+            top: 50,
+            left: 23,
+            right: 23,
+            child: UpEdge(title: '意见反馈'),
+          ),
+
+          Align(
+            alignment: Alignment.center,
             child: Padding(
-              padding: EdgeInsets.only(top: 45,left:20), 
+              padding: EdgeInsets.only(top: 45, left: 20),
               child: Smile(),
             ),
           ),
@@ -27,7 +32,7 @@ class Fankui extends StatelessWidget {
   }
 }
 
-class Smile extends StatelessWidget{
+class Smile extends StatelessWidget {
   const Smile({super.key});
 
   @override
@@ -42,7 +47,6 @@ class Smile extends StatelessWidget{
           fit: BoxFit.cover,
         ),
       ),
-      
     );
   }
 }

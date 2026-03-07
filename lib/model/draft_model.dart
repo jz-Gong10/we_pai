@@ -64,16 +64,19 @@ class DraftResponse {
   final dynamic data;
   final String msg;
 
-  DraftResponse({
-    required this.code,
-    required this.data,
-    required this.msg,
-  });
+  DraftResponse({required this.code, required this.data, required this.msg});
 
   factory DraftResponse.fromJson(Map<String, dynamic> json) {
     return DraftResponse(
       code: json['code'],
-      data: json['data'] is List ? DraftData.fromJson(json['data']) : DraftModel.fromJson(json['data']),
+      data:
+          json['data'] != null &&
+              json['data'] is Map &&
+              json['data'].containsKey('list')
+          ? DraftData.fromJson(json['data'])
+          : json['data'] != null && json['data'] is Map
+          ? DraftModel.fromJson(json['data'])
+          : null,
       msg: json['msg'],
     );
   }
@@ -96,5 +99,3 @@ class DraftData {
     );
   }
 }
-
-  

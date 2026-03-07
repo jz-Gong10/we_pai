@@ -6,7 +6,7 @@ import 'package:we_pai/ui/widget/zhuye_low_edge.dart';
 import 'package:we_pai/ui/widget/up_edge.dart';
 import 'package:we_pai/ui/widget/post.dart';
 import 'package:we_pai/service/api_service.dart';
-import 'package:we_pai/model/work_model.dart';//作品数据模型
+import 'package:we_pai/model/work_model.dart'; //作品数据模型
 
 class WorkDisplay extends StatefulWidget {
   const WorkDisplay({super.key});
@@ -39,9 +39,25 @@ class _WorkDisplayState extends State<WorkDisplay> {
       final response = await _apiService.getAllWorks(1, 10);
       //使用apiservice调用getAllWorks接口获取作品列表
       setState(() {
+        // 过滤掉无效数据
+        _works = response.data.list.where((work) {
+          // 确保有图片和必要的字段
+          return work.images != null &&
+              work.images.isNotEmpty &&
+              work.createdAt != null &&
+              work.avatarUrl != null &&
+              work.nickname != null;
+        }).toList();
+
         // 按时间排序，最新的在前
-        _works = response.data.list
-          ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        _works.sort((a, b) {
+          try {
+            return b.createdAt.compareTo(a.createdAt);
+          } catch (e) {
+            return 0;
+          }
+        });
+
         // 初始化点赞状态和计数
         for (var work in _works) {
           _isLikedMap[work.postId] = false;
@@ -50,6 +66,7 @@ class _WorkDisplayState extends State<WorkDisplay> {
         _isLoading = false;
       });
     } catch (e) {
+      print('加载作品失败: $e');
       setState(() {
         _error = e.toString();
         _isLoading = false;
@@ -78,9 +95,9 @@ class _WorkDisplayState extends State<WorkDisplay> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('操作失败: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('操作失败: $e')));
       }
     }
   }
@@ -94,9 +111,7 @@ class _WorkDisplayState extends State<WorkDisplay> {
         title: const Text('发表评论'),
         content: TextField(
           controller: commentController,
-          decoration: const InputDecoration(
-            hintText: '请输入评论内容',
-          ),
+          decoration: const InputDecoration(hintText: '请输入评论内容'),
           maxLines: 3,
         ),
         actions: [
@@ -116,15 +131,15 @@ class _WorkDisplayState extends State<WorkDisplay> {
       try {
         await _apiService.commentPost(postId, result);
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('评论成功')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('评论成功')));
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('评论失败: $e')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('评论失败: $e')));
         }
       }
     }
@@ -137,31 +152,31 @@ class _WorkDisplayState extends State<WorkDisplay> {
         children: [
           Background(imagePath: 'lib/material/background2.png'),
 
-          Positioned(top: 40, left: 23, right: 23, child: UpEdge(title: ' ')),
+          Positioned(top: 50, left: 23, right: 23, child: UpEdge(title: ' ')),
 
           Positioned(
             top: 70,
             left: 20,
             right: 20,
-            bottom: 30, 
+            bottom: 30,
             child: _isLoading
                 ? Center(child: CircularProgressIndicator())
                 : _error != null
-                    ? Center(child: Text('错误: $_error'))
-                    : _works.isEmpty
-                        ? Center(child: Text('暂无作品'))
-                        : SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                ..._works.map((work) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(bottom: 20),
-                                    child: _buildWorkCard(work),
-                                  );
-                                }),
-                              ],
-                            ),
-                          ),
+                ? Center(child: Text('错误: $_error'))
+                : _works.isEmpty
+                ? Center(child: Text('暂无作品'))
+                : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ..._works.map((work) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: _buildWorkCard(work),
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
           ),
 
           //下方状态栏
@@ -182,6 +197,12 @@ class _WorkDisplayState extends State<WorkDisplay> {
   Widget _buildWorkCard(WorkItem work) {
     final isLiked = _isLikedMap[work.postId] ?? false;
     final likeCount = _likeCountMap[work.postId] ?? work.likeCount;
+    final avatarUrl = work.avatarUrl ?? 'https://via.placeholder.com/100';
+    final nickname = work.nickname ?? '未知用户';
+    final hasImage = work.images != null && work.images.isNotEmpty;
+    final firstImageUrl = hasImage
+        ? work.images[0]
+        : 'https://via.placeholder.com/240x180';
 
     return Center(
       child: Container(
@@ -206,15 +227,30 @@ class _WorkDisplayState extends State<WorkDisplay> {
                     height: 32,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: NetworkImage(work.avatarUrl),//头像
+                      color: Colors.grey[300],
+                    ),
+                    child: ClipOval(
+                      child: Image.network(
+                        avatarUrl,
                         fit: BoxFit.cover,
+                        width: 32,
+                        height: 32,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Colors.grey[300],
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.grey,
+                              size: 20,
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    work.nickname,//昵称
+                    nickname, //昵称
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14,
@@ -243,8 +279,17 @@ class _WorkDisplayState extends State<WorkDisplay> {
                   borderRadius: BorderRadius.circular(0),
                 ),
                 child: Image.network(
-                  work.images[0], //只展示第一张图片
+                  firstImageUrl, //只展示第一张图片
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Colors.grey[200],
+                      child: Icon(
+                        Icons.image_not_supported,
+                        color: Colors.grey,
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -259,11 +304,7 @@ class _WorkDisplayState extends State<WorkDisplay> {
                   // 评论按钮
                   GestureDetector(
                     onTap: () => _handleComment(work.postId),
-                    child: Icon(
-                      Icons.edit,
-                      color: Colors.black,
-                      size: 16,
-                    ),
+                    child: Icon(Icons.edit, color: Colors.black, size: 16),
                   ),
                   const SizedBox(width: 8),
                   SizedBox(
@@ -300,7 +341,9 @@ class _WorkDisplayState extends State<WorkDisplay> {
                     child: Row(
                       children: [
                         Icon(
-                          isLiked ? Icons.thumb_up : Icons.thumb_up_alt_outlined,
+                          isLiked
+                              ? Icons.thumb_up
+                              : Icons.thumb_up_alt_outlined,
                           color: isLiked ? Colors.red : Colors.black,
                           size: 16,
                         ),

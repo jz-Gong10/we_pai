@@ -6,9 +6,7 @@ import 'package:we_pai/ui/widget/button.dart';
 import 'package:we_pai/api/api_service.dart';
 import 'package:we_pai/model/draft_model.dart';
 
-
 class DisplayDrafts extends StatefulWidget {
-  
   const DisplayDrafts({super.key});
 
   @override
@@ -33,7 +31,13 @@ class _DisplayDraftsState extends State<DisplayDrafts> {
       // 调用ApiService中的方法获取草稿列表数据
       DraftResponse response = await ApiEnquiry.fetchDraftList(1, 10);
       setState(() {
-        _draftList = response.data.list; 
+        // 检查 response.data 的类型
+        if (response.data is DraftData) {
+          _draftList = response.data.list;
+        } else {
+          // 如果不是 DraftData 类型，设置为空列表
+          _draftList = [];
+        }
         _isLoading = false; // 数据加载完成，更新加载状态
       });
     } catch (e) {
@@ -48,8 +52,7 @@ class _DisplayDraftsState extends State<DisplayDrafts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      appBar:AppBar(
+      appBar: AppBar(
         automaticallyImplyLeading: false,
         // 返回按钮
         leading: Padding(
@@ -57,13 +60,13 @@ class _DisplayDraftsState extends State<DisplayDrafts> {
           child: AppBackButton(),
         ),
       ),
-      
+
       body: Stack(
         children: [
           Background(imagePath: 'lib/material/background2.png'),
 
           Positioned.fill(
-            child: _buildContent(),//搭建页面内容
+            child: _buildContent(), //搭建页面内容
           ),
         ],
       ),
@@ -84,7 +87,8 @@ class _DisplayDraftsState extends State<DisplayDrafts> {
         itemBuilder: (context, index) {
           return Displaydraft(
             //传递数据给子组件displaydraft
-              draft:_draftList[index]);
+            draft: _draftList[index],
+          );
         },
       );
     }

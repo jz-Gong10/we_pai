@@ -5,6 +5,7 @@ import 'package:we_pai/ui/widget/button.dart';
 import 'package:we_pai/service/api_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:we_pai/ui/page/wode.dart';
+import 'package:we_pai/module/recieve_zishenxinxi.dart';
 
 //这里先写个带横线的文本输入框
 class lineInput extends StatelessWidget {
@@ -29,7 +30,9 @@ class lineInput extends StatelessWidget {
 
 //这个是客户端的完善资料
 class Ziliaocard extends StatefulWidget {
-  const Ziliaocard({super.key});
+  final UserInfo? userInfo;
+
+  const Ziliaocard({super.key, this.userInfo});
 
   @override
   State<Ziliaocard> createState() => _ZiliaocardState();
@@ -42,6 +45,17 @@ class _ZiliaocardState extends State<Ziliaocard> {
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _contactController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // 初始化输入框内容
+    if (widget.userInfo != null) {
+      _nicknameController.text = widget.userInfo!.nickname ?? '';
+      _genderController.text = widget.userInfo!.sex == 1 ? '男' : '女';
+      _contactController.text = widget.userInfo!.phone ?? '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +166,9 @@ class _ZiliaocardState extends State<Ziliaocard> {
 
 //这个是摄影师端的完善资料
 class Ziliaocard1 extends StatefulWidget {
-  const Ziliaocard1({super.key});
+  final UserInfo? userInfo;
+
+  const Ziliaocard1({super.key, this.userInfo});
 
   @override
   State<Ziliaocard1> createState() => _Ziliaocard1State();
@@ -170,6 +186,20 @@ class _Ziliaocard1State extends State<Ziliaocard1> {
   final TextEditingController _styleController = TextEditingController();
   // final TextEditingController _priceController = TextEditingController();
   // final TextEditingController _noticeController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // 初始化输入框内容
+    if (widget.userInfo != null) {
+      _nicknameController.text = widget.userInfo!.nickname ?? '';
+      _genderController.text = widget.userInfo!.sex == 1 ? '男' : '女';
+      _contactController.text = widget.userInfo!.phone ?? '';
+      _introController.text = widget.userInfo!.detail ?? '';
+      _equipController.text = widget.userInfo!.equipment?.join(', ') ?? '';
+      _styleController.text = widget.userInfo!.style?.join(', ') ?? '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

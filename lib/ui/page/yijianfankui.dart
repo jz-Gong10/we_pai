@@ -17,13 +17,18 @@ class _YijianfankuiState extends State<Yijianfankui> {
       body: Stack(
         children: [
           Background(imagePath: 'lib/material/background2.png'),
-          
-          Positioned(top: 30, left: 23, right: 23, child: UpEdge(title: '意见反馈')),
 
-           Align(
-            alignment: Alignment.centerLeft, 
+          Positioned(
+            top: 50,
+            left: 23,
+            right: 23,
+            child: UpEdge(title: '意见反馈'),
+          ),
+
+          Align(
+            alignment: Alignment.centerLeft,
             child: Padding(
-              padding: EdgeInsets.only(top: 50), 
+              padding: EdgeInsets.only(top: 50),
               child: Problems(),
             ),
           ),

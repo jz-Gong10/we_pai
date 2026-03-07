@@ -63,7 +63,7 @@ class _DisplayDraftsState extends State<DisplayDrafts> {
           Background(imagePath: 'lib/material/background2.png'),
 
           Positioned.fill(
-            child: _buildContent(),
+            child: _buildContent(),//搭建页面内容
           ),
         ],
       ),
@@ -72,11 +72,11 @@ class _DisplayDraftsState extends State<DisplayDrafts> {
 
   Widget _buildContent() {
     if (_isLoading) {
-      return CircularProgressIndicator(); // 显示加载指示器
+      return Center(child: CircularProgressIndicator()); // 显示加载指示器
     } else if (_error.isNotEmpty) {
       return Text('错误: $_error'); // 显示错误信息
     } else if (_draftList.isEmpty) {
-      return Text('没有草稿'); // 显示没有数据的提示
+      return Center(child: Text('没有草稿')); // 显示没有数据的提示
     } else {
       // 显示草稿列表
       return ListView.builder(

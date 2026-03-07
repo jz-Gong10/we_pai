@@ -20,7 +20,23 @@ class ApiEnquiry {
       // 解析JSON数据并返回 DraftResponse
       return DraftResponse.fromJson(json.decode(response.data));
     } else {
-      throw Exception('接口请求失败：${response.statusCode}');
+      // 尝试解析错误响应
+      try {
+        final errorData = json.decode(response.data);
+        String errorMsg = errorData['msg'] ?? '服务器错误，请稍后重试';
+        return DraftResponse(
+          code: response.statusCode ?? 500,
+          data: DraftData(total: 0, pages: 0, list: []),
+          msg: errorMsg,
+        );
+      } catch (e) {
+        // 解析失败，返回默认错误
+        return DraftResponse(
+          code: response.statusCode ?? 500,
+          data: DraftData(total: 0, pages: 0, list: []),
+          msg: '服务器错误，请稍后重试',
+        );
+      }
     }
   }
 }
@@ -74,6 +90,22 @@ class ApiDetail {
     if (response.statusCode == 200) {
       // 解析JSON数据并返回 DraftResponse
       return DraftResponse.fromJson(json.decode(response.data));
+    } else {
+      throw Exception('接口请求失败：${response.statusCode}');
+    }
+  }
+}
+
+//删除草稿的接口调用方法
+class ApiDelete {
+  static Future<DraftResponse> deleteDraft(int orderId) async {
+    final response = await Http().delete(
+      path: '/order/draft/delete/$orderId',
+    );
+
+    if (response.statusCode == 200) {
+      final dynamic body = response.data is String ? json.decode(response.data) : response.data;
+      return DraftResponse.fromJson(body);
     } else {
       throw Exception('接口请求失败：${response.statusCode}');
     }

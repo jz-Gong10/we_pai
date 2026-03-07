@@ -5,7 +5,7 @@ import 'package:we_pai/ui/widget/post.dart';
 import 'package:we_pai/ui/widget/zhuye_low_edge.dart';
 import 'package:we_pai/ui/widget/options.dart';
 import 'package:we_pai/ui/widget/search.dart';
-import 'package:we_pai/ui/widget/show_youzhizuopin.dart';
+import 'package:we_pai/ui/widget/show_anoucement.dart';
 
 class Zhuye extends StatefulWidget {
   const Zhuye({super.key});
@@ -43,7 +43,7 @@ class _ZhuyeState extends State<Zhuye> {
             top: screenHeight * 0.18, // 相对高度
             left: 20,
             right: 20,
-            child: Center(child: ShowYouzhizuopin()),
+            child: Center(child: ShowAnouncement()),
           ),
 
           //选项按钮容器

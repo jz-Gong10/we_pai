@@ -21,6 +21,7 @@ class _WodeState extends State<Wode> {
   String name = '暂无昵称';
   String casId = '000000';
   String avatarUrl = '';
+  int role = 2; // 用户角色：1=普通用户，2=摄影师
   List<Order> _orders = [];
 
   // 展开/收起状态
@@ -114,7 +115,7 @@ class _WodeState extends State<Wode> {
                           ],
                         ),
 
-                  // 我的预约单板块
+                  // 我的预约单板块（所有角色都显示）
                   Container(
                     width: contentWidth,
                     decoration: BoxDecoration(
@@ -190,110 +191,113 @@ class _WodeState extends State<Wode> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
 
-                  // 我的约拍客单
-                  Container(
-                    width: contentWidth,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: pinkGradient,
-                      border: Border.all(color: primary3, width: 1),
-                    ),
-                    child: Column(
-                      children: [
-                        // 标题栏
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _isOrderExpanded = !_isOrderExpanded;
-                            });
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 15,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '我的约拍客单（客单管理）',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Icon(
-                                  _isOrderExpanded
-                                      ? Icons.arrow_circle_up
-                                      : Icons.arrow_circle_down,
-                                  size: 20,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        // 展开内容
-                        if (_isOrderExpanded)
-                          Column(
-                            children: [
-                              Divider(height: 1, color: primary3),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 10,
-                                ),
-                                child: Column(
-                                  children: [
-                                    // 客单项目
-                                    ..._orders.map((order) {
-                                      return Column(
-                                        children: [
-                                          _buildOrderItem(order),
-                                          Divider(height: 1, color: primary3),
-                                        ],
-                                      );
-                                    }).toList(),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20),
-
-                  // 我的作品
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyWorks()),
-                      );
-                    },
-                    child: Container(
+                  // role=2：显示我的约拍客单
+                  if (role == 2) ...[
+                    SizedBox(height: 20),
+                    Container(
                       width: contentWidth,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         gradient: pinkGradient,
                         border: Border.all(color: primary3, width: 1),
                       ),
-                      child: Text(
-                        '我的作品',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      child: Column(
+                        children: [
+                          // 标题栏
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _isOrderExpanded = !_isOrderExpanded;
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 15,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '我的约拍客单（客单管理）',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Icon(
+                                    _isOrderExpanded
+                                        ? Icons.arrow_circle_up
+                                        : Icons.arrow_circle_down,
+                                    size: 20,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          // 展开内容
+                          if (_isOrderExpanded)
+                            Column(
+                              children: [
+                                Divider(height: 1, color: primary3),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 10,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      // 客单项目
+                                      ..._orders.map((order) {
+                                        return Column(
+                                          children: [
+                                            _buildOrderItem(order),
+                                            Divider(height: 1, color: primary3),
+                                          ],
+                                        );
+                                      }).toList(),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
+
+                    // 我的作品
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyWorks()),
+                        );
+                      },
+                      child: Container(
+                        width: contentWidth,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 15,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: pinkGradient,
+                          border: Border.all(color: primary3, width: 1),
+                        ),
+                        child: Text(
+                          '我的作品',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
+
                   SizedBox(height: 40),
                 ],
               ),
@@ -341,16 +345,11 @@ class _WodeState extends State<Wode> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => Judge(),
-                          ), //点击跳转到评价页面
+                          MaterialPageRoute(builder: (context) => Judge()),
                         );
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 3,
-                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.grey[200],
@@ -367,7 +366,7 @@ class _WodeState extends State<Wode> {
     );
   }
 
-  // 客单
+  // 构建客单项目
   Widget _buildOrderItem(Order order) {
     String statusText = '';
     switch (order.status) {
@@ -393,11 +392,7 @@ class _WodeState extends State<Wode> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 第一行：预算在右上角
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [Text('预算: ${order.price ?? 0}元')],
-          ),
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [Text('预算')]),
           SizedBox(height: 8),
 
           Row(
@@ -440,7 +435,6 @@ class _WodeState extends State<Wode> {
           Text('${order.type ?? ''} - ${order.remark ?? '无备注'}'),
           SizedBox(height: 10),
 
-          // 状态按钮
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

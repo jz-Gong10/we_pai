@@ -2,8 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/button.dart';
 import 'package:we_pai/ui/themes/colors.dart';
-import 'package:we_pai/ui/page/editdraft.dart';
 import 'package:we_pai/model/draft_model.dart';
+import 'package:we_pai/ui/page/new.dart';
+import 'package:we_pai/api/api_service.dart';
 
 class Displaydraft extends StatefulWidget {
   //接收传递过来的草稿数据
@@ -51,14 +52,6 @@ class _DisplaydraftState extends State<Displaydraft> {
                       fontSize: 18,
                     )
                   ),
-                  SizedBox(height: 8),
-                  Text(
-                  '上次编辑：${_formatDate(widget.draft.createdAt)}',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 18,
-                  ),
-                  ),
                 ],
               ),
             ),
@@ -70,13 +63,28 @@ class _DisplaydraftState extends State<Displaydraft> {
             left: 0,
             right: 0,
             child: Center(
-              child: EditButton(onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Editdraft(
-                    //跳转时携带数据
-                  )),
-                );
+              child: EditButton(onPressed: () async {//编辑按钮
+                try {
+                  // 获取草稿详细信息
+                  final response = await ApiDetail.fetchDraftDetail(widget.draft.orderId!);
+                  if (response.code == 200 && response.data != null) {
+                    // 将详细信息传递给Newdraft页面
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Newdraft(
+                        draft: widget.draft,
+                      )),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('获取草稿详情失败: ${response.msg}')),
+                    );
+                  }
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('获取草稿详情失败: $e')),
+                  );
+                }
               }),
             ),
           ),
@@ -86,11 +94,5 @@ class _DisplaydraftState extends State<Displaydraft> {
     );
   }
 
-  // 日期格式化处理（去除时间，只保留日期）
-  String _formatDate(String dateTimeStr) {
-    if (dateTimeStr.length >= 10) {
-      return dateTimeStr.substring(0, 10);
-    }
-    return dateTimeStr;
-  }
+
 }

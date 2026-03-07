@@ -198,6 +198,7 @@ class _ClientdetailState extends State<Clientdetail> {
 
                     // 显示作品
                     Work(
+                      postId: 111,
                       avatarUrl: _avatarUrl,
                       nickname: _name,
                       description: '一看就会的九种万能摄影构图公式！',

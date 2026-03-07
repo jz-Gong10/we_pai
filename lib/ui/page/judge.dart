@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/up_edge.dart';
 import 'package:we_pai/ui/widget/button.dart';
+import 'package:we_pai/service/api_service.dart';
 
 class Judge extends StatefulWidget {
-  const Judge({super.key});
+  final int? orderId; // 订单ID（可选）
+
+  const Judge({super.key, this.orderId});
 
   @override
   State<Judge> createState() => _JudgeState();
 }
 
 class _JudgeState extends State<Judge> {
+  final ApiService _apiService = ApiService();
+  bool _isSubmitting = false;
+
   // 评分状态
   int _qualityRating = 0;
   int _punctualityRating = 0;
@@ -56,18 +62,46 @@ class _JudgeState extends State<Judge> {
   }
 
   // 提交评价
-  void _submitRating() {
-    // 构建评分数据
-    Map<String, int> ratings = {
-      '摄影师拍摄质量': _qualityRating,
-      '摄影师准时性': _punctualityRating,
-      '沟通效率': _communicationRating,
-    };
+  Future<void> _submitRating() async {
+    // 检查是否所有项都已评分
+    if (_qualityRating == 0 || _punctualityRating == 0 || _communicationRating == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('请为所有项评分')),
+      );
+      return;
+    }
 
-    print('提交的评分: $ratings');
-    
-    // 显示提交成功图片
-    _showSubmitSuccess();
+    // 如果没有订单ID，只显示成功提示（演示模式）
+    if (widget.orderId == null) {
+      _showSubmitSuccess();
+      return;
+    }
+
+    setState(() {
+      _isSubmitting = true;
+    });
+
+    try {
+      // 调用评价接口
+      await _apiService.rateOrder(
+        orderId: widget.orderId!,
+        photoScore: _qualityRating,
+        timeScore: _punctualityRating,
+        commScore: _communicationRating,
+        content: '', // 可选评价内容
+      );
+
+      // 显示提交成功
+      _showSubmitSuccess();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('评价失败: $e')),
+      );
+    } finally {
+      setState(() {
+        _isSubmitting = false;
+      });
+    }
   }
 
   // 星级评分组件

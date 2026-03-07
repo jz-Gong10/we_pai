@@ -8,7 +8,7 @@ class Http {
   final Duration receiveTimeout = Duration(seconds: 10);
 
   //token
-  String _token = "";
+  static String _token = "";
 
   //Dio实例
   late final Dio _dio;
@@ -31,6 +31,10 @@ class Http {
           baseUrl: _instance!.baseUrl,
           connectTimeout: _instance!.connectTimeout,
           receiveTimeout: _instance!.receiveTimeout,
+          validateStatus: (status) {
+            // 允许所有状态码，包括500
+            return status != null;
+          },
         ),
       );
 
@@ -39,9 +43,9 @@ class Http {
         InterceptorsWrapper(
           onRequest: (options, handler) {
             //请求之前的处理
-            if (_instance!._token.isNotEmpty) {
+            if (Http._token.isNotEmpty) {
               //添加token，需要看后端的要求
-              options.headers['Authorization'] = 'Bearer ${_instance!._token}';
+              options.headers['Authorization'] = 'Bearer ${Http._token}';
             }
             return handler.next(options);
           },
@@ -112,8 +116,23 @@ class Http {
     );
   }
 
+  /// DELETE请求
+  Future<Response<T>> delete<T>({
+    required String path,
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
+    return await _dio.delete<T>(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+    );
+  }
+
   //设置token
   void setToken(String token) {
-    _token = token;
+    Http._token = token;
   }
 }

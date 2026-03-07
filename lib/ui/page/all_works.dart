@@ -1,53 +1,66 @@
+//摄影实践圈
 import 'package:flutter/material.dart';
 import 'package:we_pai/ui/widget/background.dart';
 import 'package:we_pai/ui/widget/up_edge.dart';
 import 'package:we_pai/ui/widget/work.dart';
 import 'package:we_pai/ui/themes/colors.dart';
+import 'package:we_pai/service/api_service.dart';
+import 'package:we_pai/model/work_model.dart';
 
-class MyWorks extends StatefulWidget {
-  const MyWorks({super.key});
+class AllWorks extends StatefulWidget {
+  const AllWorks({super.key});
 
   @override
-  State<MyWorks> createState() => _MyWorksState();
+  State<AllWorks> createState() => _AllWorksState();
 }
 
-class _MyWorksState extends State<MyWorks> {
-  // 模拟数据
-  final List<Map<String, dynamic>> works = [
-    {
-      'avatarUrl': 'https://via.placeholder.com/48',
-      'nickname': '叮咚鸡',
-      'description': '一看就会的九种万能摄影构图公式！',
-      'imageUrls': List.generate(
-        9,
-        (index) => 'https://via.placeholder.com/100',
-      ),
-      'likes': 1111,
-      'comments': 2222,
-    },
-    {
-      'avatarUrl': 'https://via.placeholder.com/48',
-      'nickname': '叮咚鸡',
-      'description': '今年涨幅最多的光影街拍合集（附拍摄技巧）',
-      'imageUrls': List.generate(
-        9,
-        (index) => 'https://via.placeholder.com/100',
-      ),
-      'likes': 1111,
-      'comments': 2222,
-    },
-    {
-      'avatarUrl': 'https://via.placeholder.com/48',
-      'nickname': '叮咚鸡',
-      'description': '原来这就是摄影眼！如何发现角落里的美',
-      'imageUrls': List.generate(
-        3,
-        (index) => 'https://via.placeholder.com/100',
-      ),
-      'likes': 1111,
-      'comments': 2222,
-    },
-  ];
+class _AllWorksState extends State<AllWorks> {
+  final ApiService _apiService = ApiService();
+  List<WorkItem> _works = [];
+  Map<int, int> _commentCounts = {};
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadWorks();
+  }
+
+  Future<void> _loadWorks() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+    try {
+      final response = await _apiService.getAllWorks(1, 10);
+      setState(() {
+        _works = response.data.list;
+        _isLoading = false;
+      });
+      _loadCommentCounts();
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _loadCommentCounts() async {
+    for (var work in _works) {
+      try {
+        final commentResponse = await _apiService.getComments(work.postId);
+        setState(() {
+          _commentCounts[work.postId] = commentResponse.data.list.length;
+        });
+      } catch (e) {
+        setState(() {
+          _commentCounts[work.postId] = 0;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,35 +78,36 @@ class _MyWorksState extends State<MyWorks> {
 
           Padding(
             padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
-            child: ListView.builder(
-              itemCount: works.length,
-              itemBuilder: (context, index) {
-                final work = works[index];
-                return Work(
-                  type: 'all',
-                  avatarUrl: work['avatarUrl'],
-                  nickname: work['nickname'],
-                  description: work['description'],
-                  imageUrls: List<String>.from(work['imageUrls']),
-                  likes: work['likes'],
-                  comments: work['comments'],
-                  gradient: lhGradient,
+            child: _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : _error != null
+                    ? Center(child: Text('错误: $_error'))
+                    : _works.isEmpty
+                        ? Center(child: Text('暂无作品'))
+                        : ListView.builder(
+                            itemCount: _works.length,
+                            itemBuilder: (context, index) {
+                              final work = _works[index];
+                              
+                              return Work(
+                                //每个作品用work.dart中的Work组件显示
+                                postId: work.postId,
+                                type: 'all',
+                                //这里设置种类为all，没有删除，展示所有人的作品
+                                avatarUrl: work.avatarUrl,
+                                nickname: work.nickname,
+                                description: work.content,
+                                imageUrls: work.images,
+                                likes: work.likeCount,
+                                comments: _commentCounts[work.postId] ?? 0,
+                                //接口那里没看到有直接获得评论数，_commentCounts这里用的获取评论接口，获取list长度
+                                isLiked: false, // 列表接口暂未返回isLiked字段，默认为false
+                                gradient: lhGradient,
+                                onRefresh: _loadWorks,
+                              );
 
-                  onLike: () {
-                    // 点赞逻辑
-                    print('Liked work $index');
-                  },
-                  onComment: () {
-                    // 评论逻辑
-                    print('Commented on work $index');
-                  },
-                  onDelete: () {
-                    // 删除逻辑
-                    print('Deleted work $index');
-                  },
-                );
-              },
-            ),
+                            },
+                          ),
           ),
         ],
       ),

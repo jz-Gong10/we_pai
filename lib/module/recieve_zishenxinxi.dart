@@ -36,6 +36,7 @@ class UserInfo {
   factory UserInfo.fromJson(Map<String, dynamic> json) {
     return UserInfo(
       role: json['role'],
+      agreement: json['agreement'] ?? false,
       avatarUrl: json['avatarUrl'],
       sex: json['sex'],
       equipment: json['equipment'] != null
@@ -53,26 +54,22 @@ class UserInfo {
       photographerType: json['photographerType'] != null
           ? List<String>.from(json['photographerType'])
           : null,
-      agreement: json['agreement'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'role': role,
-      'avatarUrl': avatarUrl,
-      'sex': sex,
-      'equipment': equipment,
+      'agreement': agreement,
       'casId': casId,
       'phone': phone,
       'name': name,
-      'nickname': nickname,
       'completedOrders': completedOrders,
       'style': style,
       'detail': detail,
+      'totalLikes': totalLikes,
       'totalOrders': totalOrders,
       'photographerType': photographerType,
-      'agreement': agreement,
     };
   }
 

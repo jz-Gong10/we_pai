@@ -38,7 +38,7 @@ class _ZhuyeState extends State<Zhuye> {
             child: Center(child: Search()),
           ),
 
-          //作品展示
+          //公告栏
           Positioned(
             top: screenHeight * 0.18, // 相对高度
             left: 20,

@@ -94,6 +94,7 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
     setState(() {
       _taskStatus[index] = true;
     });
+    _kedan();
   }
 
   Future<void> _kedan() async {
@@ -222,10 +223,13 @@ class _KedanguangchangState extends State<KedanguangchangPage> {
                                     _buildTaskCard(
                                       avatarUrl: order['avatarUrl'],
                                       nickname: order['nickname'],
-                                      category: order['type'],
-                                      salary: '${order['price']}元/${order['duration']}',
-                                      needEquipment: order['needEquipment'],
+                                      
                                       index: index,
+                                      category: order['type'] ?? '未知类型',
+                                      salary:
+                                          '${order['price'] ?? 0}r/${order['duration'] ?? '未知'}',
+                                      needEquipment:
+                                          order['needEquipment'] ?? false,
                                     ),
                                     const SizedBox(height: 16),
                                   ],

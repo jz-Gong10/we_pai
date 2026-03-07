@@ -136,8 +136,8 @@ class _WorkDisplayState extends State<WorkDisplay> {
       body: Stack(
         children: [
           Background(imagePath: 'lib/material/background2.png'),
-          
-          Positioned(top: 20, left: 23, right: 23, child: UpEdge(title: ' ')),
+
+          Positioned(top: 40, left: 23, right: 23, child: UpEdge(title: ' ')),
 
           Positioned(
             top: 70,
@@ -175,7 +175,6 @@ class _WorkDisplayState extends State<WorkDisplay> {
           ),
         ],
       ),
-
     );
   }
 
@@ -191,11 +190,7 @@ class _WorkDisplayState extends State<WorkDisplay> {
           color: primary2,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
-            BoxShadow(
-              color: Colors.grey,
-              blurRadius: 4,
-              offset: Offset(0, 4),
-            ),
+            BoxShadow(color: Colors.grey, blurRadius: 4, offset: Offset(0, 4)),
           ],
         ),
         child: Column(
@@ -239,27 +234,26 @@ class _WorkDisplayState extends State<WorkDisplay> {
             // 作品图片
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Container(//大容器300，左右30
+              child: Container(
+                //大容器300，左右30
                 width: 240,
-                height: 180,//3:4
+                height: 180, //3:4
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(0),
                 ),
-                child: work.images.isNotEmpty
-                    ? Image.network(
-                        work.images[0],//只展示第一张图片
-                        fit: BoxFit.cover,
-                      )
-                    : Container(
-                        color: Colors.grey[300],
-                        child: Icon(Icons.image, color: Colors.grey),
-                      ),
+                child: Image.network(
+                  work.images[0], //只展示第一张图片
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             // 底部信息
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical:15),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 15,
+              ),
               child: Row(
                 children: [
                   // 评论按钮
@@ -272,29 +266,24 @@ class _WorkDisplayState extends State<WorkDisplay> {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  SizedBox(//评论输入框
+                  SizedBox(
+                    //评论输入框
                     width: 180,
                     height: 30,
                     child: TextField(
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                      ),
+                      style: TextStyle(color: Colors.black, fontSize: 12),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
                         hintText: '添加评论...',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12,
-                        ),
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
                         ),
                         contentPadding: EdgeInsets.symmetric(
                           horizontal: 16,
-                          vertical: 1,//降低输入框高度
+                          vertical: 1, //降低输入框高度
                         ),
                       ),
                       onSubmitted: (value) {
@@ -341,5 +330,4 @@ class _WorkDisplayState extends State<WorkDisplay> {
       ),
     );
   }
-
 }

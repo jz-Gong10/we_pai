@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
 class SYSShowBlock extends StatefulWidget {
-  final String nickname;
-  final String casId;
-  final String avatarUrl;
-  final int orderCount;
-  final List<String> style;
-  final List<String> type;
-  final List<String> equipment;
+  final String? nickname;
+  final String? casId;
+  final String? avatarUrl;
+  final int? orderCount;
+  final List<String>? style;
+  final List<String>? type;
+  final List<String>? equipment;
 
   const SYSShowBlock({
     super.key,
-    required this.nickname,
-    required this.avatarUrl,
-    required this.orderCount,
-    required this.casId,
-    required this.style,
-    required this.type,
-    required this.equipment,
+    this.nickname,
+    this.avatarUrl,
+    this.orderCount,
+    this.casId,
+    this.style,
+    this.type,
+    this.equipment,
   });
 
   @override
@@ -54,9 +54,9 @@ class _SYSShowBlockState extends State<SYSShowBlock> {
                 width: 40,
                 height: 40,
                 margin: EdgeInsets.all(11),
-                child: (widget.avatarUrl.isNotEmpty)
+                child: (widget.avatarUrl?.isNotEmpty ?? false)
                     ? Image.network(
-                        widget.avatarUrl,
+                        widget.avatarUrl!,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           // 图片加载失败时显示默认头像
@@ -79,14 +79,14 @@ class _SYSShowBlockState extends State<SYSShowBlock> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.nickname,
+                    widget.nickname ?? '未知用户',
                     style: TextStyle(
                       fontSize: 16, // 稍微调小字号
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    'id:${widget.casId}',
+                    widget.casId ?? '000000',
                     style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                 ],
@@ -105,13 +105,13 @@ class _SYSShowBlockState extends State<SYSShowBlock> {
 
           SizedBox(height: 16), // 添加间距
 
-          Text('设备：${widget.equipment}'),
+          Text('设备：${widget.equipment?.join(', ') ?? '无'}'),
 
-          Text('擅长风格：${widget.style}'),
+          Text('风格：${widget.style?.join(', ') ?? '无'}'),
 
           SizedBox(height: 8),
 
-          Text('擅长类型：${widget.type}'),
+          Text('类型：${widget.type?.join(', ') ?? '无'}'),
         ],
       ),
     );

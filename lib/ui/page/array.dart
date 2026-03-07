@@ -123,9 +123,9 @@ class _ArrayState extends State<Array> {
           Background(imagePath: 'lib/material/background2.png'),
 
           //返回按钮
-          Positioned(top: 40, left: 23, child: AppBackButton()),
+          Positioned(top: 45, left: 23, child: AppBackButton()),
           //搜索栏
-          Positioned(top: 30, left: 63, right: 20, child: Search()),
+          Positioned(top: 50, left: 63, right: 20, child: Search()),
 
           Positioned(
             top: 90,

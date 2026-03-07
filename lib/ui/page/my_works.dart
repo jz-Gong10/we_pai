@@ -51,7 +51,12 @@ class _MyWorksState extends State<MyWorks> {
         children: [
           Background(imagePath: 'lib/material/background2.png'),
 
-          Positioned(top: 30, left: 23, right: 23, child: UpEdge(title: '我的作品')),
+          Positioned(
+            top: 40,
+            left: 23,
+            right: 23,
+            child: UpEdge(title: '我的作品'),
+          ),
 
           Padding(
             padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
@@ -86,3 +91,4 @@ class _MyWorksState extends State<MyWorks> {
     );
   }
 }
+

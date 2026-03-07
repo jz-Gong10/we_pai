@@ -1,4 +1,6 @@
-class KedanOrder {
+class Order {
+  bool? isMyOrderAsCustomer;
+  String? targetName;
   int? paymentStatus;
   String? shootTime;
   String? createdAt;
@@ -6,10 +8,9 @@ class KedanOrder {
   String? contactInfo;
   String? type;
   int? photographerId;
-  String? customerName;
+  String? targetAvatar;
   String? duration;
   int? subjectCount;
-  String? customerAvatar;
   double? price;
   bool? needEquipment;
   String? location;
@@ -17,7 +18,9 @@ class KedanOrder {
   int? orderId;
   int? status;
 
-  KedanOrder({
+  Order({
+    this.isMyOrderAsCustomer,
+    this.targetName,
     this.paymentStatus,
     this.shootTime,
     this.createdAt,
@@ -25,10 +28,9 @@ class KedanOrder {
     this.contactInfo,
     this.type,
     this.photographerId,
-    this.customerName,
+    this.targetAvatar,
     this.duration,
     this.subjectCount,
-    this.customerAvatar,
     this.price,
     this.needEquipment,
     this.location,
@@ -37,8 +39,10 @@ class KedanOrder {
     this.status,
   });
 
-  factory KedanOrder.fromJson(Map<String, dynamic> json) {
-    return KedanOrder(
+  factory Order.fromJson(Map<String, dynamic> json) {
+    return Order(
+      isMyOrderAsCustomer: json['isMyOrderAsCustomer'],
+      targetName: json['targetName']?.toString(),
       paymentStatus: json['payment_status'] is int
           ? json['payment_status']
           : int.tryParse(json['payment_status']?.toString() ?? '0'),
@@ -50,18 +54,15 @@ class KedanOrder {
       photographerId: json['photographer_id'] is int
           ? json['photographer_id']
           : int.tryParse(json['photographer_id']?.toString() ?? '0'),
-      customerName: json['customerName']?.toString(),
+      targetAvatar: json['targetAvatar']?.toString(),
       duration: json['duration']?.toString(),
       subjectCount: json['subject_count'] is int
           ? json['subject_count']
           : int.tryParse(json['subject_count']?.toString() ?? '0'),
-      customerAvatar: json['customerAvatar']?.toString(),
       price: json['price'] is double
           ? json['price']
           : double.tryParse(json['price']?.toString() ?? '0.0'),
-      needEquipment: json['need_equipment'] is bool
-          ? json['need_equipment']
-          : false,
+      needEquipment: json['need_equipment'],
       location: json['location']?.toString(),
       customerId: json['customer_id'] is int
           ? json['customer_id']
@@ -77,6 +78,8 @@ class KedanOrder {
 
   Map<String, dynamic> toJson() {
     return {
+      'isMyOrderAsCustomer': isMyOrderAsCustomer,
+      'targetName': targetName,
       'payment_status': paymentStatus,
       'shoot_time': shootTime,
       'created_at': createdAt,
@@ -84,10 +87,9 @@ class KedanOrder {
       'contact_info': contactInfo,
       'type': type,
       'photographer_id': photographerId,
-      'customerName': customerName,
+      'targetAvatar': targetAvatar,
       'duration': duration,
       'subject_count': subjectCount,
-      'customerAvatar': customerAvatar,
       'price': price,
       'need_equipment': needEquipment,
       'location': location,
@@ -96,23 +98,37 @@ class KedanOrder {
       'status': status,
     };
   }
+}
 
-  @override
-  String toString() {
-    return 'KedanOrder{orderId: $orderId, type: $type, price: $price, status: $status}';
+class OrderResponse {
+  int? code;
+  OrderData? data;
+
+  OrderResponse({this.code, this.data});
+
+  factory OrderResponse.fromJson(Map<String, dynamic> json) {
+    return OrderResponse(
+      code: json['code'] is int
+          ? json['code']
+          : int.tryParse(json['code']?.toString() ?? '0'),
+      data: json['data'] != null ? OrderData.fromJson(json['data']) : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'code': code, 'data': data?.toJson()};
   }
 }
 
-// 订单列表数据模型
-class KedanList {
+class OrderData {
   int? total;
   int? pages;
-  List<KedanOrder> list;
+  List<Order>? list;
 
-  KedanList({this.total, this.pages, required this.list});
+  OrderData({this.total, this.pages, this.list});
 
-  factory KedanList.fromJson(Map<String, dynamic> json) {
-    return KedanList(
+  factory OrderData.fromJson(Map<String, dynamic> json) {
+    return OrderData(
       total: json['total'] is int
           ? json['total']
           : int.tryParse(json['total']?.toString() ?? '0'),
@@ -120,9 +136,7 @@ class KedanList {
           ? json['pages']
           : int.tryParse(json['pages']?.toString() ?? '0'),
       list: json['list'] != null
-          ? List<KedanOrder>.from(
-              json['list'].map((item) => KedanOrder.fromJson(item)),
-            )
+          ? List<Order>.from(json['list'].map((item) => Order.fromJson(item)))
           : [],
     );
   }
@@ -131,7 +145,7 @@ class KedanList {
     return {
       'total': total,
       'pages': pages,
-      'list': list.map((item) => item.toJson()).toList(),
+      'list': list?.map((item) => item.toJson()).toList(),
     };
   }
 }

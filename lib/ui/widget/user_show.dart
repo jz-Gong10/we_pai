@@ -6,14 +6,14 @@ import 'package:we_pai/ui/themes/colors.dart';
 class UserShow extends StatefulWidget {
   final String name;
   final String casId;
-  final String avatarUrl;
+  final String? avatarUrl;
   final bool change;
 
   const UserShow({
     super.key,
     required this.name,
     required this.casId,
-    required this.avatarUrl,
+    this.avatarUrl,
     required this.change,
   });
 
@@ -45,9 +45,9 @@ class _UserShowState extends State<UserShow> {
               borderRadius: BorderRadius.all(Radius.circular(50)),
             ),
             clipBehavior: Clip.hardEdge,
-            child: (widget.avatarUrl.isNotEmpty)
+            child: (widget.avatarUrl?.isNotEmpty ?? false)
                 ? Image.network(
-                    widget.avatarUrl,
+                    widget.avatarUrl!,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       // 图片加载失败时显示默认头像

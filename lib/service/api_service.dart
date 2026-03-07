@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:we_pai/module/order_model.dart';
 import 'package:we_pai/module/recieve_sheyinghsiliebiao.dart';
 import 'package:we_pai/module/sys_model.dart';
 import '../module/recieve_zishenxinxi.dart';
-import 'dio_service.dart';
+import '../module/announcement_model.dart';
 import 'package:we_pai/service/dio_service.dart';
 import 'package:we_pai/api/api_config.dart';
 import 'package:we_pai/net/http.dart';
@@ -56,11 +57,11 @@ class ApiService {
   }
 
   // 获取摄影师列表
-  Future<List<SYSList>> getPhotographers() async {
+  Future<List<SYSList>> getPhotographers({String keyword = ''}) async {
     try {
       Response response = await _dio.get(
         '/photographer/list',
-        queryParameters: {'pageNum': '1', 'pageSize': '10', 'keyword': ''},
+        queryParameters: {'pageNum': '1', 'pageSize': '10', 'keyword': keyword},
       );
 
       if (response.statusCode == 200) {
@@ -93,6 +94,25 @@ class ApiService {
         }
       } else {
         throw Exception('获取用户预约订单列表失败: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  //我的约拍客单
+  Future<OrderResponse> getMyOrders(int pageNum, int pageSize) async {
+    try {
+      Response response = await _dio.get(
+        '/order/list',
+        queryParameters: {'pageNum': pageNum, 'pageSize': pageSize},
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.data;
+        return OrderResponse.fromJson(responseData);
+      } else {
+        throw Exception('获取订单列表失败: ${response.statusCode}');
       }
     } on DioException catch (e) {
       throw _handleDioError(e);
@@ -272,7 +292,7 @@ class ApiService {
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = response.data;
         if (responseData['code'] == 200) {
-          return WorkResponse.fromJson(responseData['data']);
+          return WorkResponse.fromJson(responseData);
         } else {
           throw Exception('获取作品列表失败: ${responseData['msg']}');
         }
